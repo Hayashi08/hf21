@@ -1,19 +1,21 @@
-1. 環境構築
+## 環境構築
 
-    1.1. Pythonをどこかから入れる
-        ※林のPythonのバージョンは3.8
+1. Python
+
+    1.1. Pythonのインストール
+        ※ バージョンは3.8をおすすめ
 
     1.2. コマンドプロンプトで以下のコマンドを実行
         pip install flask
+        pip install flask-login
+        pip mysql-connector-python
         pip install numpy
         pip install opencv-python
-
-        ※　この際、ちゃんとこの場所にPATH通しておけよ！みたいな文章がで出来たら。
-            その場所をPATHに通しておく。
         
-        ※   仮想環境でやりたい人は林に申告を
+        ※ この際、ちゃんとこの場所にPATH通しておけよ！みたいな文章がで出てきたら。その場所をPATHに通しておく。
 
-2. アプリ起動方法
+
+## アプリ起動方法
 
     2.1. コマンドプロンプトで本アプリのルートディレクトリに移動
 
