@@ -4,27 +4,30 @@
 
     1.1. Pythonのインストール
         ※ バージョンは3.8をおすすめ
-
-    1.2. コマンドプロンプトで以下のコマンドを実行
-        pip install flask
-        pip install flask-login
-        pip mysql-connector-python
-        pip install numpy
-        pip install opencv-python
         
-        ※ この際、ちゃんとこの場所にPATH通しておけよ！みたいな文章がで出てきたら。その場所をPATHに通しておく。
+    1.1. コマンドプロンプトで `python --version` と打ってPythonのバージョンが出てきたら成功、出てこなかったらたぶんPythonにパスが通ってない
+
+    1.1. コマンドプロンプトで以下のコマンドを実行
+        pip install -r requirements.txt
+        
+        ※ この際、ちゃんとこの場所にPATH通しておけよ！みたいな文章がで出てきたら。その場所をPATHに通しておく
+        
+ 
 
 
 ## アプリ起動方法
 
-    2.1. コマンドプロンプトで本アプリのルートディレクトリに移動
+1. mysqlサーバーを起動
 
-    2.2. ルートディレクトリで以下のコマンドを実行してサーバーを立ち上げる
+1. コマンドプロンプトで本アプリのルートディレクトリに移動
+
+1. ルートディレクトリで以下のコマンドを実行してサーバーを立ち上げる
         python app.py
 
-    3.3. 以下のURLに"Chrome"でアクセス
+1. 以下のURLに"Chrome"でアクセス
         http://127.0.0.1:5000/
 
-    3.4. サーバーの停止方法はCtrl+C
+1. サーバーの停止方法はCtrl+C
+    
 
-以上
+# 以上
