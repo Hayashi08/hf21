@@ -1,0 +1,34 @@
+@import url('https://fonts.googleapis.com/css2?family=Kotta+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Kosugi&display=swap');
+
+a:hover{
+	text-decoration: none;
+}
+
+.main_title{
+ 	font-family: 'Kotta One', serif;
+	color: #e3e8fa;
+}
+
+
+.nav{
+	height: 100px;
+	background-color: #373e52;
+	width: 100%;
+	float: none;
+	position: fixed;
+	z-index: 1;
+}
+
+.nav .main_logo{
+	color: #e3e8fa;
+	font-size: 3rem;
+}
+
+.nav .main_logo:hover{
+  	-webkit-transition: all 0.3s linear 0s;
+	opacity: 0.8;
+
+}
+
+

@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="col-8 mx-auto">
+    <br><br>
+    <div id="form">
+        <p class="form-title">{{ message }}</p>
+        <form action="/login" method="POST">
+            <p class="offset-3">ID</p>
+            <p class="id offset-3"><input type="text" name="user_name"/></p>
+            <p class="offset-3">パスワード</p>
+            <p class="pass offset-3"><input type="text" name="password"/></p>
+            <p class="submit"><input class="submit" type="submit" value="ログイン"/></p>
+        </form>
+    </div>
+
+    <div class="offset-10 col-2">
+        <a class="btn btn-primary px-3" href="/signup">新規登録</a>
+    </div>
+</div>
+
+{% endblock %}
+
