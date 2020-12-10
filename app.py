@@ -108,10 +108,8 @@ def shoulder():
         stream = request.files['image'].stream
         img_array = np.asarray(bytearray(stream.read()), dtype=np.uint8)
         img = cv2.imdecode(img_array, 1)
-        
-        img_name = MyImage.save(img)
 
-        shoulder = Shoulder(img_name)
+        shoulder = Shoulder(img)
         result, save_path = shoulder.detect()
 
         return result + ',' + save_path
