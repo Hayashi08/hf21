@@ -1,0 +1,5 @@
+flask
+flask-login
+mysql-connector-python
+install numpy
+opencv-python
