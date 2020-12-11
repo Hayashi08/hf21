@@ -12,6 +12,8 @@ class Shoulder(object):
         self.detect_area = [250, 600, 400, 100]
         self.hough_lines = []
 
+#山本
+
     def remove_background(self):
         # ゼロの空白画像を作成（imgと同じ寸法)
         marker = np.zeros_like(self.noback_image[:,:,0]).astype(np.int32)
