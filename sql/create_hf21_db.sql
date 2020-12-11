@@ -40,7 +40,7 @@ CREATE TABLE sentence_tbl (
 	result_id INTEGER UNSIGNED NOT NULL,
 	sentence_str VARCHAR(512),
 	sentence_len TINYINT UNSIGNED DEFAULT 0,
-	sentens_time TIME DEFAULT '00:00:00',
+	sentence_time TIME DEFAULT '00:00:00',
 	sentence_wasoku TINYINT UNSIGNED DEFAULT 0,
 	sentence_datetime DATETIME,
 	PRIMARY KEY (sentence_id),
