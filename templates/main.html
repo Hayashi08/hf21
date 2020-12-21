@@ -26,7 +26,7 @@
 <section>
     <div id="log" class="mt-5"></div>
 </section>
-<a class="btn btn-primary mt-4" href="/">戻る</a>
+<a class="btn btn-primary my-4" href="/">戻る</a>
 </div>
 </div>
 {% endblock %}
@@ -66,6 +66,7 @@
             }
             else{
                 log_html += '<p class="h4">' + log_list[i].content + '</p>';
+                log_html += '<p class="h4">話速：' + log_list[i].score + '</p>';
             }
         }
         log.innerHTML = log_html;
@@ -134,7 +135,7 @@
                         set_log(capture_time, 'image', resultObjct[0], resultObjct[1]);
                     })
                     .fail(function(data){
-                        alert("画像を得られませんでした。");
+                        // alert("画像を得られませんでした。");
                     });
                 }
             , 'image/jpeg');
@@ -158,11 +159,13 @@
 
     let finalTranscript = '';
 
-    let word_time = 3000; //0.0
+    let word_time = 0.0;
     let time_head;
     let time_tail;
     let time_flag = false;
     let transcript_time;
+
+    let sentence_list = [];
 
     recognition.onresult = (event) => {
         if (!time_flag) {
@@ -178,7 +181,7 @@
                 word_time += time_tail - time_head;
                 time_flag = false;
                 finalTranscript += transcript;
-                set_log(transcript_time, 'text', '', transcript);
+                set_log(transcript_time, 'text', '' + (time_tail - time_head), transcript);
             }
             else {
                 time_tail = event.timeStamp;
@@ -198,11 +201,31 @@
             word_time += time_tail - time_head;
             time_flag = false;
         }
-        let word = cus_voice.textContent;
-        HiraganaConvert(word);
+        let word = finalTranscript;
+        let hiragana = HiraganaConvert(word);
+        let word_length = hiragana.length;
+        mozisuu.innerHTML = '文字数：' + word_length;
+        time.innerHTML = '時間：' + (word_time / 1000);
+        wasoku.innerHTML = '話速：' + (word_length / ((word_time / 1000) / 60)) + '(文字数/分)';
+        kana.innerHTML = hiragana;
+
+        for (let i = 0; i  < log_list.length; i++) {
+
+            let log = log_list[i];
+            
+            if (log.type == 'text') {
+                let hiragana = HiraganaConvert(log.content);
+                log.content += '<br>' + hiragana + '<br>文字数：' + hiragana.length + '<br>時間：' + log.score;
+                log.score = hiragana.length / ((parseFloat(log.score) / 1000) / 60);
+            }
+            
+        }
+
     }
 
     function HiraganaConvert(send_word) {
+
+        let hiragana = send_word;
 
         let json = JSON.stringify({
             app_id: "f192486406c327292ce7cc842a7e4eea482fb063c9b023d6dbd3c6339d376ab5",
@@ -212,23 +235,37 @@
         });
 
         let xhr = new XMLHttpRequest;
-        xhr.onload = function () {
-            let res = JSON.parse(xhr.responseText);
-            let hiragana = res.converted.replace(/\s+/g, '');
-            let word_length = hiragana.length;
-            mozisuu.innerHTML = '文字数：' + word_length;
-            time.innerHTML = '時間：' + (word_time / 1000);
-            wasoku.innerHTML = '話速：' + (word_length / ((word_time / 1000) / 60)) + '(文字数/分)';
-            kana.innerText = hiragana;
-        }
+        // xhr.onload = function () {
+            // let res = JSON.parse(xhr.responseText);
+            // let hiragana = res.converted.replace(/\s+/g, '');
+            // let word_length = hiragana.length;
+            // mozisuu.innerHTML = '文字数：' + word_length;
+            // time.innerHTML = '時間：' + (word_time / 1000);
+            // wasoku.innerHTML = '話速：' + (word_length / ((word_time / 1000) / 60)) + '(文字数/分)';
+            // kana.innerText = hiragana;
 
-        xhr.onerror = function () {
-            alert("文章をひらがなにできませんでした。");
-        }
+        // }
 
-        xhr.open("POST", "https://labs.goo.ne.jp/api/hiragana", true);
+        // xhr.onerror = function () {
+        //     alert("文章をひらがなにできませんでした。");
+        // }
+
+        xhr.open("POST", "https://labs.goo.ne.jp/api/hiragana", false);
         xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
-        xhr.send(json);
+
+        try {
+            xhr.send(json);
+            if (xhr.status != 200) {
+                alert(`Error ${xhr.status}: ${xhr.statusText}`);
+            } else {
+                let res = JSON.parse(xhr.responseText);
+                hiragana = res.converted.replace(/\s+/g, '');
+            }
+        } catch (err) {
+            ("Request failed");
+        }
+
+        return hiragana;
 
     }
 
