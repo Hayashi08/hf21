@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="row mt-5">
+    <div class="col text-center">
+        <p>{{ dir_name }}</p>
+        {% for i in range(5) %}
+            <img src="./static/images/all/{{ dir_name }}/0{{i}}.jpg">
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

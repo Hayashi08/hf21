@@ -122,5 +122,12 @@ def shoulder():
 
     return result + ',' + save_path
 
+@app.route('/all_images')
+def all_images():
+    path = './static/images/all'
+    files = os.listdir(path)
+    files_dir = [f for f in files if os.path.isdir(os.path.join(path, f))]
+    return render_template('all_images.html', title='処理過程', dir_name=files_dir[len(files_dir)-1])
+
 if __name__ == '__main__':
     app.run(debug=True)
