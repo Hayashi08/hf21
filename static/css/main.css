@@ -2,12 +2,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Kosugi&display=swap');
 
 body,p,form,input,a{margin: 0}
-/* #form{
+#form{/*
   width: 700px;
   margin: 30px auto;
   padding: 20px;
-  border: 1px solid #555;
-} */
+  border: 1px solid #555;*/
+  }
   
   body {overflow:hidden;}
 
@@ -84,7 +84,7 @@ input[type="password"] {
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
   border-radius: 10px;
-  border: solid #4f566a;
+  border: solid #4f566a; 4px;
   background: #4f566a;
   }
 .submit input:hover{

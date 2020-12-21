@@ -17,16 +17,7 @@ html, body {
   padding: 0 0 0 60px;
 }
 
-.btn{
-  background:#373e52;
-  color: #e3e8fa;
-}
 
-.btn:hover{
-  -webkit-transition: all 0.3s linear 0s;
-  opacity: 0.8;
-  color: #e3e8fa;
-}
 
 .back{
   padding: 0 0 0 440px;

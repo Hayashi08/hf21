@@ -2,7 +2,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Kosugi&display=swap');
 
 a:hover{
+  	-webkit-transition: all 0.3s linear 0s;
 	text-decoration: none;
+	opacity: 0.8;
 }
 
 .main_title{
@@ -20,15 +22,5 @@ a:hover{
 	z-index: 1;
 }
 
-.nav .main_logo{
-	color: #e3e8fa;
-	font-size: 3rem;
-}
-
-.nav .main_logo:hover{
-  	-webkit-transition: all 0.3s linear 0s;
-	opacity: 0.8;
-
-}
 
 
