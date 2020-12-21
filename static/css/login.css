@@ -22,8 +22,8 @@ form p{
   margin-bottom: 20px;
   }
 
-input[type="email"],
-input[type="password"] {
+input[type="text"],
+input[type="text"] {
   width: 350px;
   padding: 4px;
   font-size: 14px;
