@@ -14,6 +14,8 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 app.config['SECRET_KEY'] = os.urandom(24)
 
+## ユーザー認証
+
 class User(UserMixin):
     def __init__(self, id, name):
         self.id = id
@@ -30,6 +32,8 @@ def load_user(id):
     else:
         return None
 
+## ページ
+
 # インデックス
 @app.route('/')
 @login_required
@@ -37,18 +41,23 @@ def index():
     return render_template('index.html', title='インデックス')
     # return render_template('index.html', title='ログイン', message='ログインしてください。')
 
-# トップ
-# @app.route('/top')
-# @login_required
-# def top():
-#     return render_template('top.html', title='トップ')
-
 # メイン
 @app.route('/main')
 @login_required
 def main():
     return render_template('main.html', title='メイン')
 
+# アーカイブ
+@app.route('/archive')
+@login_required
+def archive():
+    return render_template('archive.html', title='アーカイブ')
+
+# 設定
+@app.route('/settings')
+@login_required
+def settings():
+    return render_template('settings.html', title='設定')
 
 ## ログイン機能
 
