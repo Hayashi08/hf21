@@ -5,19 +5,20 @@
 <div class="col-8 mx-auto">
     <br><br>
     <div id="form">
-        <p class="form-title">{{ message }}</p>
+        <p class="form-title" style="font-size: 40px;">{{ message }}</p>
         <form action="/login" method="POST">
             <p class="offset-3">ID</p>
-            <p class="id offset-3"><input type="text" name="user_name"/></p>
+            <p class="id offset-3"><input type="text" name="user_name" style="width: 350px;"/></p>
             <p class="offset-3">パスワード</p>
-            <p class="pass offset-3"><input type="text" name="password"/></p>
-            <p class="submit"><input class="submit" type="submit" value="ログイン"/></p>
+            <p class="pass offset-3"><input type="text" name="password" style="width: 350px;"/></p>
+            <p class="submit"><button type="imput" class="btn btn-outline-secondary">ログイン</button></p>
         </form>
     </div>
 
-    <div class="offset-10 col-2">
-        <a class="btn btn-primary px-3" href="/signup">新規登録</a>
+    <div class="text-right">
+        <a class="btn btn-outline-secondary" href="/signup">新規会員登録</a>
     </div>
+    
 </div>
 
 {% endblock %}
