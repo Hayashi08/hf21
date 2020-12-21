@@ -24,7 +24,14 @@ class MyImage(object):
         return height, width, channels
 
     def mkdir_all_img():
-        # ディレクトリを作成する
+        # 必要なディレクトリを作成
+        files_dir = ['./static/images', './static/images/all', './static/images/all/00000000_000000']
+        for file_dir in files_dir:
+        # file_dir = './static/image/all/00000000_000000'
+            if not os.path.exists(file_dir):
+                os.makedirs(file_dir)
+
+        # 処理途中画像格納用ディレクトリを作成
         now = datetime.datetime.now()
         dir_name = now.strftime('%Y%m%d_%H%M%S')
         dir_path = os.path.join(ALL_SAVE_DIR, dir_name)
