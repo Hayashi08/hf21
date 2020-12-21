@@ -4,9 +4,13 @@
 <div class="row mt-5">
     <div class="col text-center">
         <p>{{ dir_name }}</p>
-        {% for i in range(5) %}
-            <img src="./static/images/all/{{ dir_name }}/0{{i}}.jpg">
-        {% endfor %}
+        {% if dir_name == '00000000_000000' %}
+            <p>処理された画像がないよ</p>
+        {% else %}
+            {% for i in range(5) %}
+                <img src="./static/images/all/{{ dir_name }}/0{{i}}.jpg">
+            {% endfor %}
+        {% endif %}
     </div>
 </div>
 

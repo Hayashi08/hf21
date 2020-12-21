@@ -127,7 +127,9 @@ def all_images():
     path = './static/images/all'
     files = os.listdir(path)
     files_dir = [f for f in files if os.path.isdir(os.path.join(path, f))]
-    return render_template('all_images.html', title='処理過程', dir_name=files_dir[len(files_dir)-1])
-
+    if len(files_dir)>1:
+        return render_template('all_images.html', title='処理過程', dir_name=files_dir[len(files_dir)-1])
+    else: # エラー出ないようにディレクトリ用意 00000000_000000
+        return render_template('all_images.html', title='処理過程', dir_name="00000000_000000")
 if __name__ == '__main__':
     app.run(debug=True)
