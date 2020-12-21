@@ -3,9 +3,9 @@
 {% block content %}
 <div class="row mt-5">
     <div class="col text-center">
-        <p>{{ dir_name }}</p>
+        <h1 class="h1">{{ dir_name }}</h1>
         {% if dir_name == '00000000_000000' %}
-            <p>処理された画像がないよ</p>
+            <h2 class="h2">処理された画像がないよ</h2>
         {% else %}
             {% for i in range(5) %}
                 <img src="./static/images/all/{{ dir_name }}/0{{i}}.jpg">
