@@ -138,12 +138,14 @@ class Shoulder(object):
         self.hough_lines_p()
         xline = []
         yline = []
+        aline = []
         save_path = ""
         # if self.hough_lines:
         for line in self.hough_lines:
             x1, y1, x2, y2 = line[0]
             xa = (x2-x1)
             ya = (y2-y1)
+            a = ya/xa
             
             # 描画条件
             is_range = self.detect_area_line(line)
@@ -158,15 +160,34 @@ class Shoulder(object):
                     ya = -ya
                 xline =np.append(xline, xa)
                 yline =np.append(yline, ya)
+                aline =np.append(aline, a)
         # 描画後の画像保存
         save_path = MyImage.save(self.color_image)
 
-        if((yline[0]-yline[1] > 10) or (yline[0]-yline[1] < -10)):
-            result = '傾むいてます。'
-        elif((xline[0]-xline[1] > 10) or (xline[0]-xline[1] < -10)):
-            result = '回転してます。'
+        num1 = aline[0] + aline[1]
+        num2 = 1 - (aline[0]*aline[1])
+        flg = 0
+        tan = (-num2 + np.sqrt(np.power(num2, 2) + np.power(num1, 2))) / num1
+        deg = np.rad2deg(np.arctan(tan))
+        if(deg > 0):
+            flg = 1
+        else:
+            deg = -deg
+        
+        if(deg > 2):
+            if(flg == 0):
+                result = '右に' + str(deg) + '傾いています'
+            else:
+                result = '左に' + str(deg) + '傾いています'
         else:
             result = 'OK'
+
+        # if((yline[0]-yline[1] > 10) or (yline[0]-yline[1] < -10)):
+        #     result = '傾むいてます。'
+        # elif((xline[0]-xline[1] > 10) or (xline[0]-xline[1] < -10)):
+        #     result = '回転してます。'
+        # else:
+        #     result = 'OK'
         # else:
         #     result = "検出できませんでした"
         return result, save_path
