@@ -28,7 +28,7 @@
     </a>
 </div>
 <div class="m-5 row p-2">
-    <a class="p-2 offset-2 col-3 text-center main_item" href="settings_top.html">
+    <a class="p-2 offset-2 col-3 text-center main_item" href="/settings">
         <i class="fas fa-cog main_logo my-2"></i>
         <div class="main_text my-2">
             設定
@@ -62,23 +62,23 @@
     <div class="popup-inner">
         <div class="modal-body">
             <div id="form">
-                <div class="h2" style="text-align: center;">
-                    <p class="form-title">会社情報を入力</p>
+                <div class="h2" style="text-align: center; border-bottom: solid; border-width: 1px;" >
+                    <p class="form-title"><strong>会社情報を入力</strong></p>
                 </div>
             </div>
-            <div class="row">
+            <div class="row pt-3">
                 <div class="col">
                     <form action="/main" class="mx-auto" method="POST">
-                        <p class="">会社名</p>
+                        <p class="h5">会社名</p>
                         <p class="">
                             <input class="form-control" name="company_name" type="text">
                         </p>
-                        <p class="pt-3">選考状況</p>
+                        <p class="pt-3 h5">選考状況</p>
                         <p class="">
                             <input class="form-control" name="company_stage" type="text">
                         </p>
                         <div class="row">
-                            <div class="offset-2 col-3 text-right pt-3">
+                            <div class="col-3 mx-auto text-center pt-4">
                                 <input type="submit" class="btn btn-outline-secondary" value="決定">
                             </div>
                         </div>
