@@ -137,6 +137,7 @@
                         sisei.innerHTML = '<h3>' + resultObjct[0] + '</h3>';
                         kakou.src = resultObjct[1];
                         set_log(capture_time, 'image', resultObjct[0], resultObjct[1]);
+                        console.log(resultObjct[0]);
                     })
                     .fail(function(data){
                         // alert("画像を得られませんでした。");
