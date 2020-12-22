@@ -26,7 +26,10 @@
 <section>
     <div id="log" class="mt-5"></div>
 </section>
-<a class="btn btn-primary my-4" href="/">戻る</a>
+<form>
+    <input id="save" class="btn btn-primary" type="submit" style="display: none;" value="SAVE">
+</form>
+<a class="btn btn-outline-secondary my-4" href="/">戻る</a>
 </div>
 </div>
 {% endblock %}
@@ -46,6 +49,7 @@
         wasoku_stop();
         video_stop();
         print_log();
+        save.style = "display: block"
     }
 
 
@@ -136,6 +140,7 @@
                     })
                     .fail(function(data){
                         // alert("画像を得られませんでした。");
+                        console.log('画像を得られませんでした。');
                     });
                 }
             , 'image/jpeg');
