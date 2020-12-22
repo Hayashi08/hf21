@@ -26,8 +26,13 @@
 <section>
     <div id="log" class="mt-5"></div>
 </section>
-<form>
-    <input id="save" class="btn btn-primary" type="submit" style="display: none;" value="SAVE">
+<form action="/save" method="POST">
+    <input type="text" name="result" value="" hidden>
+    <input type="text" name="sentece" value="" hidden>
+    <input type="text" name="senteceData" value="" hidden>
+    <input type="text" name="imagePath" value="" hidden>
+    <input type="text" name="imageData" value="" hidden>
+    <input id="save" class="btn btn-primary mx-auto" type="submit" style="display: none;" value="SAVE">
 </form>
 <a class="btn btn-outline-secondary my-4" href="/">戻る</a>
 </div>
