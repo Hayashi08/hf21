@@ -42,7 +42,7 @@ def index():
     # return render_template('index.html', title='ログイン', message='ログインしてください。')
 
 # メイン
-@app.route('/main')
+@app.route('/main', methods=['POST'])
 @login_required
 def main():
     return render_template('main.html', title='メイン')
