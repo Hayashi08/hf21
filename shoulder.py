@@ -139,34 +139,34 @@ class Shoulder(object):
         xline = []
         yline = []
         save_path = ""
-        if self.hough_lines:
-            for line in self.hough_lines:
-                x1, y1, x2, y2 = line[0]
-                xa = (x2-x1)
-                ya = (y2-y1)
-                
-                # 描画条件
-                is_range = self.detect_area_line(line)
-                if is_range=="true":
-                    cv2.line(self.color_image,(x1,y1),(x2,y2),(0,0,255),2) # 描画
+        # if self.hough_lines:
+        for line in self.hough_lines:
+            x1, y1, x2, y2 = line[0]
+            xa = (x2-x1)
+            ya = (y2-y1)
+            
+            # 描画条件
+            is_range = self.detect_area_line(line)
+            if is_range=="true":
+                cv2.line(self.color_image,(x1,y1),(x2,y2),(0,0,255),2) # 描画
 
-                    line = np.append(line, [xa,ya])
-                    # 負の数を正の数に変換
-                    if(xa < 0):
-                        xa = -xa
-                    if(ya < 0):
-                        ya = -ya
-                    xline =np.append(xline, xa)
-                    yline =np.append(yline, ya)
-            # 描画後の画像保存
-            save_path = MyImage.save(self.color_image)
+                line = np.append(line, [xa,ya])
+                # 負の数を正の数に変換
+                if(xa < 0):
+                    xa = -xa
+                if(ya < 0):
+                    ya = -ya
+                xline =np.append(xline, xa)
+                yline =np.append(yline, ya)
+        # 描画後の画像保存
+        save_path = MyImage.save(self.color_image)
 
-            if((yline[0]-yline[1] > 10) or (yline[0]-yline[1] < -10)):
-                result = '傾むいてます。'
-            elif((xline[0]-xline[1] > 10) or (xline[0]-xline[1] < -10)):
-                result = '回転してます。'
-            else:
-                result = 'OK'
+        if((yline[0]-yline[1] > 10) or (yline[0]-yline[1] < -10)):
+            result = '傾むいてます。'
+        elif((xline[0]-xline[1] > 10) or (xline[0]-xline[1] < -10)):
+            result = '回転してます。'
         else:
-            result = "検出できませんでした"
+            result = 'OK'
+        # else:
+        #     result = "検出できませんでした"
         return result, save_path
