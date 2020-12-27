@@ -114,19 +114,27 @@ def signup():
         return render_template('signup.html', title='新規登録', message ='新規登録')
 
 
-## 画像処理
+# 画像処理
 
 @app.route('/shoulder', methods=['POST'])
 def shoulder():
+    stream = request.files['image'].stream
+    img_array = np.asarray(bytearray(stream.read()), dtype=np.uint8)
+    img = cv2.imdecode(img_array, 1)
 
-        stream = request.files['image'].stream
-        img_array = np.asarray(bytearray(stream.read()), dtype=np.uint8)
-        img = cv2.imdecode(img_array, 1)
+    shoulder = Shoulder(img)
+    result, save_path = shoulder.detect()
 
-        shoulder = Shoulder(img)
-        result, save_path = shoulder.detect()
+    return result + ',' + save_path
 
-        return result + ',' + save_path
-
+@app.route('/all_images')
+def all_images():
+    path = './static/images/all'
+    files = os.listdir(path)
+    files_dir = [f for f in files if os.path.isdir(os.path.join(path, f))]
+    if len(files_dir)>1:
+        return render_template('all_images.html', title='処理過程', dir_name=files_dir[len(files_dir)-1])
+    else: # エラー出ないようにディレクトリ用意 00000000_000000
+        return render_template('all_images.html', title='処理過程', dir_name="00000000_000000")
 if __name__ == '__main__':
     app.run(debug=True)
