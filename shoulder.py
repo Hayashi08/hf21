@@ -12,6 +12,9 @@ class Shoulder(object):
         self.detect_area = [250, 600, 400, 100]
         self.hough_lines = []
 
+        self.all_img_path = MyImage.mkdir_all_img()
+        MyImage.all_save(img, self.all_img_path, '00')
+
     def remove_background(self):
         # ゼロの空白画像を作成（imgと同じ寸法)
         marker = np.zeros_like(self.noback_image[:,:,0]).astype(np.int32)
@@ -88,13 +91,16 @@ class Shoulder(object):
         # BGR を RGB に変換することで、正確な色で画像を描画
         b, g, r = cv2.split(final_img)
         self.noback_image = cv2.merge([r, g, b])
+        MyImage.all_save(self.noback_image, self.all_img_path, '01')
 
     def get_gray_image(self):
         self.gray_image = cv2.cvtColor(self.noback_image, cv2.COLOR_BGR2GRAY)
+        MyImage.all_save(self.gray_image, self.all_img_path, '02')
     
     # canny変換
     def convert_canny_image(self):
         self.canny_image = cv2.Canny(self.gray_image, 200, 200)
+        MyImage.all_save(self.canny_image, self.all_img_path, '03')
 
     # 確率的ハフ変換
     def hough_lines_p(self):
@@ -160,7 +166,8 @@ class Shoulder(object):
                 yline =np.append(yline, ya)
         # 描画後の画像保存
         save_path = MyImage.save(self.color_image)
-
+        MyImage.all_save(self.color_image, self.all_img_path, '04')
+        
         if((yline[0]-yline[1] > 10) or (yline[0]-yline[1] < -10)):
             result = '傾むいてます。'
         elif((xline[0]-xline[1] > 10) or (xline[0]-xline[1] < -10)):
