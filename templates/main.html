@@ -7,12 +7,17 @@
 {% block content %}
 <div class="row mt-5">
 <div class="col text-center">
+<!-- 企業名 -->
+<div class="h3">{{ company_name }}</div>
+<!-- 選考段階 -->
+<div class="h3">{{ company_stage }}</div>
 <div id="videoPreview"></div>
 <button class="btn btn-success" onclick="start()">スタート</button>
 <button class="btn btn-danger" onclick="stop()">ストップ</button>
 <section>
+
     <!-- 表示される文章 -->
-    <div class="my-3 h3" id="cus_voice">本日は宜しくお願いいたします</div>
+    <div class="my-3 h3" id="cus_voice">こちらに話した言葉が表示されます。</div>
     <!-- 話している時間 -->
     <div id="time" class="h4 mt-5"></div>
     <!-- 話した文字数 -->

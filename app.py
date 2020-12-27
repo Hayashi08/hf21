@@ -45,7 +45,12 @@ def index():
 @app.route('/main', methods=['POST'])
 @login_required
 def main():
-    return render_template('main.html', title='メイン')
+    if request.method == 'POST':
+        company_name = request.form['company_name']
+        company_stage = request.form['company_stage']
+        return render_template('main.html', title='メイン', company_name=company_name, company_stage=company_stage)
+    else:
+        return render_template('index.html', title='インデックス')
 
 # アーカイブ
 @app.route('/archive')
