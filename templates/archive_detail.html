@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="row mt-5">
+    <div class="col text-center">
+
+        <div class="h4">{{ row_session[0] }}</div>
+        <div class="h3">{{ row_session[1] }}</div>
+        <div class="h3">{{ row_session[2] }}</div>
+
+        <br><br>
+
+        <div class="h3">{{ row_result[1] }} ~ {{ row_result[2] }}</div>
+
+        <br>
+
+        {% for row_sentence in rows_sentence %}
+        <div class="h3">{{ row_sentence[0] }}</div>
+        <div class="h4">話速: {{ row_sentence[2] }}</div>
+        <div class="h4">{{ row_sentence[1] }}</div>
+        {% endfor %}
+
+        {% for row_image in rows_image %}
+        <div class="h3">{{ row_image[0] }}</div>
+        <div class="h4">{{ row_image[2] }}</div>
+        <div class="h4">{{ row_image[1] }}</div>
+        {% endfor %}
+
+    </div>
+</div>
+
+{% endblock %}

@@ -164,6 +164,7 @@ class Shoulder(object):
                     ya = -ya
                 xline =np.append(xline, xa)
                 yline =np.append(yline, ya)
+
         # 描画後の画像保存
         save_path = MyImage.save(self.color_image)
         MyImage.all_save(self.color_image, self.all_img_path, '04')

@@ -4,12 +4,12 @@
         <title>{{ title }}</title>
         <meta charset="UTF-8">
 
-        <link rel="icon" type="image/x-icon" href="static/asets/horus.jpg">
-        <link rel="stylesheet" href="static/css/bootstrap.css">
-        <link rel="stylesheet" href="static/css/common.css">
-        <link rel="stylesheet" href="static/css/top.css">
-        <link rel="stylesheet" href="static/css/all.css">
-        <link rel="stylesheet" href="static/css/particles.css">
+        <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='asets/horus.jpg') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/common.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/top.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/all.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/particles.css') }}">
         <link href="https://fonts.googleapis.com/css?family=Sawarabi+Gothic" rel="stylesheet">
         <link href="https://fonts.googleapis.com/earlyaccess/nicomoji.css" rel="stylesheet">
 
@@ -28,14 +28,15 @@
         
             <div class="p-3 row nav">
                 <div class="col-1">
-                    <img src="static/asets/horus.jpg" width="70px" height="auto">
+                    <img src="{{ url_for('static', filename='asets/horus.jpg') }}" width="70px" height="auto">
                 </div>
                 <div class="col-4 h1 my-2 main_title">
                     The Eyes of Horus
                 </div>
                 {% if current_user.is_active %}
-                    <div class="col text-light h3 mt-3 ml-5">
-                        ようこそ <span class="text-white">{{ current_user.name }}</span> !
+                    <div class="col text-right h3 mt-3">
+                        <i class="fas fa-user-circle text-white"></i>
+                        <span class="text-white">{{ current_user.name }}</span>
                     </div>
                 {% endif %}
             </div>
@@ -48,8 +49,8 @@
 
         </div>
 
-        <script src="static/js/particles.js"></script>
-        <script src="static/js/set_bubble.js"></script>
+        <script src="{{ url_for('static', filename='js/particles.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/set_bubble.js') }}"></script>
         <script src="https://cdn.jsdelivr.net/npm/bubbly-bg@1.0.0/dist/bubbly-bg.js"></script>
 
     </body>

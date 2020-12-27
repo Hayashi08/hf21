@@ -1,9 +1,7 @@
 {% extends "layout.html" %}
 
 {% block header %}
-
-<link rel="stylesheet" href="static/css/index.css">
-<link rel="stylesheet" href="static/css/history.css">
+<link rel="stylesheet" href="static/css/archive.css">
 {% endblock %}
 
 
@@ -11,64 +9,39 @@
 
 <div class="m-5 row ">
                     
-    <div class="container">
-        <div class="row">
-            <div class="col-12 text-center">
-                <div class="h1">履歴</div>
+    <div class="col-12 text-center">
+        <div class="h1">履歴</div>
 　　　　　　　　　
-                <br>
+        <br>
 
-                <table class="table table-lm h4 ml-4">
-                    <thead>
-                      <tr>
-                        <td style="color: black;"><strong>解析日</strong></td>
-                        <td style="color: black;"><strong>解析日</strong></td>
-                        <td style="color: black;"><strong>結果選択</strong></td>
-                        <td style="color: black;"><strong>削除選択</strong></td>
-                      </tr>
-                      <tr>
-                        <td style="color: black;">2020/11/11</td>
-                        <td style="color: black;">test.avi</td>
-                        <td><button type="button" class="btn btn-success" onclick="location.href='chart.html'">結果</button></td>
-                        <td><button type="button" class="btn btn-danger">削除</button></td>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td style="color: black;">2020/11/12</td>
-                        <td style="color: black;">test.avi</td>
-                        <td><button type="button" class="btn btn-success" onclick="location.href='chart.html'">結果</button></td>
-                        <td><button type="button" class="btn btn-danger">削除</button></td>
-                      </tr>
-                      <tr>
-                        <td style="color: black;">2020/11/13</td>
-                        <td style="color: black;">test.avi</td>
-                        <td><button type="button" class="btn btn-success " onclick="location.href='chart.html'">結果</button></td>
-                        <td><button type="button" class="btn btn-danger">削除</button></td>
-                      </tr>
-                      <tr>
-                        <td style="color: black;">2020/11/14</td>
-                        <td style="color: black;">test.avi</td>
-                        <td><button type="button" class="btn btn-success " onclick="location.href='chart.html'">結果</button></td>
-                        <td><button type="button" class="btn btn-danger">削除</button></td>
-                      </tr>
-                      <tr>
-                        <td style="color: black;">2020/11/15</td>
-                        <td style="color: black;">test.avi</td>
-                        <td><button type="button" class="btn btn-success " onclick="location.href='chart.html'">結果</button></td>
-                        <td><button type="button" class="btn btn-danger">削除</button></td>
-                      </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-      </div>
+        <table class="table h4">
+            <thead>
+              <tr>
+                <td class="text-left" style="color: black;"><strong>解析日</strong></td>
+                <td class="text-left" style="color: black;"><strong>会社名</strong></td>
+                <td class="text-left" style="color: black;"><strong>選考段階</strong></td>
+              </tr>
+            </thead>
+            <tbody>
+              {% for row in rows %}
+              <tr>
+                <td class="text-left" style="color: black;">{{ row[1] }}</td>
+                <td class="text-left" style="color: black;"><a href="/archive/{{ row[0] }}">{{ row[2] }}</a></td>
+                <td class="text-left" style="color: black;">{{ row[3] }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+        </table>
 
-    </div>          
+    </div>
+
 </div>
+
 <div class="col-12 mx-auto">
   <div class="offset-10">
       <a class="btn btn-outline-secondary" href="/">戻る</a>
   </div>
-        {% endblock %}
+</div>
+
+{% endblock %}
 

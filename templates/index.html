@@ -2,7 +2,6 @@
 
 {% block header %}
 <link rel="stylesheet" href="static/css/top.css">
-<link rel="stylesheet" href="static/css/main.css">
 <link rel="stylesheet" href="static/css/modal.css">
 {% endblock %}
 
@@ -17,7 +16,7 @@
             Web面接の様子を撮影します
         </div>
     </div>
-    <a class="p-2 offset-2 col-3 text-center main_item" href="history.html">
+    <a class="p-2 offset-2 col-3 text-center main_item" href="/archive">
         <i class="fa fa-book main_logo my-2"></i>
         <div class="main_text my-2">
             履歴
@@ -37,8 +36,8 @@
             アカウント情報を確認します
         </div>
     </a>
-    <!-- 
-    <div id="open" class="p-2 offset-2 col-3 text-center main_item">
+    
+    <!-- <div id="open" class="p-2 offset-2 col-3 text-center main_item">
         <i class="fas fa-door-open main_logo"></i>
         <div class="main_text my-2">
             ログアウト
@@ -46,8 +45,9 @@
         <div class="mt-4 sub_text my-2">
             ログイン画面に戻ります
         </div>
-    -->
-    <a class="p-2 offset-2 col-3 text-center main_item" href="/login">
+    </div> -->
+   
+    <a class="p-2 offset-2 col-3 text-center main_item" href="/logout">
         <i class="fas fa-door-open main_logo"></i>
         <div class="main_text my-2">
             ログアウト
@@ -73,7 +73,7 @@
                         <p class="">
                             <input class="form-control" name="company_name" type="text">
                         </p>
-                        <p class="pt-3 h5">選考状況</p>
+                        <p class="pt-3 h5">選考段階</p>
                         <p class="">
                             <input class="form-control" name="company_stage" type="text">
                         </p>
@@ -91,15 +91,15 @@
 </div>
 
 <!-- modal-ログアウト   -->
-<!-- 
-<div id="mask" class="hidden"></div>
+
+<!-- <div id="mask" class="hidden"></div>
 <section id="modal" class="hidden">
   <div class="row h2 text-center">
       <div class="col my-2" style="border-bottom: solid;">ログアウトしますか</div>
   </div>
   <div class="row h2 text-center my-2">
       <div class="offset-2 col-3">
-          <a class="btn btn-outline-secondary" href="login.html">はい</a>
+          <a class="btn btn-outline-secondary" href="/logout">はい</a>
       </div>
       <div class="offset-2 col-3">
           <a class="btn btn-outline-secondary" id="close">いいえ</a>
@@ -127,24 +127,25 @@
         }
     }
     popupImage();
-    'use strict';
-    {
-        const open = document.getElementById('open');
-        const close = document.getElementById('close');
-        const modal = document.getElementById('modal');
-        const mask = document.getElementById('mask');
-        open.addEventListener('click', function () {
-            modal.classList.remove('hidden');
-            mask.classList.remove('hidden');
-        });
-        close.addEventListener('click', function () {
-            modal.classList.add('hidden');
-            mask.classList.add('hidden');
-        });
-        mask.addEventListener('click', function () {
-            modal.classList.add('hidden');
-            mask.classList.add('hidden');
-        });
-    }
+
+    // 'use strict';
+    // {
+    //     const open = document.getElementById('open');
+    //     const close = document.getElementById('close');
+    //     const modal = document.getElementById('modal');
+    //     const mask = document.getElementById('mask');
+    //     open.addEventListener('click', function () {
+    //         modal.classList.remove('hidden');
+    //         mask.classList.remove('hidden');
+    //     });
+    //     close.addEventListener('click', function () {
+    //         modal.classList.add('hidden');
+    //         mask.classList.add('hidden');
+    //     });
+    //     mask.addEventListener('click', function () {
+    //         modal.classList.add('hidden');
+    //         mask.classList.add('hidden');
+    //     });
+    // }
 </script>
 {% endblock %}
