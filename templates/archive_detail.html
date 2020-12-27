@@ -24,7 +24,7 @@
         {% for row_image in rows_image %}
         <div class="h3">{{ row_image[0] }}</div>
         <div class="h4">{{ row_image[2] }}</div>
-        <div class="h4">{{ row_image[1] }}</div>
+        <img src="{{ url_for('static', filename='{{ row_image[1] }}') }}">
         {% endfor %}
 
     </div>
