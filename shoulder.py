@@ -161,8 +161,10 @@ class Shoulder(object):
                 xline =np.append(xline, xa)
                 yline =np.append(yline, ya)
                 aline =np.append(aline, a)
+                
         # 描画後の画像保存
         save_path = MyImage.save(self.color_image)
+        MyImage.all_save(self.color_image, self.all_img_path, '04')
 
         num1 = aline[0] + aline[1]
         num2 = 1 - (aline[0]*aline[1])
