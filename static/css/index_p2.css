@@ -6,26 +6,31 @@
 	background-color: #373e52;
 	border-radius: 20px;
 	height: 160px;
-	margin: 40px 0 0 100px;
+	margin: 40px 0 0 65px;
+	width: 350px;
 }
 
 .main_item_logout{
 	background-color: #373e52;
 	border-radius: 20px;
 	height: 160px;
-	margin: 40px 0 0 80px;
+	margin: 40px 0 0 50px;
+	width: 170px;
 }
 
 .main_item_history{
 	background-color: #373e52;
 	border-radius: 20px;
 	height: 300px;
+	width: 550px;	
+	margin: 10px 0 0 60px;
 }
-
+			
 .main_item_record{
 	background-color: #373e52;
 	border-radius: 20px;
 	height: 500px;
+	margin: 10px 0 0 55px;
 }
 
 .main_item .main_text{/*
