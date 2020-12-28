@@ -1,42 +1,69 @@
 {% extends "layout.html" %}
 
 {% block header %}
-<!-- <link rel="stylesheet" href="static/css/main.css"> -->
+    <link rel="stylesheet" href="static/css/main.css">
 {% endblock %}
 
 {% block content %}
-<div class="row mt-5">
-<div class="col text-center">
-<!-- セッション日時 -->
-<div class="h4">{{ session_timestamp }}</div>
-<!-- 企業名 -->
-<div class="h3">{{ company_name }}</div>
-<!-- 選考段階 -->
-<div class="h3">{{ company_stage }}</div>
-<div id="videoPreview"></div>
-<button class="btn btn-success" onclick="start()">スタート</button>
-<button class="btn btn-danger" onclick="stop()">ストップ</button>
-<section>
-    <!-- 表示される文章 -->
-    <div class="my-3 h3" id="cus_voice">こちらに話した言葉が表示されます。</div>
-</section>
-<section>
-    <div id="sisei"></div>
-    <img id="kakou">
-    <canvas id="canvas" width="768" height="432" style="display: none;"></canvas>
-</section>
-<section>
-    <div id="log" class="mt-5"></div>
-</section>
-<form action="/save" method="POST">
-    <input id="result" type="text" name="result" value="" hidden>
-    <input id="sentence" type="text" name="sentence" value="" hidden>
-    <input id="image" type="text" name="image" value="" hidden>
-    <input id="save" class="btn btn-primary mx-auto" type="submit" style="display: none;" value="SAVE">
-</form>
-<a class="btn btn-outline-secondary my-4" href="/">戻る</a>
-</div>
-</div>
+<body>
+    <div id="button">
+        <button class="btn btn-success" onclick="start()">スタート</button>
+        <button class="btn btn-danger" onclick="stop()">ストップ</button>
+    </div>
+    <div class="row mt-3">
+    <div class="col text-center">
+    <!-- セッション日時 -->
+    <div class="h4">
+        {{ session_timestamp }}
+        <a class="btn btn-outline-secondary my-4" href="/" id="back">戻る</a>
+    </div>
+    <div class="h3">
+        <!-- 企業名 -->
+        {{ company_name }}
+        <!-- 選考段階 -->
+        {{ company_stage }}
+    </div>
+    <div class="row">
+        <div class="col-5 offset-1">
+            <div id="videoPreview"></div>
+        </div>
+        <div class="col-5">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card mx-auto my-4" id="card_box">
+                        <div class="card-body  text-primary overflow-auto" id="sampleBox">
+                            <section>
+                                <!-- 表示される文章 -->
+                                <div id="cus_voice">こちらに話した言葉が表示されます。</div>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <img id="kakou">
+                    <div id="sisei"></div>
+                </div>
+            </div>
+        </div>
+        <div class="offset-1"></div>
+    </div>
+    <section>
+        <canvas id="canvas" width="768" height="432" style="display: none;"></canvas>
+    </section>
+    <section>
+        <div id="log" class="mt-5"></div>
+    </section>
+    <form action="/save" method="POST">
+        <input id="result" type="text" name="result" value="" hidden>
+        <input id="sentence" type="text" name="sentence" value="" hidden>
+        <input id="image" type="text" name="image" value="" hidden>
+        <input id="save" class="btn btn-primary mx-auto" type="submit" style="display: none;" value="SAVE">
+    </form>
+    </div>
+    </div>
+</body>
 {% endblock %}
 
 {% block script %}
@@ -114,10 +141,12 @@
     let video;
     let media;
 
+    let videoPreviewWidth = document.getElementById('videoPreview').clientWidth;
+
     // video要素をつくる
     video = document.createElement('video');
     video.id = 'video';
-    video.width = cameraSize.w;
+    video.width = videoPreviewWidth;
     video.height = cameraSize.h;
     video.autoplay = true;
     document.getElementById('videoPreview').appendChild(video);
@@ -179,7 +208,7 @@
                 }
             , 'image/jpeg');
 
-        }, 5000);
+        }, 10000);
     }
 
     function video_stop(){
