@@ -9,7 +9,7 @@ class Shoulder(object):
         self.noback_image = img
         self.gray_image = None
         self.canny_image = None
-        self.detect_area = [300, 600, 400, 100, 300, 480]
+        self.detect_area = [300, 619, 430, 133, 380]
         self.hough_lines = []
 
     def remove_background(self):
@@ -128,9 +128,6 @@ class Shoulder(object):
         # x方向に短すぎる直線を除く
         if xa < 50:
             return "false"
-        # 中央の直線を除く
-        if x1<self.detect_area[4] and x1>self.detect_area[5]:
-            return "false"
         return "true"
 
     # 結果
@@ -144,6 +141,8 @@ class Shoulder(object):
         y1line = []
         y2line = []
         aline = []
+        flg = 0
+        line_count = 0
         cnt = 0
         cnt1 = 0
         save_path = ""
@@ -152,17 +151,27 @@ class Shoulder(object):
             x1, y1, x2, y2 = line[0]
             a = (y2-y1)/(x2-x1)
             cnt = cnt + 1
-            
-            # 描画条件
-            is_range = self.detect_area_line(line)
-            if is_range=="true":
-                cv2.line(self.color_image,(x1,y1),(x2,y2),(0,0,255),2) # 描画
-                cnt1 = cnt1 + 1
-                x1line =np.append(x1line, x1)
-                x2line =np.append(x2line, x2)
-                y1line =np.append(y1line, y1)
-                y2line =np.append(y2line, y2)
-                aline =np.append(aline, a)
+            while line_count <= 2:
+                # 描画条件
+                is_range = self.detect_area_line(line)
+                if is_range=="true":
+                    # 右左一本ずつ描画
+                    if flg == 0:
+                        #左部の線ですか
+                        if x1>self.detect_area[4] or x2>self.detect_area[4]:
+                            flg = 1
+                        else
+                            flg = -1
+                        cv2.line(self.color_image,(x1,y1),(x2,y2),(0,0,255),2) # 描画
+                        x1line =np.append(x1line, x1)
+                        x2line =np.append(x2line, x2)
+                        y1line =np.append(y1line, y1)
+                        y2line =np.append(y2line, y2)
+                        aline =np.append(aline, a)
+                        line_count = line_count + 1
+                    elif flg == 1:
+                        line_count = line_count + 1
+                    cnt1 = cnt1 + 1
         # 描画後の画像保存
         save_path = MyImage.save(self.color_image)
 
