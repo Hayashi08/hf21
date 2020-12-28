@@ -9,7 +9,7 @@ class Shoulder(object):
         self.noback_image = img
         self.gray_image = None
         self.canny_image = None
-        self.detect_area = [300, 600, 400, 100, 300, 480]
+        self.detect_area = [300, 619, 430, 133, 300, 480]
         self.hough_lines = []
 
     def remove_background(self):
@@ -127,9 +127,6 @@ class Shoulder(object):
             return "false"
         # x方向に短すぎる直線を除く
         if xa < 50:
-            return "false"
-        # 中央の直線を除く
-        if x1<self.detect_area[4] and x1>self.detect_area[5]:
             return "false"
         return "true"
 
