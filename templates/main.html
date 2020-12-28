@@ -82,9 +82,9 @@
         end_time = new Date().toLocaleString();
         wasoku_stop();
         video_stop();
+        run.style = "display: none"
         print_log();
         set_form('{{ session_id }}');
-        run.style = "display: none"
     }
 
 
@@ -330,6 +330,7 @@
         set_log('09:30:00', 'text', 400, '私の強みは問題解決能力があるところです。私は大学時代バスケットボール部に所属していました。部のなかで、私は練習メニューを考えることに力を入れていました。試合結果を分析して課題と改善点を打ち出すことで、チームの底上げになる練習メニューを考え取り入れていました。');
         set_log('09:30:10', 'image', '傾いています。', './static/images/20201211_102337.jpg');
         set_log('09:50:00', 'text', 350, '本日は誠にありがとうございました。');
+        run.style = "display: none"
         print_log();
         set_form('{{ session_id }}');
     }
