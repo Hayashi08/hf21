@@ -1,7 +1,6 @@
 {% extends "layout.html" %}
 
 {% block header %}
-<link rel="stylesheet" href="static/css/top.css">
 <link rel="stylesheet" href="static/css/modal.css">
 <link rel="stylesheet" href="static/css/index_p2.css">
 <link rel="stylesheet" href="static/css/main.css">
@@ -9,17 +8,19 @@
 
 {% block content %}
 <div class="row p-3 m-5">
-    <div id="js-show-popup" class="p-2 col-5 text-center main_item_record">
-        <i class="fas fa-video main_logo my-2 mt-5"></i>
-        <div class="main_text my-2 mt-5">
-            録画
-        </div>
-        <div class="mt-4 sub_text my-2 mt-5">
-            Web面接の様子を撮影します
+    <div class="col-6">
+        <div id="js-show-popup" class="p-2 text-center main_item_record">
+            <i class="fas fa-video main_logo my-2 mt-5"></i>
+            <div class="main_text my-2 mt-5">
+                録画
+            </div>
+            <div class="mt-4 sub_text my-2 mt-5">
+                Web面接の様子を撮影します
+            </div>
         </div>
     </div>
 
-    <div class="d-flex flex-column w-50">
+    <div class="col-6 d-flex flex-column w-50 mx-auto">
 
     <a class="p-2 col text-center main_item_history col" href="/archive">
         <i class="fa fa-book main_logo my-2 mt-4"></i>
@@ -33,8 +34,9 @@
 
 <div class="d-flex flex-row bd-highlight">
 
-<div class="row p-2">
-    <a class="p-2 offset-2 col text-center main_item" href="/settings">
+<div class="row pt-2">
+    
+    <a class="col text-center main_item" href="/settings">
         <i class="fas fa-cog main_logo my-2"></i>
         <div class="main_text my-2">
             設定
@@ -44,17 +46,7 @@
         </div>
     </a>
     
-    <!-- <div id="open" class="p-2 offset-2 col-3 text-center main_item">
-        <i class="fas fa-door-open main_logo"></i>
-        <div class="main_text my-2">
-            ログアウト
-        </div>
-        <div class="mt-4 sub_text my-2">
-            ログイン画面に戻ります
-        </div>
-    </div> -->
-   
-    <a class="p-2 col text-center main_item_logout" href="/logout">
+    <div id="js-show-popup1" class="col text-center main_item_logout">
         <i class="fas fa-door-open main_logo my-2"></i>
         <div class="main_text my-2">
             ログアウト
@@ -62,8 +54,17 @@
         <div class="mt-4 sub_text my-2">
             ログイン画面に戻ります
         </div>
-    </a>
-</div>
+    </div>
+    <!-- <a id="js-show-popup1" class="col text-center main_item_logout" href="/logout">
+        <i class="fas fa-door-open main_logo my-2"></i>
+        <div class="main_text my-2">
+            ログアウト
+        </div>
+        <div class="mt-4 sub_text my-2">
+            ログイン画面に戻ります
+        </div>
+    </a> -->
+
 </div>
 </div>
 </div>
@@ -102,20 +103,34 @@
 
 <!-- modal-ログアウト   -->
 
-<!-- <div id="mask" class="hidden"></div>
-<section id="modal" class="hidden">
-  <div class="row h2 text-center">
-      <div class="col my-2" style="border-bottom: solid;">ログアウトしますか</div>
+<div class="popup1" id="js-popup1">
+    <div class="popup-inner1">
+  
+                <div class="modal-body1">
+                  <div id="form">
+                    <div class="h2" style="text-align: center; border-bottom: solid; border-width: 1px;" >
+                  <div class="h2" style="text-align: center;"><p class="form-title">ログアウトしますか？</p></div>
+                    </div>
+                </div>
+                <div class="row pt-3">
+                  <div class="offset-2 col-3">
+                              <div class="text-center">
+                                  <a class="btn btn-outline-secondary" href="/login">はい</a>
+                              </div>
+                  </div>
+                  <div class="offset-2 col-3">
+                          <div class="close-btn1" id="js-close-btn1">
+                              <div class="text-center">
+                                  <button class="btn btn-outline-secondary">いいえ</button>
+                              </div>
+                          </div>
+                  </div>
+                  </div>
+              </div>
+  
+    </div>
+    <div class="black-background1" id="js-black-bg1"></div>
   </div>
-  <div class="row h2 text-center my-2">
-      <div class="offset-2 col-3">
-          <a class="btn btn-outline-secondary" href="/logout">はい</a>
-      </div>
-      <div class="offset-2 col-3">
-          <a class="btn btn-outline-secondary" id="close">いいえ</a>
-      </div>
-  </div>
-</section> -->
 {% endblock %}
 
 {% block script %}
@@ -138,24 +153,24 @@
     }
     popupImage();
 
-    // 'use strict';
-    // {
-    //     const open = document.getElementById('open');
-    //     const close = document.getElementById('close');
-    //     const modal = document.getElementById('modal');
-    //     const mask = document.getElementById('mask');
-    //     open.addEventListener('click', function () {
-    //         modal.classList.remove('hidden');
-    //         mask.classList.remove('hidden');
-    //     });
-    //     close.addEventListener('click', function () {
-    //         modal.classList.add('hidden');
-    //         mask.classList.add('hidden');
-    //     });
-    //     mask.addEventListener('click', function () {
-    //         modal.classList.add('hidden');
-    //         mask.classList.add('hidden');
-    //     });
-    // }
+    function popupImage1() {
+  var popup1 = document.getElementById('js-popup1');
+  if(!popup1) return;
+
+  var blackBg = document.getElementById('js-black-bg1');
+  var closeBtn = document.getElementById('js-close-btn1');
+  var showBtn = document.getElementById('js-show-popup1');
+
+  closePopUp(blackBg);
+  closePopUp(closeBtn);
+  closePopUp(showBtn);
+  function closePopUp(elem) {
+    if(!elem) return;
+    elem.addEventListener('click', function() {
+      popup1.classList.toggle('is-show1');
+    });
+  }
+}
+popupImage1();
 </script>
 {% endblock %}
