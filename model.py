@@ -91,7 +91,7 @@ class MySQL:
         for row_sentence in rows_sentence:
             log_list.append({'time': row_sentence[0], 'type': 'text', 'score': str(row_sentence[2]), 'content': row_sentence[1]})
         for row_image in rows_image:
-            log_list.append({'time': row_image[0], 'type': 'image', 'score': row_image[2], 'content': row_sentence[1]})
+            log_list.append({'time': row_image[0], 'type': 'image', 'score': row_image[2], 'content': row_image[1]})
         log_list = sorted(log_list, key = lambda x: x['time'])
 
         return row_session, row_result, log_list

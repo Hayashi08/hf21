@@ -5,31 +5,35 @@
 <div class="row mt-5">
     <div class="col text-center">
 
+        <!-- セッション日時 -->
         <div class="h4">{{ row_session[0] }}</div>
+        <!-- 会社名 -->
         <div class="h3">{{ row_session[1] }}</div>
+        <!-- 選考段階 -->
         <div class="h3">{{ row_session[2] }}</div>
 
         <br><br>
 
+        <!-- 開始日時 ~ 終了日時 -->
         <div class="h3">{{ row_result[1] }} ~ {{ row_result[2] }}</div>
 
         <br>
 
         {% for log in log_list %}
     
+        <!-- ログ時刻 -->
         <div class="h3">{{ log['time'] }}</div>
+
+        <!-- 文章の場合 -->
         {% if log['type'] == 'text' %}
         <div class="h4">話速: {{ log['score'] }}</div>
         <div class="h4">{{ log['content'] }}</div>
+        <!-- 画像の場合 -->
         {% else %}
         <div class="h4">{{ log['score'] }}</div>
         <img src="../static/{{ log['content'] }}">
         {% endif %}
     
-        {% endfor %}
-
-        {% for row_image in rows_image %}
-        <div class="h3">{{ row_image[0] }}</div>
         {% endfor %}
 
     </div>
