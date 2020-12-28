@@ -201,5 +201,5 @@ class Shoulder(object):
                 result = '左に' + str(round(deg, 1)) + '傾いています' + '\n' + str(cnt) + '\n' + str(cnt1)
         else:
             for i in range(len(x1line)):
-                result = str(x1line[int(i)]) + '\n' + str(x2line[int(i)]) + '\n' + str(y1line[int(i)]) + '\n' + str(y2line[int(i)]) + '\n' + str(aline[int(i)]) + '\n' + str(cnt) + '\n' + str(cnt)
+                result = str(x1line[int(i)]) + '\n' + str(x2line[int(i)]) + '\n' + str(y1line[int(i)]) + '\n' + str(y2line[int(i)]) + '\n' + str(aline[int(i)]) + '\n' + str(round(deg, 1)) + '\n' + str(cnt) + '\n' + str(cnt)
         return result, save_path
