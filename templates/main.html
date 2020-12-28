@@ -6,10 +6,6 @@
 
 {% block content %}
 <body>
-    <div id="button">
-        <button class="btn btn-success" onclick="start()">スタート</button>
-        <button class="btn btn-danger" onclick="stop()">ストップ</button>
-    </div>
     <div class="row mt-3">
     <div class="col text-center">
     <!-- セッション日時 -->
@@ -23,7 +19,7 @@
         <!-- 選考段階 -->
         {{ company_stage }}
     </div>
-    <div class="row">
+    <div class="row" id="run">
         <div class="col-5 offset-1">
             <div id="videoPreview"></div>
         </div>
@@ -48,6 +44,10 @@
             </div>
         </div>
         <div class="offset-1"></div>
+        <div id="button">
+            <button class="btn btn-success" onclick="start()">スタート</button>
+            <button class="btn btn-danger" onclick="stop()">ストップ</button>
+        </div>
     </div>
     <section>
         <canvas id="canvas" width="768" height="432" style="display: none;"></canvas>
@@ -84,6 +84,7 @@
         video_stop();
         print_log();
         set_form('{{ session_id }}');
+        run.style = "display: none"
     }
 
 
