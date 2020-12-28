@@ -12,6 +12,9 @@ class Shoulder(object):
         self.detect_area = [300, 619, 430, 133, 380]
         self.hough_lines = []
 
+        self.all_img_path = MyImage.mkdir_all_img()
+        MyImage.all_save(img, self.all_img_path, '00')
+
     def remove_background(self):
         # ゼロの空白画像を作成（imgと同じ寸法)
         marker = np.zeros_like(self.noback_image[:,:,0]).astype(np.int32)

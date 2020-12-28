@@ -7,20 +7,27 @@ a:hover{
 	opacity: 0.8;
 }
 
-.main_title{
- 	font-family: 'Kotta One', serif;
-	color: #e3e8fa;
-}
-
-
-.nav{
-	height: 100px;
+._nav{
+	/* height: 100px; */
 	background-color: #373e52;
 	width: 100%;
 	float: none;
 	position: fixed;
 	z-index: 1;
 }
+
+._main_title{
+	white-space: nowrap;
+ 	font-family: 'Kotta One', serif;
+	color: #e3e8fa;
+}
+
+._user_info{
+	white-space: nowrap;
+	color: #ffffff;
+}
+
+
 
 
 

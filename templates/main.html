@@ -1,26 +1,24 @@
 {% extends "layout.html" %}
 
 {% block header %}
-    <link rel="stylesheet" href="static/css/main.css">
+
 {% endblock %}
 
 {% block content %}
 <div class="row mt-5">
 <div class="col text-center">
+<!-- セッション日時 -->
+<div class="h4">{{ session_timestamp }}</div>
+<!-- 企業名 -->
+<div class="h3">{{ company_name }}</div>
+<!-- 選考段階 -->
+<div class="h3">{{ company_stage }}</div>
 <div id="videoPreview"></div>
 <button class="btn btn-success" onclick="start()">スタート</button>
 <button class="btn btn-danger" onclick="stop()">ストップ</button>
 <section>
     <!-- 表示される文章 -->
-    <div class="my-3 h3" id="cus_voice">本日は宜しくお願いいたします</div>
-    <!-- 話している時間 -->
-    <div id="time" class="h4 mt-5"></div>
-    <!-- 話した文字数 -->
-    <div id="mozisuu" class="h4"></div>
-    <!-- 話速 -->
-    <div id="wasoku" class="h4"></div>
-    <!-- ひらがな化 -->
-    <div id="kana" class="h4"></div>
+    <div class="my-3 h3" id="cus_voice">こちらに話した言葉が表示されます。</div>
 </section>
 <section>
     <div id="sisei"></div>
@@ -30,8 +28,11 @@
 <section>
     <div id="log" class="mt-5"></div>
 </section>
-<form>
-    <input id="save" class="btn btn-primary" type="submit" style="display: none;" value="SAVE">
+<form action="/save" method="POST">
+    <input id="result" type="text" name="result" value="" hidden>
+    <input id="sentence" type="text" name="sentence" value="" hidden>
+    <input id="image" type="text" name="image" value="" hidden>
+    <input id="save" class="btn btn-primary mx-auto" type="submit" style="display: none;" value="SAVE">
 </form>
 <a class="btn btn-outline-secondary my-4" href="/">戻る</a>
 </div>
@@ -41,31 +42,34 @@
 {% block script %}
 <script>
 
-    var start_date_time;
+    var start_time;
+    var end_time;
 
     function start(){
+        start_time = new Date().toLocaleString();
         wasoku_start();
         video_start();
-        start_date_time = new Date().toLocaleString();
     }
 
     function stop(){
+        end_time = new Date().toLocaleString();
         wasoku_stop();
         video_stop();
         print_log();
-        save.style = "display: block"
+        set_form('{{ session_id }}');
     }
 
 
 //-------------ログ-------------------------------------------    
     var log_list = [];
+
     function set_log(time, type,  score, content){
         log_list.push({time: time,type: type, score: score, content: content});    
     }
 
     function print_log(){
         log_html = '<div class="h2">ログ</div>';
-        log_html += '<p class="h3">' + start_date_time + '</p>';
+        log_html += '<p class="h3">' + start_time + ' ~ ' + end_time + '</p>';
         for (let i = 0; i < log_list.length; i++){
             log_html += '<p class="h3 mt-3">' + log_list[i].time + '</p>';
             if (log_list[i].type == 'image') {
@@ -73,39 +77,64 @@
                 log_html += '<p><img src="' + log_list[i].content + '" width="450px"></p>';
             }
             else{
-                log_html += '<p class="h4">' + log_list[i].content + '</p>';
                 log_html += '<p class="h4">話速：' + log_list[i].score + '</p>';
+                log_html += '<p class="h4">' + log_list[i].content + '</p>';
             }
         }
         log.innerHTML = log_html;
     }
 
+//-------------保存-------------------------------------------
+    function set_form(session_id){
+
+        result.value = session_id + ',' + start_time  + ',' + end_time;
+
+        for (let i = 0; i < log_list.length; i++) {
+            let log = log_list[i];
+            if (log.type == 'text') {
+                sentence.value +=  log.time + ',' + log.content + ',' + log.score + "|";
+            }
+            else{
+                image.value += log.time + ',' + log.content.slice(9) + ',' + log.score + "|";
+            }
+        }
+
+        sentence.value = sentence.value.slice(0, sentence.value.length - 1);
+        image.value = image.value.slice(0, image.value.length - 1);
+
+        save.style = "display: block"
+
+    }
+
 //--------------画像判定--------------------------------------
     let timer;
-    function video_start(){
-        const cameraSize = { w: 768, h: 432 };
-        const resolution = { w: 768, h: 432 };
-        let video;
-        let media;
 
-        // video要素をつくる
-        video          = document.createElement('video');
-        video.id       = 'video';
-        video.width    = cameraSize.w;
-        video.height   = cameraSize.h;
-        video.autoplay = true;
-        document.getElementById('videoPreview').appendChild(video);
+    const cameraSize = { w: 768, h: 432 };
+    const resolution = { w: 768, h: 432 };
+    let video;
+    let media;
 
-        // video要素にWebカメラの映像を表示させる
-        media = navigator.mediaDevices.getUserMedia({
+    // video要素をつくる
+    video = document.createElement('video');
+    video.id = 'video';
+    video.width = cameraSize.w;
+    video.height = cameraSize.h;
+    video.autoplay = true;
+    document.getElementById('videoPreview').appendChild(video);
+
+    // video要素にWebカメラの映像を表示させる
+    media = navigator.mediaDevices.getUserMedia({
         audio: false,
         video: {
             width: { ideal: resolution.w },
             height: { ideal: resolution.h }
         }
-        }).then(function(stream) {
+    }).then(function (stream) {
         video.srcObject = stream;
-        });
+    });
+
+
+    function video_start(){
 
         // キャプチャ
         let video_cap = document.getElementById('video');
@@ -214,10 +243,7 @@
         let word = finalTranscript;
         let hiragana = HiraganaConvert(word);
         let word_length = hiragana.length;
-        mozisuu.innerHTML = '文字数：' + word_length;
-        time.innerHTML = '時間：' + (word_time / 1000);
-        wasoku.innerHTML = '話速：' + (word_length / ((word_time / 1000) / 60)) + '(文字数/分)';
-        kana.innerHTML = hiragana;
+        let wasoku = Math.round((word_length / ((word_time / 1000) / 60)));
 
         for (let i = 0; i  < log_list.length; i++) {
 
@@ -225,8 +251,8 @@
             
             if (log.type == 'text') {
                 let hiragana = HiraganaConvert(log.content);
-                log.content += '<br>' + hiragana + '<br>文字数：' + hiragana.length + '<br>時間：' + log.score;
-                log.score = hiragana.length / ((parseFloat(log.score) / 1000) / 60);
+                // log.content += '<br>' + hiragana + '<br>文字数：' + hiragana.length + '<br>時間：' + log.score;
+                log.score =  Math.round(hiragana.length / ((parseFloat(log.score) / 1000) / 60));
             }
             
         }
@@ -245,20 +271,6 @@
         });
 
         let xhr = new XMLHttpRequest;
-        // xhr.onload = function () {
-            // let res = JSON.parse(xhr.responseText);
-            // let hiragana = res.converted.replace(/\s+/g, '');
-            // let word_length = hiragana.length;
-            // mozisuu.innerHTML = '文字数：' + word_length;
-            // time.innerHTML = '時間：' + (word_time / 1000);
-            // wasoku.innerHTML = '話速：' + (word_length / ((word_time / 1000) / 60)) + '(文字数/分)';
-            // kana.innerText = hiragana;
-
-        // }
-
-        // xhr.onerror = function () {
-        //     alert("文章をひらがなにできませんでした。");
-        // }
 
         xhr.open("POST", "https://labs.goo.ne.jp/api/hiragana", false);
         xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
@@ -278,6 +290,21 @@
         return hiragana;
 
     }
+
+    // 俺様専用スクリプト
+    function sample(){
+        start_time = '09:00:00';
+        end_time = '10:00:00';
+        set_log('09:10:00', 'text', 350, 'おはようございます。本日は宜しくお願いいたします。');
+        set_log('09:10:10', 'image', 'OK', './static/images/20201211_102327.jpg');
+        set_log('09:30:00', 'text', 400, '私の強みは問題解決能力があるところです。私は大学時代バスケットボール部に所属していました。部のなかで、私は練習メニューを考えることに力を入れていました。試合結果を分析して課題と改善点を打ち出すことで、チームの底上げになる練習メニューを考え取り入れていました。');
+        set_log('09:30:10', 'image', '傾いています。', './static/images/20201211_102337.jpg');
+        set_log('09:50:00', 'text', 350, '本日は誠にありがとうございました。');
+        print_log();
+        set_form('{{ session_id }}');
+    }
+
+    // sample();
 
 </script>
 {% endblock %}

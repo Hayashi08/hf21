@@ -1,31 +1,38 @@
 @import url('https://fonts.googleapis.com/css2?family=Kotta+One&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Kosugi&display=swap');
 
-
+/* 設定 */
 .main_item{
 	background-color: #373e52;
 	border-radius: 20px;
 	height: 160px;
-	margin: 40px 0 0 100px;
+	margin: 0 0 0 14px;
+	width: 320px;
 }
 
+/* ログアウト */
 .main_item_logout{
 	background-color: #373e52;
 	border-radius: 20px;
 	height: 160px;
-	margin: 40px 0 0 80px;
+	margin: 0 0 0 20px;
+	width: 320px;
 }
 
+/* 履歴 */
 .main_item_history{
 	background-color: #373e52;
 	border-radius: 20px;
 	height: 300px;
+	/* width: 550px; */
 }
 
+/* 録画 */
 .main_item_record{
 	background-color: #373e52;
 	border-radius: 20px;
 	height: 500px;
+	/* margin: 10px 0 0 55px; */
 }
 
 .main_item .main_text{/*
@@ -113,7 +120,7 @@
 	opacity: 0.8;
 }
 
-.main_item_.main_item_record{
+.main_item_record:hover{
 	-webkit-transition: all 0.3s linear 0s;
 	opacity: 0.8;
 }

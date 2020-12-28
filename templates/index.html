@@ -1,30 +1,42 @@
 {% extends "layout.html" %}
 
-{% block content %}
+{% block header %}
+<link rel="stylesheet" href="static/css/modal.css">
+<link rel="stylesheet" href="static/css/index_p2.css">
+<link rel="stylesheet" href="static/css/main.css">
+{% endblock %}
 
+{% block content %}
 <div class="row p-3 m-5">
-    <a class="p-2 offset-2 col-3 text-center main_item" href="/main">
-        <i class="fas fa-video main_logo my-2"></i>
-        <div class="main_text my-2">
-            録画
+    <div class="col-6">
+        <div id="js-show-popup" class="p-2 text-center main_item_record">
+            <i class="fas fa-video main_logo my-2 mt-5"></i>
+            <div class="main_text my-2 mt-5">
+                録画
+            </div>
+            <div class="mt-4 sub_text my-2 mt-5">
+                Web面接の様子を撮影します
+            </div>
         </div>
-        <div class="mt-4 sub_text my-2">
-            Web面接の様子を撮影します
-        </div>
-    </a>
-    <a class="p-2 offset-2 col-3 text-center main_item" href="/archive">
-        <i class="fa fa-book main_logo my-2"></i>
-        <div class="main_text my-2">
+    </div>
+
+    <div class="col-6 d-flex flex-column w-50 mx-auto">
+
+    <a class="p-2 col text-center main_item_history col" href="/archive">
+        <i class="fa fa-book main_logo my-2 mt-4"></i>
+        <div class="main_text my-2 mt-4">
             履歴
         </div>
         <div class="mt-4 sub_text my-2">
             過去の解析結果を確認します
         </div>
     </a>
-</div>
 
-<div class="m-5 row p-2">
-    <a class="p-2 offset-2 col-3 text-center main_item" href="/settings">
+<div class="d-flex flex-row bd-highlight">
+
+<div class="row pt-2">
+    
+    <a class="col text-center main_item" href="/settings">
         <i class="fas fa-cog main_logo my-2"></i>
         <div class="main_text my-2">
             設定
@@ -33,16 +45,132 @@
             アカウント情報を確認します
         </div>
     </a>
-    <a class="p-2 offset-2 col-3 text-center main_item" href="/logout">
-        <i class="fas fa-door-open main_logo"></i>
+    
+    <div id="js-show-popup1" class="col text-center main_item_logout">
+        <i class="fas fa-door-open main_logo my-2"></i>
         <div class="main_text my-2">
             ログアウト
         </div>
         <div class="mt-4 sub_text my-2">
             ログイン画面に戻ります
         </div>
-    </a>
+    </div>
+    <!-- <a id="js-show-popup1" class="col text-center main_item_logout" href="/logout">
+        <i class="fas fa-door-open main_logo my-2"></i>
+        <div class="main_text my-2">
+            ログアウト
+        </div>
+        <div class="mt-4 sub_text my-2">
+            ログイン画面に戻ります
+        </div>
+    </a> -->
 
 </div>
+</div>
+</div>
+<!-- modal-録画   -->
+<div class="popup" id="js-popup">
+    <div class="popup-inner">
+        <div class="modal-body">
+            <div id="form">
+                <div class="h2" style="text-align: center; border-bottom: solid; border-width: 1px;" >
+                    <p class="form-title"><strong>会社情報を入力</strong></p>
+                </div>
+            </div>
+            <div class="row pt-3">
+                <div class="col">
+                    <form action="/main" class="mx-auto" method="POST">
+                        <p class="h5">会社名</p>
+                        <p class="">
+                            <input class="form-control" name="company_name" type="text">
+                        </p>
+                        <p class="pt-3 h5">選考段階</p>
+                        <p class="">
+                            <input class="form-control" name="company_stage" type="text">
+                        </p>
+                        <div class="row">
+                            <div class="col-3 mx-auto text-center pt-4">
+                                <input type="submit" class="btn btn-outline-secondary" value="決定">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="black-background" id="js-black-bg"></div>
+</div>
 
+<!-- modal-ログアウト   -->
+
+<div class="popup1" id="js-popup1">
+    <div class="popup-inner1">
+  
+                <div class="modal-body1">
+                  <div id="form">
+                    <div class="h2" style="text-align: center; border-bottom: solid; border-width: 1px;" >
+                  <div class="h2" style="text-align: center;"><p class="form-title">ログアウトしますか？</p></div>
+                    </div>
+                </div>
+                <div class="row pt-3">
+                  <div class="offset-2 col-3">
+                              <div class="text-center">
+                                  <a class="btn btn-outline-secondary" href="/login">はい</a>
+                              </div>
+                  </div>
+                  <div class="offset-2 col-3">
+                          <div class="close-btn1" id="js-close-btn1">
+                              <div class="text-center">
+                                  <button class="btn btn-outline-secondary">いいえ</button>
+                              </div>
+                          </div>
+                  </div>
+                  </div>
+              </div>
+  
+    </div>
+    <div class="black-background1" id="js-black-bg1"></div>
+  </div>
+{% endblock %}
+
+{% block script %}
+<script>
+    function popupImage() {
+        var popup = document.getElementById('js-popup');
+        if (!popup) return;
+        var blackBg = document.getElementById('js-black-bg');
+        var closeBtn = document.getElementById('js-close-btn');
+        var showBtn = document.getElementById('js-show-popup');
+        closePopUp(blackBg);
+        closePopUp(closeBtn);
+        closePopUp(showBtn);
+        function closePopUp(elem) {
+            if (!elem) return;
+            elem.addEventListener('click', function () {
+                popup.classList.toggle('is-show');
+            });
+        }
+    }
+    popupImage();
+
+    function popupImage1() {
+  var popup1 = document.getElementById('js-popup1');
+  if(!popup1) return;
+
+  var blackBg = document.getElementById('js-black-bg1');
+  var closeBtn = document.getElementById('js-close-btn1');
+  var showBtn = document.getElementById('js-show-popup1');
+
+  closePopUp(blackBg);
+  closePopUp(closeBtn);
+  closePopUp(showBtn);
+  function closePopUp(elem) {
+    if(!elem) return;
+    elem.addEventListener('click', function() {
+      popup1.classList.toggle('is-show1');
+    });
+  }
+}
+popupImage1();
+</script>
 {% endblock %}
