@@ -105,9 +105,9 @@ def archive():
 def archive_detail(id):
     session_id = id
     db = MySQL()
-    row_session, row_result, rows_sentence, rows_image = db.archive_detail(session_id)
+    row_session, row_result, log_list = db.archive_detail(session_id)
     db.close()
-    return render_template('archive_detail.html', title='アーカイブ詳細', row_session=row_session, row_result=row_result, rows_sentence=rows_sentence, rows_image=rows_image)
+    return render_template('archive_detail.html', title='アーカイブ詳細', row_session=row_session, row_result=row_result, log_list=log_list)
 
 # 設定
 @app.route('/settings')

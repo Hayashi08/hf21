@@ -15,16 +15,21 @@
 
         <br>
 
-        {% for row_sentence in rows_sentence %}
-        <div class="h3">{{ row_sentence[0] }}</div>
-        <div class="h4">話速: {{ row_sentence[2] }}</div>
-        <div class="h4">{{ row_sentence[1] }}</div>
+        {% for log in log_list %}
+    
+        <div class="h3">{{ log['time'] }}</div>
+        {% if log['type'] == 'text' %}
+        <div class="h4">話速: {{ log['score'] }}</div>
+        <div class="h4">{{ log['content'] }}</div>
+        {% else %}
+        <div class="h4">{{ log['score'] }}</div>
+        <img src="../static/{{ log['content'] }}">
+        {% endif %}
+    
         {% endfor %}
 
         {% for row_image in rows_image %}
         <div class="h3">{{ row_image[0] }}</div>
-        <div class="h4">{{ row_image[2] }}</div>
-        <img src="../static/{{ row_image[1] }}">
         {% endfor %}
 
     </div>
