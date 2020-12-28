@@ -157,12 +157,12 @@ class Shoulder(object):
             is_range = self.detect_area_line(line)
             if is_range=="true":
                 cv2.line(self.color_image,(x1,y1),(x2,y2),(0,0,255),2) # 描画
-            cnt1 = cnt1 + 1
-            x1line =np.append(x1line, x1)
-            x2line =np.append(x2line, x2)
-            y1line =np.append(y1line, y1)
-            y2line =np.append(y2line, y2)
-            aline =np.append(aline, a)
+                cnt1 = cnt1 + 1
+                x1line =np.append(x1line, x1)
+                x2line =np.append(x2line, x2)
+                y1line =np.append(y1line, y1)
+                y2line =np.append(y2line, y2)
+                aline =np.append(aline, a)
         # 描画後の画像保存
         save_path = MyImage.save(self.color_image)
 
