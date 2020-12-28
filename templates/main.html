@@ -95,7 +95,7 @@
                 sentence.value +=  log.time + ',' + log.content + ',' + log.score + "|";
             }
             else{
-                image.value += log.time + ',' + log.content.slice(7) + ',' + log.score + "|";
+                image.value += log.time + ',' + log.content.slice(9) + ',' + log.score + "|";
             }
         }
 
@@ -251,7 +251,7 @@
             
             if (log.type == 'text') {
                 let hiragana = HiraganaConvert(log.content);
-                log.content += '<br>' + hiragana + '<br>文字数：' + hiragana.length + '<br>時間：' + log.score;
+                // log.content += '<br>' + hiragana + '<br>文字数：' + hiragana.length + '<br>時間：' + log.score;
                 log.score =  Math.round(hiragana.length / ((parseFloat(log.score) / 1000) / 60));
             }
             
@@ -296,9 +296,9 @@
         start_time = '09:00:00';
         end_time = '10:00:00';
         set_log('09:10:00', 'text', 350, 'おはようございます。本日は宜しくお願いいたします。');
-        set_log('09:10:10', 'image', 'OK', 'static/images/20201211_102327.jpg');
+        set_log('09:10:10', 'image', 'OK', './static/images/20201211_102327.jpg');
         set_log('09:30:00', 'text', 400, '私の強みは問題解決能力があるところです。私は大学時代バスケットボール部に所属していました。部のなかで、私は練習メニューを考えることに力を入れていました。試合結果を分析して課題と改善点を打ち出すことで、チームの底上げになる練習メニューを考え取り入れていました。');
-        set_log('09:30:10', 'image', '傾いています。', 'static/images/20201211_102337.jpg');
+        set_log('09:30:10', 'image', '傾いています。', './static/images/20201211_102337.jpg');
         set_log('09:50:00', 'text', 350, '本日は誠にありがとうございました。');
         print_log();
         set_form('{{ session_id }}');
