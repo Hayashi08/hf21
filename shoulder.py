@@ -106,29 +106,36 @@ class Shoulder(object):
         x1, y1, x2, y2 = line[0]
         xa = (x2-x1)
         ya = (y2-y1)
+        result1 = "true"
 
         # 画面サイズを取得
         height, width, channels = MyImage.get_size(self.color_image)
 
         # 長すぎる直線を除く
         if xa > (width/2):
-            return "false"
+            result1 = "false"
         # 上部の直線を除く
         if y1<self.detect_area[0] or y2<self.detect_area[0]:
-            return "false"
+            result1 = "false"
         # 右部の直線を除く
         if x1>self.detect_area[1] or x2>self.detect_area[1]:
-            return "false"
+            result1 = "false"
         # 下部の直線を除く
         if y1>self.detect_area[2] or y2>self.detect_area[2]:
-            return "false"
+            result1 = "false"
         # 左部の直線を除く
         if x1<self.detect_area[3] or x2<self.detect_area[3]:
-            return "false"
+            result1 = "false"
         # x方向に短すぎる直線を除く
         if xa < 50:
-            return "false"
-        return "true"
+            result1 = "false"
+        # 左半分の直線を検知する。
+        if x1 < self.detect_area[4] or x2 < self.detect_area[4]:
+            result1 = 1
+        # 右半分の直線を検知する。
+        if x1 > self.detect_area[4] or x2 > self.detect_area[4]:
+            result1 = -1
+        return result1
 
     # 結果
     def detect(self):
@@ -141,55 +148,57 @@ class Shoulder(object):
         y1line = []
         y2line = []
         aline = []
-        flg = 0
-        line_count = 0
+        left_flag = 0
+        right_flag = 0
         cnt = 0
         cnt1 = 0
         save_path = ""
-        # if self.hough_lines:
-        for line in self.hough_lines:
-            x1, y1, x2, y2 = line[0]
-            a = (y2-y1)/(x2-x1)
-            cnt = cnt + 1
-            while line_count <= 2:
+        while left_flag == 0 or right_flag == 0:
+            for line in self.hough_lines:
+                x1, y1, x2, y2 = line[0]
+                a = (y2-y1)/(x2-x1)
+                cnt = cnt+1
                 # 描画条件
                 is_range = self.detect_area_line(line)
-                if is_range=="true":
-                    # 右左一本ずつ描画
-                    if flg == 0:
-                        #左部の線ですか
-                        if x1>self.detect_area[4] or x2>self.detect_area[4]:
-                            flg = 1
-                        else
-                            flg = -1
+                if is_range== 1:
+                    if left_flag== 0:
                         cv2.line(self.color_image,(x1,y1),(x2,y2),(0,0,255),2) # 描画
-                        x1line =np.append(x1line, x1)
-                        x2line =np.append(x2line, x2)
-                        y1line =np.append(y1line, y1)
-                        y2line =np.append(y2line, y2)
-                        aline =np.append(aline, a)
-                        line_count = line_count + 1
-                    elif flg == 1:
-                        line_count = line_count + 1
-                    cnt1 = cnt1 + 1
+                        x1line = np.append(x1line, x1)
+                        x2line = np.append(x2line, x2)
+                        y1line = np.append(y1line, y1)
+                        y2line = np.append(y2line, y2)
+                        aline = np.append(aline, a)
+                        cnt1 = cnt1+1
+                        left_flag = 1
+                elif is_range== -1:
+                    if right_flag== 0:
+                        cv2.line(self.color_image,(x1,y1),(x2,y2),(0,0,255),2) # 描画
+                        x1line = np.append(x1line, x1)
+                        x2line = np.append(x2line, x2)
+                        y1line = np.append(y1line, y1)
+                        y2line = np.append(y2line, y2)
+                        aline = np.append(aline, a)
+                        cnt1 = cnt1+1
+                        right_flag = 1
+
         # 描画後の画像保存
         save_path = MyImage.save(self.color_image)
 
-        num1 = aline[0] + aline[1]
-        num2 = 1 - (aline[0]*aline[1])
+        num1 = aline[0]+aline[1]
+        num2 = 1-(aline[0]*aline[1])
         flg = 0
-        tan = (-num2 + np.sqrt(np.power(num2, 2) + np.power(num1, 2))) / num1
+        tan = (-num2+np.sqrt(np.power(num2, 2)+np.power(num1, 2)))/num1
         deg = np.rad2deg(np.arctan(tan))
-        if(deg > 0):
+        if(deg>0):
             flg = 1
         else:
             deg = -deg
         
-        if(deg > 2):
+        if(deg > 4):
             if(flg == 0):
-                result = '右に' + str(deg) + '傾いています' + '\n' + str(cnt) + '\n' + str(cnt1)
+                result = '右に' + str(round(deg, 1)) + '傾いています' + '\n' + str(cnt) + '\n' + str(cnt1)
             else:
-                result = '左に' + str(deg) + '傾いています' + '\n' + str(cnt) + '\n' + str(cnt1)
+                result = '左に' + str(round(deg, 1)) + '傾いています' + '\n' + str(cnt) + '\n' + str(cnt1)
         else:
             for i in range(len(x1line)):
                 result = str(x1line[int(i)]) + '\n' + str(x2line[int(i)]) + '\n' + str(y1line[int(i)]) + '\n' + str(y2line[int(i)]) + '\n' + str(aline[int(i)]) + '\n' + str(cnt) + '\n' + str(cnt)
