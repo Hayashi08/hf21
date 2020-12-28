@@ -9,7 +9,7 @@ class Shoulder(object):
         self.noback_image = img
         self.gray_image = None
         self.canny_image = None
-        self.detect_area = [250, 600, 400, 100]
+        self.detect_area = [300, 600, 400, 100, 300, 480]
         self.hough_lines = []
 
     def remove_background(self):
@@ -128,6 +128,9 @@ class Shoulder(object):
         # x方向に短すぎる直線を除く
         if xa < 50:
             return "false"
+        # 中央の直線を除く
+        if x1<self.detect_area[4] and x1>self.detect_area[5]:
+            return "false"
         return "true"
 
     # 結果
@@ -136,31 +139,30 @@ class Shoulder(object):
         self.get_gray_image()
         self.convert_canny_image()
         self.hough_lines_p()
-        xline = []
-        yline = []
+        x1line = []
+        x2line = []
+        y1line = []
+        y2line = []
         aline = []
+        cnt = 0
+        cnt1 = 0
         save_path = ""
         # if self.hough_lines:
         for line in self.hough_lines:
             x1, y1, x2, y2 = line[0]
-            xa = (x2-x1)
-            ya = (y2-y1)
-            a = ya/xa
+            a = (y2-y1)/(x2-x1)
+            cnt = cnt + 1
             
             # 描画条件
             is_range = self.detect_area_line(line)
             if is_range=="true":
                 cv2.line(self.color_image,(x1,y1),(x2,y2),(0,0,255),2) # 描画
-
-                line = np.append(line, [xa,ya])
-                # 負の数を正の数に変換
-                if(xa < 0):
-                    xa = -xa
-                if(ya < 0):
-                    ya = -ya
-                xline =np.append(xline, xa)
-                yline =np.append(yline, ya)
-                aline =np.append(aline, a)
+            cnt1 = cnt1 + 1
+            x1line =np.append(x1line, x1)
+            x2line =np.append(x2line, x2)
+            y1line =np.append(y1line, y1)
+            y2line =np.append(y2line, y2)
+            aline =np.append(aline, a)
         # 描画後の画像保存
         save_path = MyImage.save(self.color_image)
 
@@ -176,18 +178,10 @@ class Shoulder(object):
         
         if(deg > 2):
             if(flg == 0):
-                result = '右に' + str(deg) + '傾いています'
+                result = '右に' + str(deg) + '傾いています' + '\n' + str(cnt) + '\n' + str(cnt1)
             else:
-                result = '左に' + str(deg) + '傾いています'
+                result = '左に' + str(deg) + '傾いています' + '\n' + str(cnt) + '\n' + str(cnt1)
         else:
-            result = 'OK'
-
-        # if((yline[0]-yline[1] > 10) or (yline[0]-yline[1] < -10)):
-        #     result = '傾むいてます。'
-        # elif((xline[0]-xline[1] > 10) or (xline[0]-xline[1] < -10)):
-        #     result = '回転してます。'
-        # else:
-        #     result = 'OK'
-        # else:
-        #     result = "検出できませんでした"
+            for i in range(len(x1line)):
+                result = str(x1line[int(i)]) + '\n' + str(x2line[int(i)]) + '\n' + str(y1line[int(i)]) + '\n' + str(y2line[int(i)]) + '\n' + str(aline[int(i)]) + '\n' + str(cnt) + '\n' + str(cnt)
         return result, save_path
