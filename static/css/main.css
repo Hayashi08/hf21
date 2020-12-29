@@ -8,4 +8,6 @@
    transform: scaleX(-1);
   }
 
-  body {overflow: hidden;}
+  body {
+    /* overflow: hidden; */
+  }
