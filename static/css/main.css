@@ -26,8 +26,8 @@
 
 #parent{
   position: relative;
-  height: 234px;
-  width :416px;
+  height: 15vw;
+  width :20vw;
 }
 
 #before_kakou{
@@ -36,6 +36,7 @@
   height: 100%;
   width: 100%;
   z-index: 2;
+  font-size: 17px;
 }
 
 #kakou {
@@ -43,7 +44,7 @@
   left: 0;
   right: 0;
   height: 100%;
-  width: 90%;
+  width: 80%;
   margin: auto;
   transform: scaleX(-1);
   z-index: 3;
