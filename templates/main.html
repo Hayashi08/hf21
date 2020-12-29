@@ -51,8 +51,8 @@
         </div>
         <div class="offset-1"></div>
         <div id="button">
-            <button class="btn btn-success" onclick="start()">スタート</button>
-            <button class="btn btn-danger" onclick="stop()">ストップ</button>
+            <button id="button_js" class="btn btn-success" onclick="recordButton()">START</button>
+            <!-- <button class="btn btn-danger" onclick="stop()">ストップ</button> -->
         </div>
     </div>
     <section>
@@ -90,6 +90,17 @@
 
     var start_time;
     var end_time;
+
+    function recordButton(){
+        if (button_js.textContent == 'START') {
+            start();
+            button_js.textContent = 'STOP';
+            button_js.className = 'btn btn-danger';
+        }
+        else{
+            stop();
+        }
+    }
 
     function start(){
         start_time = new Date().toLocaleString();
@@ -307,8 +318,8 @@ var myPieChart = new Chart(ctx, {
                         console.log(resultObjct[0]);
                     })
                     .fail(function(data){
-                         // alert("画像を得られませんでした。");
-                        console.log('画像を得られませんでした。');
+                        let time = new Date().toLocaleTimeString();
+                        console.log(time + '画像を得られませんでした。');
                     });
                 }
             , 'image/jpeg');
