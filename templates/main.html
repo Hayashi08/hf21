@@ -257,15 +257,15 @@ var myPieChart = new Chart(ctx, {
         video.srcObject = stream;
     });
 
-    // img要素をつくる
-    adjuster          = document.createElement('img');
-    adjuster.id       = 'adjuster';
-    // adjuster.src      = 'images/adjuster.png';
-    adjuster.src      = '/static/asets/adjuster.png';
-    adjuster.width    = videoPreviewWidth;
-    adjuster.height   = cameraSize.h;
-    adjuster.style.zIndex = 1;
-    document.getElementById('videoPreview').appendChild(adjuster);
+    // // img要素をつくる
+    // adjuster          = document.createElement('img');
+    // adjuster.id       = 'adjuster';
+    // // adjuster.src      = 'images/adjuster.png';
+    // adjuster.src      = '/static/asets/adjuster.png';
+    // adjuster.width    = videoPreviewWidth;
+    // adjuster.height   = cameraSize.h;
+    // adjuster.style.zIndex = 1;
+    // document.getElementById('videoPreview').appendChild(adjuster);
 
 
     function video_start(){
