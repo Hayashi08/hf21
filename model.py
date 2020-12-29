@@ -70,7 +70,7 @@ class MySQL:
         self.cur.execute('INSERT INTO image_tbl (result_id, image_time, image_path, image_judge) VALUES (%s, %s, %s, %s)', (result_id, image_time, image_path, image_judge))
 
     def archive(self, user_id):
-        self.cur.execute('SELECT session_id, session_timestamp, company_name, company_stage FROM session_tbl WHERE user_id = %s', (user_id,))
+        self.cur.execute('SELECT session_id, session_timestamp, company_name, company_stage FROM session_tbl WHERE user_id = %s order by session_timestamp DESC', (user_id,))
         rows = self.cur.fetchall()
         return rows
 
