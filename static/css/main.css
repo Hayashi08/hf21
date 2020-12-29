@@ -24,16 +24,29 @@
  height:11rem;
 }
 
-#img_out{
- width: 100%;
- height: 100%;
+#parent{
+  position: relative;
+  height: 234px;
+  width :416px;
+}
+
+#before_kakou{
+  position: absolute;
+  border:1px;
+  height: 100%;
+  width: 100%;
+  z-index: 2;
 }
 
 #kakou {
- transform: scaleX(-1);
- max-width: 75%;
- height: auto;
- width :auto;
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 90%;
+  margin: auto;
+  transform: scaleX(-1);
+  z-index: 3;
  }
 
 #canvas{

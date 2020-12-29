@@ -37,8 +37,13 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-12">
+                <div class="col-12" id="parent">
+                    <div id="before_kakou">加工済み画像を表示します。</div>
                     <img id="kakou">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
                     <div id="sisei"></div>
                 </div>
             </div>
@@ -63,7 +68,7 @@
     </form>
     </div>
     </div>
-</body>
+</body>>
 {% endblock %}
 
 {% block script %}
@@ -102,7 +107,7 @@
             log_html += '<p class="h3 mt-3">' + log_list[i].time + '</p>';
             if (log_list[i].type == 'image') {
                 log_html += '<p class="h4">' + log_list[i].score + '</p>';
-                log_html += '<p><img src="' + log_list[i].content + '" width="450px"></p>';
+                log_html += '<p><img src="' + log_list[i].content + '"style=" width: 45opx; transform: scaleX(-1);"></p>';
             }
             else{
                 log_html += '<p class="h4">話速：' + log_list[i].score + '</p>';
