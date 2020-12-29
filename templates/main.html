@@ -242,7 +242,7 @@ var myPieChart = new Chart(ctx, {
     video = document.createElement('video');
     video.id = 'video';
     video.width = videoPreviewWidth;
-    video.height = cameraSize.h;
+    video.height = cameraSize.h * (videoPreviewWidth / cameraSize.w)
     video.autoplay = true;
     document.getElementById('videoPreview').appendChild(video);
 
@@ -263,7 +263,7 @@ var myPieChart = new Chart(ctx, {
     // adjuster.src      = 'images/adjuster.png';
     adjuster.src      = '/static/asets/adjuster.png';
     adjuster.width    = videoPreviewWidth;
-    adjuster.height   = cameraSize.h;
+    adjuster.height   = cameraSize.h * (videoPreviewWidth / cameraSize.w);
     adjuster.style.zIndex = 1;
     document.getElementById('videoPreview').appendChild(adjuster);
 
