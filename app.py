@@ -118,6 +118,11 @@ def archive_detail(id):
 def settings():
     return render_template('settings.html', title='設定')
 
+# 設定編集
+@app.route('/settings_edit')
+@login_required
+def settings_edit():
+    return render_template('settings_edit.html', title='設定')
 
 ## ログイン機能
 
