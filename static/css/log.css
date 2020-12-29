@@ -1,7 +1,15 @@
 .log{
-    margin: 0 0 0 340px;
+    margin: 0 0 0 460px;
 }
 
 .card_log{
-    margin: 0 0 0 230px;
+    margin: 0 0 0 380px;
+}
+
+.card{
+    background-color:  #373e52;
+}
+
+.log_time{
+    color:#d3d3d3;
 }

@@ -6,44 +6,43 @@
 
 {% block content %}
 
-<div class="row mt-5">
+<div class="mt-5">
     <div class="col text-center">
 
-        <table class="log table-sm table-borderless col-6 log">
+        <table class="log table-sm table-borderless col-6">
               <tr>
-                <th class="h4">セッション日時:</th>
-                <th><div class="h4">{{ row_session[0] }}</div></th>
+                <th class="h4 text-right">セッション日時:</th>
+                <th><div class="h3 ml-5 text-left font-weight-bold ">{{ row_session[0] }}</div></th>
               </tr>
               <tr>
-                <th class="h4">会社名:</th>
-                <td><div class="h3">{{ row_session[1] }}</div></td>
+                <th class="h4 text-right">会社名:</th>
+                <td><div class="h3 ml-5 text-left font-weight-bold">{{ row_session[1] }}</div></td>
               </tr>
               <tr>
-                <th class="h4">選考段階:</th>
-                <td><div class="h3">{{ row_session[2] }}</div></td>
+                <th class="h4 text-right">選考段階:</th>
+                <td><div class="h3 ml-5 text-left font-weight-bold">{{ row_session[2] }}</div></td>
               </tr>
               <tr>
-                <th class="h4   ">開始時間、終了時間:</th>
-                <td><div class="h3">{{ row_result[1] }} ~ {{ row_result[2] }}</div></td>
+                <th class="h4 text-right">開始時間、終了時間:</th>
+                <td><div class="h3 ml-5 text-left font-weight-bold">{{ row_result[1] }} ~ {{ row_result[2] }}</div></td>
               </tr>
-          </table>
+        </table>
 
         <br><br>
 
         <br>
 
         {% for log in log_list %}
-    
 
-
-          <div class="card text-white bg-secondary mb-4 card_log" style="max-width: 55rem;">
-            <div class="card-header"><div class="h3">{{ log['time'] }}</div></div>
-            <div class="card-body"> 
-                {% if log['type'] == 'text' %}
-                <h5><div class="h4">話速: {{ log['score'] }}</div></h5>
+          <div class="card mb-4 card_log text-white text-center" style="max-width: 55rem;">
+            <div class="card-header">
+                <div class="h5 text-left log_time">{{ log['time'] }}</div>{% if log['type'] == 'text' %}
+                <div class="h3 font-weight-bold text-center">話速 : {{ log['score'] }}</div>
+            </div>
+            <div class="card-body card bg-light text-dark"> 
                 <div class="h4">{{ log['content'] }}</div>
                 {% else %}
-                <div class="h4">{{ log['score'] }}</div>
+                <div class="h3 font-weight-bold">{{ log['score'] }}</div>    
                 <img src="../static/{{ log['content'] }}">
                 {% endif %}
             </div>
@@ -51,8 +50,8 @@
 
         {% endfor %}
 
-        <button type="button" class="btn btn-secondary" onclick="location.href='../archive'">戻る</button>
-    </div>
+        <button type="button" class="btn btn-secondary mb-4" onclick="location.href='../archive'">戻る</button>
 </div>
 
 {% endblock %}
+</div>
