@@ -22,7 +22,7 @@
     </div>
     <div class="row" id="run">
         <div class="col-5 offset-1">
-            <div id="videoPreview"></div>
+                <div id="videoPreview"></div>
         </div>
         <div class="col-5">
             <div class="row">
@@ -257,6 +257,16 @@ var myPieChart = new Chart(ctx, {
         video.srcObject = stream;
     });
 
+    // img要素をつくる
+    adjuster          = document.createElement('img');
+    adjuster.id       = 'adjuster';
+    // adjuster.src      = 'images/adjuster.png';
+    adjuster.src      = '/static/asets/adjuster.png';
+    adjuster.width    = videoPreviewWidth;
+    adjuster.height   = cameraSize.h;
+    adjuster.style.zIndex = 1;
+    document.getElementById('videoPreview').appendChild(adjuster);
+
 
     function video_start(){
 
@@ -297,7 +307,7 @@ var myPieChart = new Chart(ctx, {
                         console.log(resultObjct[0]);
                     })
                     .fail(function(data){
-                        // alert("画像を得られませんでした。");
+                        alert("画像を得られませんでした。");
                         console.log('画像を得られませんでした。');
                     });
                 }
