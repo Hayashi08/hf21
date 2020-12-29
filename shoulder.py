@@ -138,7 +138,7 @@ class Shoulder(object):
         if x1 < self.detect_area[4] or x2 < self.detect_area[4]:
             result1 = 1
         # 傾きの値が大きい直線を排除。
-        if a>2:
+        if a>2 or a<-2:
             result1 = 'false'
         return result1
 
