@@ -3,7 +3,8 @@
   right: 90%;
 }
 
-#videoPreview {
+/* #videoPreview { */
+#video {
   position: absolute;
   left: 0;
   right: 0;
@@ -12,14 +13,14 @@
   /* z-index: 4; */
  }
 
- /* #adjuster {
-   position: absolute;
-   left: 0;
-   right: 0;
-   bottom: 6%;
-   margin: auto;
-   z-index: 3;
-  } */
+ #adjuster {
+  position: absolute;
+  left: 0;
+  right: 0;
+  /* bottom: 6%; */
+  margin: auto;
+  /* z-index: 3; */
+  }
 
 #cus_voice{
  color: black;
