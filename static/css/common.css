@@ -7,13 +7,15 @@ a:hover{
 	opacity: 0.8;
 }
 
-._nav{
-	/* height: 100px; */
-	background-color: #373e52;
-	width: 100%;
-	float: none;
-	position: fixed;
+._zindex_1{
 	z-index: 1;
+}
+
+._nav{
+	background-color: #373e52;
+	float: none;
+	position: relative;
+	z-index: 5;
 }
 
 ._main_title{
@@ -26,7 +28,6 @@ a:hover{
 	white-space: nowrap;
 	color: #ffffff;
 }
-
 
 
 

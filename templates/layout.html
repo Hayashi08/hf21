@@ -4,6 +4,8 @@
         <title>{{ title }}</title>
         <meta charset="UTF-8">
 
+        <meta name="viewport" content="width=1280 ,initial-scale=1">
+
         <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='asets/horus.jpg') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/common.css') }}">
@@ -24,7 +26,7 @@
     <body>
         <div id="particles-js"></div>
 
-        <div class="container-fluid">
+        <div class="container-fluid _zindex_1">
         
             <div class="p-3 row _nav">
                 <!-- <div class="col-1"> -->
@@ -46,7 +48,7 @@
                 {% endif %}
             </div>
 
-            <br><br><br><br><br><br><br><br>
+
 
             {% block content %}
             <!-- ここにメインコンテンツが入る。 -->
