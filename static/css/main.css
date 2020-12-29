@@ -14,12 +14,12 @@
  }
 
  #adjuster {
-   position: absolute;
-   left: 0;
-   right: 0;
-   /* bottom: 6%; */
-   margin: auto;
-   /* z-index: 3; */
+  position: absolute;
+  left: 0;
+  right: 0;
+  /* bottom: 6%; */
+  margin: auto;
+  /* z-index: 3; */
   }
 
 #cus_voice{
