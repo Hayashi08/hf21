@@ -9,7 +9,7 @@ class Shoulder(object):
         self.noback_image = img
         self.gray_image = None
         self.canny_image = None
-        self.detect_area = [300, 619, 430, 133, 380]
+        self.detect_area = [350, 619, 430, 133, 380]
         self.hough_lines = []
 
         self.all_img_path = MyImage.mkdir_all_img()
@@ -110,16 +110,18 @@ class Shoulder(object):
     
     def detect_area_line(self, line):
         x1, y1, x2, y2 = line[0]
-        xa = (x2-x1)
-        ya = (y2-y1)
+        a = (y2-y1)/(x2-x1)
         result1 = "true"
 
         # 画面サイズを取得
         height, width, channels = MyImage.get_size(self.color_image)
 
-        # 長すぎる直線を除く
-        if xa > (width/2):
-            result1 = "false"
+        # 左半分の直線を検知する。
+        if x1 < self.detect_area[4] or x2 < self.detect_area[4]:
+            result1 = 1
+        # 右半分の直線を検知する。
+        if x1 > self.detect_area[4] or x2 > self.detect_area[4]:
+            result1 = -1
         # 上部の直線を除く
         if y1<self.detect_area[0] or y2<self.detect_area[0]:
             result1 = "false"
@@ -132,15 +134,12 @@ class Shoulder(object):
         # 左部の直線を除く
         if x1<self.detect_area[3] or x2<self.detect_area[3]:
             result1 = "false"
-        # x方向に短すぎる直線を除く
-        if xa < 50:
-            result1 = "false"
         # 左半分の直線を検知する。
         if x1 < self.detect_area[4] or x2 < self.detect_area[4]:
             result1 = 1
-        # 右半分の直線を検知する。
-        if x1 > self.detect_area[4] or x2 > self.detect_area[4]:
-            result1 = -1
+        # 傾きの値が大きい直線を排除。
+        if a>2 or a<-2:
+            result1 = 'false'
         return result1
 
     # 結果
@@ -186,9 +185,9 @@ class Shoulder(object):
         
         if(deg > 4):
             if(flag == 0):
-                result = '右に' + str(round(deg, 1)) + '傾いています'
+                result = '右に' + str(round(deg, 1)) + '傾いています' + '\n' + str(aline[0]) + '\n' + str(aline[1])
             else:
-                result = '左に' + str(round(deg, 1)) + '傾いています'
+                result = '左に' + str(round(deg, 1)) + '傾いています' + '\n' + str(aline[0]) + '\n' + str(aline[1])
         else:
-            result = 'OK'
+            result = 'OK' + '\n' + str(aline[0]) + '\n' + str(aline[1])
         return result, save_path
