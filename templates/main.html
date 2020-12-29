@@ -2,6 +2,7 @@
 
 {% block header %}
     <link rel="stylesheet" href="static/css/main.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -45,22 +46,37 @@
         </div>
         <div class="offset-1"></div>
         <div id="button">
-            <button class="btn btn-success" onclick="start()">スタート</button>
-            <button class="btn btn-danger" onclick="stop()">ストップ</button>
+            <!-- <button class="btn btn-success" onclick="start()">スタート</button>
+            <button class="btn btn-danger" onclick="stop()">ストップ</button> -->
         </div>
     </div>
     <section>
         <canvas id="canvas" width="768" height="432" style="display: none;"></canvas>
     </section>
     <section>
+        <div id="result" class="mt-5">
+            <div class="row">
+                <div class=" col-6 offset-1">
+                    <canvas id="myLineChart"></canvas>
+                </div>
+                <div class=" col-5">
+                    <canvas id="myPieChart"></canvas>
+                </div>
+                <div class="offset-1"></div>
+            </div>
+        </div>
+    </section>
+    <section>
         <div id="log" class="mt-5"></div>
     </section>
+    <section>
     <form action="/save" method="POST">
         <input id="result" type="text" name="result" value="" hidden>
         <input id="sentence" type="text" name="sentence" value="" hidden>
         <input id="image" type="text" name="image" value="" hidden>
-        <input id="save" class="btn btn-primary mx-auto" type="submit" style="display: none;" value="SAVE">
+        <input id="save" class="btn btn-primary mx-auto my-5" type="submit" style="display: none;" value="SAVE">
     </form>
+    </section>
     </div>
     </div>
 </body>
@@ -87,6 +103,71 @@
         set_form('{{ session_id }}');
     }
 
+//-------------リザルト-------------------------------------------
+
+// 話速グラフ
+var ctx = document.getElementById("myLineChart");
+var myLineChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: ['0', '5', '10', '15', '20', '25', '30(分 )'],
+        datasets: [
+            {
+                label: '話速',
+                data: [450, 360, 380, 470, 500, 450, 300, 430],
+                borderColor: "rgba(255,0,0,1)",
+                backgroundColor: "rgba(0,0,0,0)"
+            },
+            {
+                label: '基準',
+                data: [400, 400, 400, 400, 400, 400, 400, 400],
+                borderColor: "rgba(f,f,f,1)",
+                backgroundColor: "rgba(0,0,0,0)"
+            }
+        ],
+    },
+    options: {
+        title: {
+            display: true,
+            text: '話速'
+        },
+        scales: {
+            yAxes: [{
+                ticks: {
+                    suggestedMax: 550,
+                    suggestedMin: 250,
+                    stepSize: 50,
+                    callback: function (value, index, values) {
+                        return value + '文字/分'
+                    }
+                }
+            }]
+        },
+    }
+});
+
+// 姿勢グラフ
+var ctx = document.getElementById("myPieChart");
+var myPieChart = new Chart(ctx, {
+    type: 'pie',
+    data: {
+        labels: ["OK", "回転", "傾き",],
+        datasets: [{
+            backgroundColor: [
+                "#BB5179",
+                "#FAFF67",
+                "#58A27C",
+            ],
+            data: [48, 31, 21,]
+        }]
+    },
+    options: {
+        title: {
+            display: true,
+            text: '姿勢'
+        }
+    }
+});
 
 //-------------ログ-------------------------------------------    
     var log_list = [];
