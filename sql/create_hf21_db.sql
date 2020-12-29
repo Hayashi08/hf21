@@ -44,7 +44,7 @@ CREATE TABLE sentence_tbl (
 	result_id INTEGER UNSIGNED NOT NULL,
 	sentence_time TIME DEFAULT '00:00:00',
 	sentence_str VARCHAR(512),
-	sentence_wasoku TINYINT UNSIGNED DEFAULT 0,
+	sentence_wasoku SMALLINT UNSIGNED DEFAULT 0,
 	sentence_judge VARCHAR(64) DEFAULT '',
 	sentence_point TINYINT UNSIGNED DEFAULT 0,
 	PRIMARY KEY (sentence_id),

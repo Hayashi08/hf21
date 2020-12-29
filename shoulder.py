@@ -9,7 +9,7 @@ class Shoulder(object):
         self.noback_image = img
         self.gray_image = None
         self.canny_image = None
-        self.detect_area = [250, 600, 400, 100]
+        self.detect_area = [350, 619, 430, 133, 380]
         self.hough_lines = []
 
         self.all_img_path = MyImage.mkdir_all_img()
@@ -96,7 +96,7 @@ class Shoulder(object):
     def get_gray_image(self):
         self.gray_image = cv2.cvtColor(self.noback_image, cv2.COLOR_BGR2GRAY)
         MyImage.all_save(self.gray_image, self.all_img_path, '02')
-    
+
     # canny変換
     def convert_canny_image(self):
         self.canny_image = cv2.Canny(self.gray_image, 200, 200)
@@ -110,31 +110,37 @@ class Shoulder(object):
     
     def detect_area_line(self, line):
         x1, y1, x2, y2 = line[0]
-        xa = (x2-x1)
-        ya = (y2-y1)
+        a = (y2-y1)/(x2-x1)
+        result1 = "true"
 
         # 画面サイズを取得
         height, width, channels = MyImage.get_size(self.color_image)
 
-        # 長すぎる直線を除く
-        if xa > (width/2):
-            return "false"
+        # 左半分の直線を検知する。
+        if x1 < self.detect_area[4] or x2 < self.detect_area[4]:
+            result1 = 1
+        # 右半分の直線を検知する。
+        if x1 > self.detect_area[4] or x2 > self.detect_area[4]:
+            result1 = -1
         # 上部の直線を除く
         if y1<self.detect_area[0] or y2<self.detect_area[0]:
-            return "false"
+            result1 = "false"
         # 右部の直線を除く
         if x1>self.detect_area[1] or x2>self.detect_area[1]:
-            return "false"
+            result1 = "false"
         # 下部の直線を除く
         if y1>self.detect_area[2] or y2>self.detect_area[2]:
-            return "false"
+            result1 = "false"
         # 左部の直線を除く
         if x1<self.detect_area[3] or x2<self.detect_area[3]:
-            return "false"
-        # x方向に短すぎる直線を除く
-        if xa < 50:
-            return "false"
-        return "true"
+            result1 = "false"
+        # 左半分の直線を検知する。
+        if x1 < self.detect_area[4] or x2 < self.detect_area[4]:
+            result1 = 1
+        # 傾きの値が大きい直線を排除。
+        if a>2 or a<-2:
+            result1 = 'false'
+        return result1
 
     # 結果
     def detect(self):
@@ -142,39 +148,46 @@ class Shoulder(object):
         self.get_gray_image()
         self.convert_canny_image()
         self.hough_lines_p()
-        xline = []
-        yline = []
+        aline = []
+        left_flag = 0
+        right_flag = 0
         save_path = ""
-        # if self.hough_lines:
-        for line in self.hough_lines:
-            x1, y1, x2, y2 = line[0]
-            xa = (x2-x1)
-            ya = (y2-y1)
-            
-            # 描画条件
-            is_range = self.detect_area_line(line)
-            if is_range=="true":
-                cv2.line(self.color_image,(x1,y1),(x2,y2),(0,0,255),2) # 描画
-
-                line = np.append(line, [xa,ya])
-                # 負の数を正の数に変換
-                if(xa < 0):
-                    xa = -xa
-                if(ya < 0):
-                    ya = -ya
-                xline =np.append(xline, xa)
-                yline =np.append(yline, ya)
+        while left_flag == 0 or right_flag == 0:
+            for line in self.hough_lines:
+                x1, y1, x2, y2 = line[0]
+                a = (y2-y1)/(x2-x1)
+                # 描画条件
+                is_range = self.detect_area_line(line)
+                if is_range== 1:
+                    if left_flag== 0:
+                        cv2.line(self.color_image,(x1,y1),(x2,y2),(0,0,255),2) # 描画
+                        aline = np.append(aline, a)
+                        left_flag = 1
+                elif is_range== -1:
+                    if right_flag== 0:
+                        cv2.line(self.color_image,(x1,y1),(x2,y2),(0,0,255),2) # 描画
+                        aline = np.append(aline, a)
+                        right_flag = 1
 
         # 描画後の画像保存
         save_path = MyImage.save(self.color_image)
         MyImage.all_save(self.color_image, self.all_img_path, '04')
-        
-        if((yline[0]-yline[1] > 10) or (yline[0]-yline[1] < -10)):
-            result = '傾むいてます。'
-        elif((xline[0]-xline[1] > 10) or (xline[0]-xline[1] < -10)):
-            result = '回転してます。'
+
+        num1 = aline[0]+aline[1]
+        num2 = 1-(aline[0]*aline[1])
+        flag = 0
+        tan = (-num2+np.sqrt(np.power(num2, 2)+np.power(num1, 2)))/num1
+        deg = np.rad2deg(np.arctan(tan))
+        if(deg>0):
+            flag = 1
         else:
-            result = 'OK'
-        # else:
-        #     result = "検出できませんでした"
+            deg = -deg
+        
+        if(deg > 4):
+            if(flag == 0):
+                result = '右に' + str(round(deg, 1)) + '傾いています' + '\n' + str(aline[0]) + '\n' + str(aline[1])
+            else:
+                result = '左に' + str(round(deg, 1)) + '傾いています' + '\n' + str(aline[0]) + '\n' + str(aline[1])
+        else:
+            result = 'OK' + '\n' + str(aline[0]) + '\n' + str(aline[1])
         return result, save_path

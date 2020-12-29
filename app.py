@@ -75,12 +75,15 @@ def save():
         sentence_list = sentence.split('|')
         for sentence_row in sentence_list:
             sentence_ele = sentence_row.split(',')
-            db.insert_sentence(result_id, str(sentence_ele[0]), str(sentence_ele[1]), int(sentence_ele[2]))
+            if len(sentence_ele) != 1 and sentence_ele[2] != 'Infinity':
+                db.insert_sentence(result_id, str(sentence_ele[0]), str(sentence_ele[1]), int(sentence_ele[2]))
+
 
         image_list = image.split('|')
         for image_row in image_list:
             image_ele = image_row.split(',')
-            db.insert_image(result_id, str(image_ele[0]), str(image_ele[1]), str(image_ele[2]))
+            if len(image_ele) != 1:
+                db.insert_image(result_id, str(image_ele[0]), str(image_ele[1]), str(image_ele[2]))
 
         db.close()
 
