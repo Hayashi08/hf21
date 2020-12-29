@@ -181,15 +181,25 @@ var myPieChart = new Chart(ctx, {
 
     function print_log(){
         log_html = '<div class="h2">ログ</div>';
+        // 開始時間 ~ 終了時間
         log_html += '<p class="h3">' + start_time + ' ~ ' + end_time + '</p>';
         for (let i = 0; i < log_list.length; i++){
+
+            // ログ時刻
             log_html += '<p class="h3 mt-3">' + log_list[i].time + '</p>';
+
+            // ログが画像の場合
             if (log_list[i].type == 'image') {
+                // 画像結果
                 log_html += '<p class="h4">' + log_list[i].score + '</p>';
+                // 画像表示
                 log_html += '<p><img src="' + log_list[i].content + '"style=" width: 45opx; transform: scaleX(-1);"></p>';
             }
+            // ログが文章の場合
             else{
+                // 話速
                 log_html += '<p class="h4">話速：' + log_list[i].score + '</p>';
+                // 文章
                 log_html += '<p class="h4">' + log_list[i].content + '</p>';
             }
         }
