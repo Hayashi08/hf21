@@ -55,7 +55,7 @@
 			</div>
 			<div class="card-body bg-light text-dark text-center">
 				{% if log['type'] == 'text' %}
-					<div class="h4">{{ log['content'] }}</div>
+					<div class="h4 text-left">{{ log['content'] }}</div>
 				{% else %}
 					<img src="../static/{{ log['content'] }}">
 				{% endif %}
