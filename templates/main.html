@@ -57,6 +57,12 @@
             <canvas id="canvas" width="768" height="432"></canvas>
         </section>
         <section>
+            <div id="result_header" class="mt-4 text-center" style="display: none;">
+                <div class="h2">解析結果</div>
+                <div id="result_header_time" class="h4"></div>
+            </div>
+        </section>
+        <section>
             <div id="result_chart" class="mt-4" style="display: none;">
                 <div class="row">
                     <div class="col-6 offset-1">
@@ -111,7 +117,7 @@
         wasoku_stop();
         video_stop();
         run.style = "display: none"
-        printGraph();
+        // printGraph();
         print_log();
         set_form();
     }
@@ -201,9 +207,8 @@ function printGraph(){
     }
 
     function print_log(){
-        log_html = '<div class="h2">ログ</div>';
-        // 開始時間 ~ 終了時間
-        log_html += '<p class="h3">' + start_time + ' ~ ' + end_time + '</p>';
+        result_header_time.textContent = start_time + ' ~ ' + end_time;
+        result_header.style = "display: block";
         // ソート
         log_list.sort(function (a, b) {
             if (a.time > b.time) {
@@ -212,6 +217,7 @@ function printGraph(){
                 return -1;
             }
         })
+        let log_html = '';
         for (let i = 0; i < log_list.length; i++){
 
             // ログ時刻
@@ -417,7 +423,6 @@ function printGraph(){
             
             if (log.type == 'text') {
                 let hiragana = HiraganaConvert(log.content);
-                // log.content += '<br>' + hiragana + '<br>文字数：' + hiragana.length + '<br>時間：' + log.score;
                 log.score =  Math.round(hiragana.length / ((parseFloat(log.score) / 1000) / 60));
             }
             
@@ -467,7 +472,7 @@ function printGraph(){
         set_log('09:30:00', 'text', 400, '私の強みは問題解決能力があるところです。私は大学時代バスケットボール部に所属していました。部のなかで、私は練習メニューを考えることに力を入れていました。試合結果を分析して課題と改善点を打ち出すことで、チームの底上げになる練習メニューを考え取り入れていました。');
         set_log('09:50:00', 'text', 350, '本日は誠にありがとうございました。');
         run.style = "display: none"
-        printGraph();
+        // printGraph();
         print_log();
         set_form();
         video.remove();
