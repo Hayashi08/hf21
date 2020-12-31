@@ -67,4 +67,5 @@
 
 #canvas{
  transform: scaleX(-1);
+ display: none;
  }

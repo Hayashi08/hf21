@@ -47,13 +47,13 @@ class MySQL:
         else:
             return row[0]
 
-    def insert_session(self, user_id, company_name, company_stage):
-        self.cur.execute('INSERT INTO session_tbl (user_id, company_name, company_stage) VALUES (%s, %s, %s)', (user_id, company_name, company_stage))
+    def insert_session(self, user_id, session_timestamp, company_name, company_stage):
+        self.cur.execute('INSERT INTO session_tbl (user_id, session_timestamp, company_name, company_stage) VALUES (%s, %s, %s, %s)', (user_id, session_timestamp, company_name, company_stage))
 
-        self.cur.execute('SELECT MAX(session_id), session_timestamp from session_tbl WHERE user_id = %s', (user_id,))
+        self.cur.execute('SELECT MAX(session_id) from session_tbl WHERE user_id = %s', (user_id,))
         row = self.cur.fetchone()
 
-        return row[0], row[1]
+        return row[0]
 
     def insert_result(self, session_id, result_start_time, result_end_time):
         self.cur.execute('INSERT INTO result_tbl (session_id, result_start_time, result_end_time) VALUES (%s, %s, %s)', (session_id, result_start_time, result_end_time))
@@ -70,7 +70,6 @@ class MySQL:
         self.cur.execute('INSERT INTO image_tbl (result_id, image_time, image_path, image_judge) VALUES (%s, %s, %s, %s)', (result_id, image_time, image_path, image_judge))
 
     def archive(self, user_id):
-        # self.cur.execute('SELECT session_id, session_timestamp, company_name, company_stage FROM session_tbl WHERE user_id = %s order by session_timestamp DESC', (user_id,))
         self.cur.execute('SELECT a.session_id, session_timestamp, company_name, company_stage FROM session_tbl a, result_tbl b WHERE a.session_id = b.session_id AND user_id = %s order by session_timestamp DESC', (user_id,))
         rows = self.cur.fetchall()
         return rows

@@ -5,6 +5,7 @@ from image import MyImage
 import numpy as np
 import cv2
 import os
+import datetime
 from model import MySQL
 
 SAVE_DIR = './static/images'
@@ -51,10 +52,8 @@ def main():
     if request.method == 'POST':
         company_name = request.form['company_name']
         company_stage = request.form['company_stage']
-        db = MySQL()
-        session_id, session_timestamp = db.insert_session(int(current_user.id), company_name, company_stage)
-        db.close()
-        return render_template('main.html', title='メイン', session_id=str(session_id), session_timestamp=session_timestamp, company_name=company_name, company_stage=company_stage)
+        session_timestamp = str(datetime.datetime.now())[0:19]
+        return render_template('main.html', title='メイン', session_timestamp=session_timestamp, company_name=company_name, company_stage=company_stage)
     else:
         return render_template('index.html', title='インデックス')
 
@@ -63,14 +62,19 @@ def main():
 @login_required
 def save():
     if request.method == 'POST':
+
+        session = request.form['session']
         result = request.form['result']
         sentence = request.form['sentence']
         image = request.form['image']
 
         db = MySQL()
 
+        session_list = session.split(',')
+        session_id = db.insert_session(int(current_user.id), session_list[0], session_list[1], session_list[2])
+
         result_list = result.split(',')
-        result_id = db.insert_result(int(result_list[0]), str(result_list[1]), str(result_list[2]))
+        result_id = db.insert_result(session_id, str(result_list[0]), str(result_list[1]))
 
         sentence_list = sentence.split('|')
         for sentence_row in sentence_list:

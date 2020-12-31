@@ -54,15 +54,15 @@
             </div>
         </div>
         <section>
-            <canvas id="canvas" width="768" height="432" style="display: none;"></canvas>
+            <canvas id="canvas" width="768" height="432"></canvas>
         </section>
         <section>
             <div id="result_chart" class="mt-5" style="display: none;">
                 <div class="row">
-                    <div class=" col-6 offset-1">
+                    <div class="col-6 offset-1">
                         <canvas id="myLineChart"></canvas>
                     </div>
-                    <div class=" col-5">
+                    <div class="col-5">
                         <canvas id="myPieChart"></canvas>
                     </div>
                     <div class="offset-1"></div>
@@ -73,6 +73,7 @@
             <div id="log" class="mt-5"></div>
         </section>
         <form action="/save" method="POST">
+            <input id="session" type="text" name="session" value="" hidden>
             <input id="result" type="text" name="result" value="" hidden>
             <input id="sentence" type="text" name="sentence" value="" hidden>
             <input id="image" type="text" name="image" value="" hidden>
@@ -111,75 +112,82 @@
         wasoku_stop();
         video_stop();
         run.style = "display: none"
+        printGraph();
         print_log();
-        set_form('{{ session_id }}');
+        set_form();
     }
 
 //-------------リザルト-------------------------------------------
 
-// 話速グラフ
-var ctx = document.getElementById("myLineChart");
-var myLineChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-        labels: ['0', '5', '10', '15', '20', '25', '30(分 )'],
-        datasets: [
-            {
-                label: '話速',
-                data: [450, 360, 380, 470, 500, 450, 300, 430],
-                borderColor: "rgba(255,0,0,1)",
-                backgroundColor: "rgba(0,0,0,0)"
-            },
-            {
-                label: '基準',
-                data: [400, 400, 400, 400, 400, 400, 400, 400],
-                borderColor: "rgba(f,f,f,1)",
-                backgroundColor: "rgba(0,0,0,0)"
-            }
-        ],
-    },
-    options: {
-        title: {
-            display: true,
-            text: '話速'
-        },
-        scales: {
-            yAxes: [{
-                ticks: {
-                    suggestedMax: 550,
-                    suggestedMin: 250,
-                    stepSize: 50,
-                    callback: function (value, index, values) {
-                        return value + '文字/分'
-                    }
+function printGraph(){
+
+    result_chart.style = "display: block"
+
+    // 話速グラフ
+    var ctx = document.getElementById("myLineChart");
+    var myLineChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['0', '5', '10', '15', '20', '25', '30(分 )'],
+            datasets: [
+                {
+                    label: '話速',
+                    data: [450, 360, 380, 470, 500, 450, 300, 430],
+                    borderColor: "rgba(255,0,0,1)",
+                    backgroundColor: "rgba(0,0,0,0)"
+                },
+                {
+                    label: '基準',
+                    data: [400, 400, 400, 400, 400, 400, 400, 400],
+                    borderColor: "rgba(f,f,f,1)",
+                    backgroundColor: "rgba(0,0,0,0)"
                 }
+            ],
+        },
+        options: {
+            title: {
+                display: true,
+                text: '話速'
+            },
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        suggestedMax: 550,
+                        suggestedMin: 250,
+                        stepSize: 50,
+                        callback: function (value, index, values) {
+                            return value + '文字/分'
+                        }
+                    }
+                }]
+            },
+        }
+    });
+
+    // 姿勢グラフ
+    var ctx = document.getElementById("myPieChart");
+    var myPieChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: ["OK", "回転", "傾き",],
+            datasets: [{
+                backgroundColor: [
+                    "#BB5179",
+                    "#FAFF67",
+                    "#58A27C",
+                ],
+                data: [48, 31, 21,]
             }]
         },
-    }
-});
-
-// 姿勢グラフ
-var ctx = document.getElementById("myPieChart");
-var myPieChart = new Chart(ctx, {
-    type: 'pie',
-    data: {
-        labels: ["OK", "回転", "傾き",],
-        datasets: [{
-            backgroundColor: [
-                "#BB5179",
-                "#FAFF67",
-                "#58A27C",
-            ],
-            data: [48, 31, 21,]
-        }]
-    },
-    options: {
-        title: {
-            display: true,
-            text: '姿勢'
+        options: {
+            title: {
+                display: true,
+                text: '姿勢'
+            }
         }
-    }
-});
+    });
+
+}
 
 //-------------ログ-------------------------------------------    
     var log_list = [];
@@ -224,9 +232,11 @@ var myPieChart = new Chart(ctx, {
     }
 
 //-------------保存-------------------------------------------
-    function set_form(session_id){
+    function set_form(){
 
-        result.value = session_id + ',' + start_time  + ',' + end_time;
+        session.value = '{{ session_timestamp }},' + '{{ company_name }},' + '{{ company_stage }}';
+
+        result.value = start_time  + ',' + end_time;
 
         for (let i = 0; i < log_list.length; i++) {
             let log = log_list[i];
@@ -452,8 +462,9 @@ var myPieChart = new Chart(ctx, {
         set_log('09:30:00', 'text', 400, '私の強みは問題解決能力があるところです。私は大学時代バスケットボール部に所属していました。部のなかで、私は練習メニューを考えることに力を入れていました。試合結果を分析して課題と改善点を打ち出すことで、チームの底上げになる練習メニューを考え取り入れていました。');
         set_log('09:50:00', 'text', 350, '本日は誠にありがとうございました。');
         run.style = "display: none"
+        printGraph();
         print_log();
-        set_form('{{ session_id }}');
+        set_form();
         video.remove();
     }
 
