@@ -29,6 +29,8 @@
 	</div>
 </div>
 
+{% if log_list != None %}
+
 {% for log in log_list %}
 
 <div class="row mb-4">
@@ -61,7 +63,10 @@
 		</div>
 	</div>
 </div>
+
 {% endfor %}
+
+{% endif %}
 
 <div class="row">
 	<div class="col text-center">

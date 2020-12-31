@@ -124,6 +124,7 @@ def settings():
 def settings_edit():
     return render_template('settings_edit.html', title='設定')
 
+
 ## ログイン機能
 
 
@@ -176,6 +177,7 @@ def signup():
 
 
 # 画像処理
+
 
 # 検出
 @app.route('/shoulder', methods=['POST'])
