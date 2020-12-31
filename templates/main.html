@@ -52,7 +52,6 @@
         <div class="offset-1"></div>
         <div id="button">
             <button id="button_js" class="btn btn-success" onclick="recordButton()">START</button>
-            <!-- <button class="btn btn-danger" onclick="stop()">ストップ</button> -->
         </div>
     </div>
     <section>
@@ -194,6 +193,14 @@ var myPieChart = new Chart(ctx, {
         log_html = '<div class="h2">ログ</div>';
         // 開始時間 ~ 終了時間
         log_html += '<p class="h3">' + start_time + ' ~ ' + end_time + '</p>';
+        // ソート
+        log_list.sort(function (a, b) {
+            if (a.time > b.time) {
+                return 1;
+            } else {
+                return -1;
+            }
+        })
         for (let i = 0; i < log_list.length; i++){
 
             // ログ時刻
@@ -440,10 +447,10 @@ var myPieChart = new Chart(ctx, {
     function sample(){
         start_time = '09:00:00';
         end_time = '10:00:00';
-        set_log('09:10:00', 'text', 350, 'おはようございます。本日は宜しくお願いいたします。');
         set_log('09:10:10', 'image', 'OK', './static/images/20201211_102327.jpg');
+        set_log('09:10:00', 'text', 350, 'おはようございます。本日は宜しくお願いいたします。');
+        set_log('09:30:10', 'image', '右に15度傾いています', './static/images/20201211_102337.jpg');
         set_log('09:30:00', 'text', 400, '私の強みは問題解決能力があるところです。私は大学時代バスケットボール部に所属していました。部のなかで、私は練習メニューを考えることに力を入れていました。試合結果を分析して課題と改善点を打ち出すことで、チームの底上げになる練習メニューを考え取り入れていました。');
-        set_log('09:30:10', 'image', '傾いています。', './static/images/20201211_102337.jpg');
         set_log('09:50:00', 'text', 350, '本日は誠にありがとうございました。');
         run.style = "display: none"
         print_log();
