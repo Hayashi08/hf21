@@ -318,6 +318,8 @@ function printGraph(){
                 function(blob){
                     fd.set('image', blob);
 
+                    console.log(new Date().toLocaleTimeString() + ' 画像を送信しました');
+
                     $.ajax({
                         url: "/shoulder",
                         type : "POST",
@@ -331,11 +333,10 @@ function printGraph(){
                         sisei.innerHTML = '<h3>' + resultObjct[0] + '</h3>';
                         kakou.src = resultObjct[1];
                         set_log(capture_time, 'image', resultObjct[0], resultObjct[1]);
-                        console.log(resultObjct[0]);
+                        console.log(new Date().toLocaleTimeString() + ' ' + resultObjct[0]);
                     })
                     .fail(function(data){
-                        let time = new Date().toLocaleTimeString();
-                        console.log(time + '画像を得られませんでした。');
+                        console.log(new Date().toLocaleTimeString() + ' 検出できませんでした。');
                     });
                 }
             , 'image/jpeg');
