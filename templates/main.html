@@ -57,7 +57,7 @@
             <canvas id="canvas" width="768" height="432"></canvas>
         </section>
         <section>
-            <div id="result_chart" class="mt-5" style="display: none;">
+            <div id="result_chart" class="mt-4" style="display: none;">
                 <div class="row">
                     <div class="col-6 offset-1">
                         <canvas id="myLineChart"></canvas>
@@ -65,7 +65,6 @@
                     <div class="col-5">
                         <canvas id="myPieChart"></canvas>
                     </div>
-                    <div class="offset-1"></div>
                 </div>
             </div>
         </section>
@@ -128,18 +127,24 @@ function printGraph(){
     var myLineChart = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: ['0', '5', '10', '15', '20', '25', '30(分 )'],
+            labels: ['0', '5', '10', '15', '20', '25', '30'],
             datasets: [
                 {
-                    label: '話速',
+                    label: 'ログ',
                     data: [450, 360, 380, 470, 500, 450, 300, 430],
-                    borderColor: "rgba(255,0,0,1)",
+                    borderColor: "rgba(0,0,0,0.75)",
                     backgroundColor: "rgba(0,0,0,0)"
                 },
                 {
-                    label: '基準',
-                    data: [400, 400, 400, 400, 400, 400, 400, 400],
-                    borderColor: "rgba(f,f,f,1)",
+                    label: '速い',
+                    data: [450, 450, 450, 450, 450, 450, 450, 450],
+                    borderColor: "rgba(255,0,0,0.5)",
+                    backgroundColor: "rgba(0,0,0,0)"
+                },
+                {
+                    label: '遅い',
+                    data: [350, 350, 350, 350, 350, 350, 350, 350],
+                    borderColor: "rgba(0,0,255,0.5)",
                     backgroundColor: "rgba(0,0,0,0)"
                 }
             ],
@@ -155,9 +160,9 @@ function printGraph(){
                         suggestedMax: 550,
                         suggestedMin: 250,
                         stepSize: 50,
-                        callback: function (value, index, values) {
-                            return value + '文字/分'
-                        }
+                        // callback: function (value, index, values) {
+                        //     return value + '文字/分'
+                        // }
                     }
                 }]
             },
@@ -169,14 +174,13 @@ function printGraph(){
     var myPieChart = new Chart(ctx, {
         type: 'pie',
         data: {
-            labels: ["OK", "回転", "傾き",],
+            labels: ["OK", "傾いている",],
             datasets: [{
                 backgroundColor: [
-                    "#BB5179",
-                    "#FAFF67",
-                    "#58A27C",
+                    "#28A745",
+                    "#DC3545",
                 ],
-                data: [48, 31, 21,]
+                data: [70, 30,]
             }]
         },
         options: {
@@ -469,7 +473,7 @@ function printGraph(){
         video.remove();
     }
 
-    // sample();
+    sample();
 
 </script>
 {% endblock %}
