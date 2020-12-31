@@ -185,9 +185,12 @@ class Shoulder(object):
         
         if(deg > 4):
             if(flag == 0):
-                result = '右に' + str(round(deg, 1)) + '傾いています' + '\n' + str(aline[0]) + '\n' + str(aline[1])
+                # result = '右に' + str(round(deg, 1)) + '傾いています' + '\n' + str(aline[0]) + '\n' + str(aline[1])
+                result = '右に' + str(round(deg)) + '度傾いています'
             else:
-                result = '左に' + str(round(deg, 1)) + '傾いています' + '\n' + str(aline[0]) + '\n' + str(aline[1])
+                # result = '左に' + str(round(deg, 1)) + '傾いています' + '\n' + str(aline[0]) + '\n' + str(aline[1])
+                result = '左に' + str(round(deg)) + '度傾いています'
         else:
-            result = 'OK' + '\n' + str(aline[0]) + '\n' + str(aline[1])
+            # result = 'OK' + '\n' + str(aline[0]) + '\n' + str(aline[1])
+            result = 'OK'
         return result, save_path
