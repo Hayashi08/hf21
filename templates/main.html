@@ -58,7 +58,7 @@
         </section>
         <section>
             <div id="result_header" class="mt-5 text-center" style="display: none;">
-                <div class="h2">解析結果</div>
+                <div class="h2">分析結果</div>
                 <div id="result_header_time" class="h4"></div>
             </div>
         </section>
@@ -209,6 +209,7 @@ function printGraph(){
     function print_log(){
         result_header_time.textContent = start_time + ' ~ ' + end_time;
         result_header.style = "display: block";
+
         // ソート
         log_list.sort(function (a, b) {
             if (a.time > b.time) {
@@ -217,27 +218,62 @@ function printGraph(){
                 return -1;
             }
         })
+
         let log_html = '';
         for (let i = 0; i < log_list.length; i++){
+            log_html += '<div class="row mb-5"><div class="col">';
+
+            // カード <
+            log_html += '<div class="card mx-auto" style="max-width: 55rem;">';
+
+            //カードヘッダー <
+            log_html += '<div class="card-header bg-dark"><div class="row">';
 
             // ログ時刻
-            log_html += '<p class="h3 mt-3">' + log_list[i].time + '</p>';
+            log_html += '<div class="col-2 h5 text-left text-white-50">';
+            log_html +=  log_list[i].time;
+            log_html += '</div>';
 
-            // ログが画像の場合
-            if (log_list[i].type == 'image') {
-                // 画像結果
-                log_html += '<p class="h4">' + log_list[i].score + '</p>';
-                // 画像表示
-                log_html += '<p><img src="' + log_list[i].content + '"style=" width: 45opx; transform: scaleX(-1);"></p>';
-            }
-            // ログが文章の場合
-            else{
+            // 解析結果 <
+            log_html += '<div class="col-8 h3 font-weight-bold text-center text-white">';
+            if (log_list[i].type == 'text') {
                 // 話速
-                log_html += '<p class="h4">話速：' + log_list[i].score + '</p>';
-                // 文章
-                log_html += '<p class="h4">' + log_list[i].content + '</p>';
+                log_html += log_list[i].score + ' <span class="h5">[文字/分]</span>';
             }
+            else{
+                // 画像判定
+                log_html += log_list[i].score;
+            }
+            // 解析結果 >
+            log_html += '</div>';
+
+            // 値
+            log_html += '<div class="col-2 text-right text-light">';
+            
+            log_html += '</div>';
+
+            // カードヘッダー >
+            log_html += '</div></div>';
+
+            // カードボディ <
+            log_html += '<div class="card-body bg-white text-dark text-center">';
+            if (log_list[i].type == 'text') {
+                // 文章
+                log_html += '<div class="h4 text-left">' + log_list[i].content + '</div>';
+            }
+            else{
+                // 画像表示
+                log_html += '<img src="' + log_list[i].content + '">';
+            }
+            // カードボディ >
+            log_html += '</div>';
+
+            // カード >
+            log_html += '</div>';
+
+            log_html += '</div></div>';
         }
+
         log.innerHTML = log_html;
     }
 
@@ -376,8 +412,6 @@ function printGraph(){
     let time_flag = false;
     let transcript_time;
 
-    let sentence_list = [];
-
     recognition.onresult = (event) => {
         if (!time_flag) {
             transcript_time = new Date().toLocaleTimeString();
@@ -412,10 +446,10 @@ function printGraph(){
             word_time += time_tail - time_head;
             time_flag = false;
         }
-        let word = finalTranscript;
-        let hiragana = HiraganaConvert(word);
-        let word_length = hiragana.length;
-        let wasoku = Math.round((word_length / ((word_time / 1000) / 60)));
+        // let word = finalTranscript;
+        // let hiragana = HiraganaConvert(word);
+        // let word_length = hiragana.length;
+        // let wasoku = Math.round((word_length / ((word_time / 1000) / 60)));
 
         for (let i = 0; i  < log_list.length; i++) {
 
