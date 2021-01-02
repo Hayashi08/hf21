@@ -73,6 +73,7 @@
                     </div>
                 </div>
             </div>
+            <button id="button_graph" class="btn btn-primary mx-auto my-4" style="display: none" onclick="GraphButton()">グラフを表示</button>
         </section>
         <section>
             <div id="log" class="mt-5"></div>
@@ -116,88 +117,25 @@
         end_time = new Date().toLocaleString();
         wasoku_stop();
         video_stop();
-        run.style = "display: none"
-        // printGraph();
+        run.style = "display: none";
+        printGraph();
+        button_graph.style = "display: inline";
         print_log();
         set_form();
     }
 
-//-------------リザルト-------------------------------------------
-
-function printGraph(){
-
-    result_chart.style = "display: block"
-
-    // 話速グラフ
-    var ctx = document.getElementById("myLineChart");
-    var myLineChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: ['0', '5', '10', '15', '20', '25', '30'],
-            datasets: [
-                {
-                    label: 'ログ',
-                    data: [450, 360, 380, 470, 500, 450, 300, 430],
-                    borderColor: "rgba(0,0,0,0.75)",
-                    backgroundColor: "rgba(0,0,0,0)"
-                },
-                {
-                    label: '速い',
-                    data: [450, 450, 450, 450, 450, 450, 450, 450],
-                    borderColor: "rgba(255,0,0,0.5)",
-                    backgroundColor: "rgba(0,0,0,0)"
-                },
-                {
-                    label: '遅い',
-                    data: [350, 350, 350, 350, 350, 350, 350, 350],
-                    borderColor: "rgba(0,0,255,0.5)",
-                    backgroundColor: "rgba(0,0,0,0)"
-                }
-            ],
-        },
-        options: {
-            title: {
-                display: true,
-                text: '話速'
-            },
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        suggestedMax: 550,
-                        suggestedMin: 250,
-                        stepSize: 50,
-                        // callback: function (value, index, values) {
-                        //     return value + '文字/分'
-                        // }
-                    }
-                }]
-            },
+    function GraphButton(){
+        if (button_graph.textContent == 'グラフを表示') {
+            result_chart.style = "display: inline"
+            button_graph.textContent = 'グラフを閉じる';
+            button_graph.className = 'btn btn-outline-secondary mx-auto my-4';
         }
-    });
-
-    // 姿勢グラフ
-    var ctx = document.getElementById("myPieChart");
-    var myPieChart = new Chart(ctx, {
-        type: 'pie',
-        data: {
-            labels: ["OK", "傾いている",],
-            datasets: [{
-                backgroundColor: [
-                    "#28A745",
-                    "#DC3545",
-                ],
-                data: [70, 30,]
-            }]
-        },
-        options: {
-            title: {
-                display: true,
-                text: '姿勢'
-            }
+        else{
+            result_chart.style = "display: none"
+            button_graph.textContent = 'グラフを表示';
+            button_graph.className = 'btn btn-primary mx-auto my-4';
         }
-    });
-
-}
+    }
 
 //-------------ログ-------------------------------------------    
     var log_list = [];
@@ -208,7 +146,7 @@ function printGraph(){
 
     function print_log(){
         result_header_time.textContent = start_time + ' ~ ' + end_time;
-        result_header.style = "display: block";
+        result_header.style = "display: inline";
 
         // ソート
         log_list.sort(function (a, b) {
@@ -275,6 +213,119 @@ function printGraph(){
         }
 
         log.innerHTML = log_html;
+    }
+
+//-------------グラフ-------------------------------------------
+
+    function printGraph() {
+
+        let wasoku_time_list = [];
+        let wasoku_list = [];
+        let wasoku_max = 450;
+        let wasoku_min = 350;
+        let wasoku_list_max = [];
+        let wasoku_list_min = [];
+
+        let sisei_list = [];
+        let sisei_cnt = 0;
+        let sisei_ok_cnt = 0;
+
+        for (let i = 0; i < log_list.length; i++) {
+            const element = log_list[i];
+            if (element.type == 'text') {
+                wasoku_time_list.push(element.time);
+                wasoku_list.push(element.score);
+                wasoku_list_max.push(wasoku_max);
+                wasoku_list_min.push(wasoku_min);
+            }
+            else {
+                sisei_cnt++;
+                if (element.score == 'OK') {
+                    sisei_ok_cnt++;
+                }
+            }
+        }
+
+        if (sisei_cnt != 0) {
+            let ok_per = Math.round((sisei_ok_cnt / sisei_cnt) * 100);
+            sisei_list.push(ok_per);
+            sisei_list.push(100 - ok_per);
+        }
+
+        // 話速グラフ
+        var ctx = document.getElementById("myLineChart");
+        var myLineChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                // labels: ['0', '5', '10', '15', '20', '25', '30'],
+                labels: wasoku_time_list,
+                datasets: [
+                    {
+                        label: 'ログ',
+                        // data: [450, 360, 380, 470, 500, 450, 300, 430],
+                        data: wasoku_list,
+                        borderColor: "rgba(0,0,0,0.75)",
+                        backgroundColor: "rgba(0,0,0,0)"
+                    },
+                    {
+                        label: '速い',
+                        // data: [450, 450, 450, 450, 450, 450, 450, 450],
+                        data: wasoku_list_max,
+                        borderColor: "rgba(255,0,0,0.5)",
+                        backgroundColor: "rgba(0,0,0,0)"
+                    },
+                    {
+                        label: '遅い',
+                        // data: [350, 350, 350, 350, 350, 350, 350, 350],
+                        data: wasoku_list_min,
+                        borderColor: "rgba(0,0,255,0.5)",
+                        backgroundColor: "rgba(0,0,0,0)"
+                    }
+                ],
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: '話速'
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            suggestedMax: 550,
+                            suggestedMin: 250,
+                            stepSize: 50,
+                            // callback: function (value, index, values) {
+                            //     return value + '文字/分'
+                            // }
+                        }
+                    }]
+                },
+            }
+        });
+
+        // 姿勢グラフ
+        var ctx = document.getElementById("myPieChart");
+        var myPieChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ["OK", "傾いている",],
+                datasets: [{
+                    backgroundColor: [
+                        "#28A745",
+                        "#DC3545",
+                    ],
+                    // data: [70, 30,]
+                    data: sisei_list,
+                }]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: '姿勢'
+                }
+            }
+        });
+
     }
 
 //-------------保存-------------------------------------------
@@ -506,8 +557,9 @@ function printGraph(){
         set_log('09:30:00', 'text', 400, '私の強みは問題解決能力があるところです。私は大学時代バスケットボール部に所属していました。部のなかで、私は練習メニューを考えることに力を入れていました。試合結果を分析して課題と改善点を打ち出すことで、チームの底上げになる練習メニューを考え取り入れていました。');
         set_log('09:50:00', 'text', 350, '本日は誠にありがとうございました。');
         run.style = "display: none"
-        // printGraph();
         print_log();
+        printGraph();
+        button_graph.style = "display: inline;";
         set_form();
         video.remove();
     }
