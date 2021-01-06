@@ -95,14 +95,17 @@
 
     var start_time;
     var end_time;
+    var button_flag = false;
 
     function recordButton(){
-        if (button_js.textContent == 'START') {
+        if (!button_flag) {
             start();
+            button_flag = true;
             button_js.textContent = 'STOP';
             button_js.className = 'btn btn-danger';
         }
         else{
+            button_flag = false;
             stop();
         }
     }
@@ -453,7 +456,9 @@
                         let resultObjct = data.split(",");
                         sisei.innerHTML = '<h3>' + resultObjct[0] + '</h3>';
                         kakou.src = resultObjct[1];
-                        set_log(capture_time, 'image', resultObjct[0], resultObjct[1]);
+                        if (resultObjct[0] != 'エラー') {
+                            set_log(capture_time, 'image', resultObjct[0], resultObjct[1]);
+                        }
                         console.log(new Date().toLocaleTimeString() + ' ' + resultObjct[0]);
                     })
                     .fail(function(data){
@@ -487,6 +492,22 @@
     let time_flag = false;
     let transcript_time;
 
+    recognition.onstart = function () {
+        console.log('音声認識サービスに接続されました。: onstart');
+    }
+
+    recognition.onend = function () {
+        console.log('音声認識サービスが切断されました。: onend');
+        if (button_flag) {
+            recognition.start()
+        }
+    }
+
+    recognition.onerror = function (event) {
+        console.log('音声を認識する際にエラーが発生しました： onerror : ' + event.error);
+    }
+
+    let interimBuffer = '';
     recognition.onresult = (event) => {
         if (!time_flag) {
             transcript_time = new Date().toLocaleTimeString();
@@ -500,8 +521,8 @@
             if (event.results[i].isFinal) {
                 word_time += time_tail - time_head;
                 time_flag = false;
-                finalTranscript += transcript;
                 set_log(transcript_time, 'text', '' + (time_tail - time_head), transcript);
+                finalTranscript += transcript;
             }
             else {
                 time_tail = event.timeStamp;
@@ -509,6 +530,7 @@
             }
         }
         cus_voice.innerHTML = finalTranscript + '<i style="color:#ddd;">' + interimTranscript + '</i>';
+        interimBuffer = interimTranscript;
     }
 
     function wasoku_start() {
@@ -520,6 +542,8 @@
         if (time_flag) {
             word_time += time_tail - time_head;
             time_flag = false;
+            set_log(transcript_time, 'text', '' + (time_tail - time_head), interimTranscript);
+            cus_voice.innerHTML = finalTranscript + interimBuffer;
         }
         // let word = finalTranscript;
         // let hiragana = HiraganaConvert(word);
