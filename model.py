@@ -93,11 +93,19 @@ class MySQL:
 
             if rows_sentence != None:
                 for row_sentence in rows_sentence:
-                    log_list.append({'time': row_sentence[0], 'type': 'text', 'score': str(row_sentence[2]), 'content': row_sentence[1]})
+                    sentence_judge = 'OK'
+                    if 350 > row_sentence[2]:
+                        sentence_judge = '遅過ぎです'
+                    elif row_sentence[2] > 450:
+                        sentence_judge = '速過ぎです'
+                    log_list.append({'time': row_sentence[0], 'type': 'text', 'score': str(row_sentence[2]), 'content': row_sentence[1], 'judge': sentence_judge})
 
             if rows_image != None:
                 for row_image in rows_image:
-                    log_list.append({'time': row_image[0], 'type': 'image', 'score': row_image[2], 'content': row_image[1]})
+                    image_judge = 'OK'
+                    if '右' in row_image[2] or '左' in row_image[2]:
+                        image_judge = 'NO'
+                    log_list.append({'time': row_image[0], 'type': 'image', 'score': row_image[2], 'content': row_image[1], 'judge': image_judge})
                     
             log_list = sorted(log_list, key = lambda x: x['time'])
 

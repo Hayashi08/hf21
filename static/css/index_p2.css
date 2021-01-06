@@ -13,6 +13,7 @@
 ._panel_record{
 	background-color: #373e52;
 	border-radius: 20px;
+	cursor:pointer;
 }
 
 /* 履歴 */
@@ -31,6 +32,7 @@
 ._panel_logout{
 	background-color: #373e52;
 	border-radius: 20px;
+	cursor:pointer;
 }
 
 
@@ -73,7 +75,6 @@
 }
 
 ._panel_logout ._main_text{
-
 	font-size: 1.5rem;
 }
 
@@ -113,18 +114,4 @@
 ._panel_logout:hover{
 	-webkit-transition: all 0.3s linear 0s;
 	opacity: 0.8;
-}
-
-
-._main_item:hover ._main_text{
-}
-
-._main_item:hover ._sub_text{
-}
-
-._main_item:hover ._main_logo{
-	/*display: none;
-	float: none;
-	position: fixed;
-	opacity: 0.5;*/
 }

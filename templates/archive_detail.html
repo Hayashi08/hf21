@@ -36,20 +36,27 @@
 <div class="row mb-5">
 	<div class="col">
 		<div class="card mx-auto" style="max-width: 55rem;">
-			<div class="card-header bg-dark">
+			{% if log['judge'] == 'OK' %}
+				<div class="card-header bg-success">
+			{% else %}
+				<div class="card-header bg-danger">
+			{% endif %}
 				<div class="row">
 					<div class="col-2 h5 text-left text-white-50">
 						{{ log['time'] }}
 					</div>
 					<div class="col-8 h3 font-weight-bold text-center text-white">
 						{% if log['type'] == 'text' %}
-							{{ log['score'] }} <span class="h5">[文字/分]</span>
+							{{ log['judge'] }}
 						{% else %}
 							{{ log['score'] }}
 						{% endif %}
 					</div>
 					<div class="col-2 text-right text-light">
-						<!-- <span class="h4">350</span> <span class="small">[文字/分]</span> -->
+						{% if log['type'] == 'text' %}
+							<span class="h4">{{ log['score'] }}</span> <span class="small">[文字/分]</span>
+						{% else %}
+						{% endif %}
 					</div>
 				</div>
 			</div>
