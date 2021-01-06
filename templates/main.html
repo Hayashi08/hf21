@@ -1,102 +1,422 @@
 {% extends "layout.html" %}
 
+{% block header %}
+    <link rel="stylesheet" href="static/css/main.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
+{% endblock %}
+
 {% block content %}
-<div class="row mt-5">
-<div class="col text-center">
-<div id="videoPreview"></div>
-<button class="btn btn-success" onclick="start()">スタート</button>
-<button class="btn btn-danger" onclick="stop()">ストップ</button>
-<section>
-    <!-- 表示される文章 -->
-    <div class="my-3 h3" id="cus_voice">本日は宜しくお願いいたします</div>
-    <!-- 話している時間 -->
-    <div id="time" class="h4 mt-5"></div>
-    <!-- 話した文字数 -->
-    <div id="mozisuu" class="h4"></div>
-    <!-- 話速 -->
-    <div id="wasoku" class="h4"></div>
-    <!-- ひらがな化 -->
-    <div id="kana" class="h4"></div>
-</section>
-<section>
-    <div id="sisei"></div>
-    <img id="kakou">
-    <canvas id="canvas" width="768" height="432" style="display: none;"></canvas>
-</section>
-<section>
-    <div id="log" class="mt-5"></div>
-</section>
-<a class="btn btn-primary mt-4" href="/">戻る</a>
+<div class="row">
+    <div class="col text-center">
+        <!-- セッション日時 -->
+        <div class="h4 mt-4">
+            {{ session_timestamp }}
+            <a class="btn btn-outline-secondary my-4" href="/" id="back">戻る</a>
+        </div>
+        <div class="h3">
+            <!-- 企業名 -->
+            {{ company_name }}
+            <!-- 選考段階 -->
+            {{ company_stage }}
+        </div>
+        <div class="row mt-2" id="run">
+            <div class="col-5 offset-1 mt-5">
+                <div id="videoPreview"></div>
+            </div>
+            <div class="col-5">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card mx-auto my-4" id="card_box">
+                            <div class="card-body  text-primary overflow-auto" id="sampleBox">
+                                <section>
+                                    <!-- 表示される文章 -->
+                                    <div id="cus_voice">こちらに話した言葉が表示されます。</div>
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12" id="parent">
+                        <div id="before_kakou">加工済み画像を表示します。</div>
+                        <img id="kakou">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div id="sisei"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="offset-1"></div>
+            <div id="button">
+                <button id="button_js" class="btn btn-success" onclick="recordButton()">START</button>
+            </div>
+        </div>
+        <section>
+            <canvas id="canvas" width="768" height="432"></canvas>
+        </section>
+        <section>
+            <div id="result_header" class="mt-5 text-center" style="display: none;">
+                <div class="h2">分析結果</div>
+                <div id="result_header_time" class="h4"></div>
+            </div>
+        </section>
+        <section>
+            <div id="result_chart" class="mt-4" style="display: none;">
+                <div class="row">
+                    <div class="col-6 offset-1">
+                        <canvas id="myLineChart"></canvas>
+                    </div>
+                    <div class="col-5">
+                        <canvas id="myPieChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <button id="button_graph" class="btn btn-primary mx-auto my-4" style="display: none" onclick="GraphButton()">グラフを表示</button>
+        </section>
+        <section>
+            <div id="log" class="mt-5"></div>
+        </section>
+        <form action="/save" method="POST">
+            <input id="session" type="text" name="session" value="" hidden>
+            <input id="result" type="text" name="result" value="" hidden>
+            <input id="sentence" type="text" name="sentence" value="" hidden>
+            <input id="image" type="text" name="image" value="" hidden>
+            <input id="save" class="btn btn-primary mx-auto my-5" type="submit" style="display: none;" value="SAVE">
+        </form>
+    </div>
 </div>
-</div>
+<!-- </body>> -->
 {% endblock %}
 
 {% block script %}
 <script>
 
-    var start_date_time;
+    var start_time;
+    var end_time;
+
+    function recordButton(){
+        if (button_js.textContent == 'START') {
+            start();
+            button_js.textContent = 'STOP';
+            button_js.className = 'btn btn-danger';
+        }
+        else{
+            stop();
+        }
+    }
 
     function start(){
+        start_time = new Date().toLocaleString();
         wasoku_start();
         video_start();
-        start_date_time = new Date().toLocaleString();
     }
 
     function stop(){
+        end_time = new Date().toLocaleString();
         wasoku_stop();
         video_stop();
+        run.style = "display: none";
+        printGraph();
+        button_graph.style = "display: inline";
         print_log();
+        set_form();
     }
 
+    function GraphButton(){
+        if (button_graph.textContent == 'グラフを表示') {
+            result_chart.style = "display: inline"
+            button_graph.textContent = 'グラフを閉じる';
+            button_graph.className = 'btn btn-outline-secondary mx-auto my-4';
+        }
+        else{
+            result_chart.style = "display: none"
+            button_graph.textContent = 'グラフを表示';
+            button_graph.className = 'btn btn-primary mx-auto my-4';
+        }
+    }
 
 //-------------ログ-------------------------------------------    
     var log_list = [];
+
     function set_log(time, type,  score, content){
         log_list.push({time: time,type: type, score: score, content: content});    
     }
 
     function print_log(){
-        log_html = '<div class="h2">ログ</div>';
-        log_html += '<p class="h3">' + start_date_time + '</p>';
+        result_header_time.textContent = start_time + ' ~ ' + end_time;
+        result_header.style = "display: inline";
+
+        // ソート
+        log_list.sort(function (a, b) {
+            if (a.time > b.time) {
+                return 1;
+            } else {
+                return -1;
+            }
+        })
+
+        let log_html = '';
         for (let i = 0; i < log_list.length; i++){
-            log_html += '<p class="h3 mt-3">' + log_list[i].time + '</p>';
-            if (log_list[i].type == 'image') {
-                log_html += '<p class="h4">' + log_list[i].score + '</p>';
-                log_html += '<p><img src="' + log_list[i].content + '" width="450px"></p>';
+
+            log_html_card_header = '<div class="card-header bg-success"><div class="row">';
+            log_html_judge = ''
+            log_html_value = '';
+            if (log_list[i].type == 'text') {
+                if (350 > log_list[i].score) {
+                    log_html_card_header = '<div class="card-header bg-danger"><div class="row">';
+                    log_html_judge = '遅過ぎです';
+                }
+                else if (log_list[i].score > 450){
+                    log_html_card_header = '<div class="card-header bg-danger"><div class="row">';
+                    log_html_judge = '速過ぎです';
+                }
+                else{
+                    log_html_judge = 'OK';
+                }
+                log_html_value = '<span class="h4">' + log_list[i].score + '</span> <span class="small">[文字/分]</span>';
+            }
+            else {
+                if (log_list[i].score.indexOf('右') > -1 || log_list[i].score.indexOf('左') > -1) {
+                    log_html_card_header = '<div class="card-header bg-danger"><div class="row">';
+                }
+            }
+
+            log_html += '<div class="row mb-5"><div class="col">';
+
+            // カード <
+            log_html += '<div class="card mx-auto" style="max-width: 55rem;">';
+
+            //カードヘッダー <
+            log_html += log_html_card_header;
+
+            // ログ時刻
+            log_html += '<div class="col-2 h5 text-left text-white-50">';
+            log_html +=  log_list[i].time;
+            log_html += '</div>';
+
+            // 解析結果 <
+            log_html += '<div class="col-8 h3 font-weight-bold text-center text-white">';
+            if (log_list[i].type == 'text') {
+                // 話速
+                log_html += log_html_judge;
             }
             else{
-                log_html += '<p class="h4">' + log_list[i].content + '</p>';
+                // 画像判定
+                log_html += log_list[i].score;
+            }
+            // 解析結果 >
+            log_html += '</div>';
+
+            // 値
+            log_html += '<div class="col-2 text-right text-light">';
+            log_html += log_html_value;
+            log_html += '</div>';
+
+            // カードヘッダー >
+            log_html += '</div></div>';
+
+            // カードボディ <
+            log_html += '<div class="card-body bg-white text-dark text-center">';
+            if (log_list[i].type == 'text') {
+                // 文章
+                log_html += '<div class="h4 text-left">' + log_list[i].content + '</div>';
+            }
+            else{
+                // 画像表示
+                log_html += '<img src="' + log_list[i].content + '">';
+            }
+            // カードボディ >
+            log_html += '</div>';
+
+            // カード >
+            log_html += '</div>';
+
+            log_html += '</div></div>';
+        }
+
+        log.innerHTML = log_html;
+    }
+
+//-------------グラフ-------------------------------------------
+
+    function printGraph() {
+
+        let wasoku_time_list = [];
+        let wasoku_list = [];
+        let wasoku_max = 450;
+        let wasoku_min = 350;
+        let wasoku_list_max = [];
+        let wasoku_list_min = [];
+
+        let sisei_list = [];
+        let sisei_cnt = 0;
+        let sisei_ok_cnt = 0;
+
+        for (let i = 0; i < log_list.length; i++) {
+            const element = log_list[i];
+            if (element.type == 'text') {
+                wasoku_time_list.push(element.time);
+                wasoku_list.push(element.score);
+                wasoku_list_max.push(wasoku_max);
+                wasoku_list_min.push(wasoku_min);
+            }
+            else {
+                sisei_cnt++;
+                if (element.score == 'OK') {
+                    sisei_ok_cnt++;
+                }
             }
         }
-        log.innerHTML = log_html;
+
+        if (sisei_cnt != 0) {
+            let ok_per = Math.round((sisei_ok_cnt / sisei_cnt) * 100);
+            sisei_list.push(ok_per);
+            sisei_list.push(100 - ok_per);
+        }
+
+        // 話速グラフ
+        var ctx = document.getElementById("myLineChart");
+        var myLineChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                // labels: ['0', '5', '10', '15', '20', '25', '30'],
+                labels: wasoku_time_list,
+                datasets: [
+                    {
+                        label: 'ログ',
+                        // data: [450, 360, 380, 470, 500, 450, 300, 430],
+                        data: wasoku_list,
+                        borderColor: "rgba(0,0,0,0.75)",
+                        backgroundColor: "rgba(0,0,0,0)"
+                    },
+                    {
+                        label: '速い',
+                        // data: [450, 450, 450, 450, 450, 450, 450, 450],
+                        data: wasoku_list_max,
+                        borderColor: "rgba(255,0,0,0.5)",
+                        backgroundColor: "rgba(0,0,0,0)"
+                    },
+                    {
+                        label: '遅い',
+                        // data: [350, 350, 350, 350, 350, 350, 350, 350],
+                        data: wasoku_list_min,
+                        borderColor: "rgba(0,0,255,0.5)",
+                        backgroundColor: "rgba(0,0,0,0)"
+                    }
+                ],
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: '話速'
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            suggestedMax: 550,
+                            suggestedMin: 250,
+                            stepSize: 50,
+                            // callback: function (value, index, values) {
+                            //     return value + '文字/分'
+                            // }
+                        }
+                    }]
+                },
+            }
+        });
+
+        // 姿勢グラフ
+        var ctx = document.getElementById("myPieChart");
+        var myPieChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ["OK", "傾いている",],
+                datasets: [{
+                    backgroundColor: [
+                        "#28A745",
+                        "#DC3545",
+                    ],
+                    // data: [70, 30,]
+                    data: sisei_list,
+                }]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: '姿勢'
+                }
+            }
+        });
+
+    }
+
+//-------------保存-------------------------------------------
+    function set_form(){
+
+        session.value = '{{ session_timestamp }},' + '{{ company_name }},' + '{{ company_stage }}';
+
+        result.value = start_time  + ',' + end_time;
+
+        for (let i = 0; i < log_list.length; i++) {
+            let log = log_list[i];
+            if (log.type == 'text') {
+                sentence.value +=  log.time + ',' + log.content + ',' + log.score + "|";
+            }
+            else{
+                image.value += log.time + ',' + log.content.slice(9) + ',' + log.score + "|";
+            }
+        }
+
+        sentence.value = sentence.value.slice(0, sentence.value.length - 1);
+        image.value = image.value.slice(0, image.value.length - 1);
+
+        save.style = "display: block"
+
     }
 
 //--------------画像判定--------------------------------------
     let timer;
-    function video_start(){
-        const cameraSize = { w: 768, h: 432 };
-        const resolution = { w: 768, h: 432 };
-        let video;
-        let media;
 
-        // video要素をつくる
-        video          = document.createElement('video');
-        video.id       = 'video';
-        video.width    = cameraSize.w;
-        video.height   = cameraSize.h;
-        video.autoplay = true;
-        document.getElementById('videoPreview').appendChild(video);
+    const cameraSize = { w: 768, h: 432 };
+    const resolution = { w: 768, h: 432 };
+    let video;
+    let media;
 
-        // video要素にWebカメラの映像を表示させる
-        media = navigator.mediaDevices.getUserMedia({
+    let videoPreviewWidth = document.getElementById('videoPreview').clientWidth;
+
+    // video要素をつくる
+    video = document.createElement('video');
+    video.id = 'video';
+    video.width = videoPreviewWidth;
+    video.height = cameraSize.h * (videoPreviewWidth / cameraSize.w)
+    video.autoplay = true;
+    document.getElementById('videoPreview').appendChild(video);
+
+    // video要素にWebカメラの映像を表示させる
+    media = navigator.mediaDevices.getUserMedia({
         audio: false,
         video: {
             width: { ideal: resolution.w },
             height: { ideal: resolution.h }
         }
-        }).then(function(stream) {
+    }).then(function (stream) {
         video.srcObject = stream;
-        });
+    });
+
+    // img要素をつくる
+    adjuster          = document.createElement('img');
+    adjuster.id       = 'adjuster';
+    // adjuster.src      = 'images/adjuster.png';
+    adjuster.src      = '/static/asets/adjuster.png';
+    adjuster.width    = videoPreviewWidth;
+    adjuster.height   = cameraSize.h * (videoPreviewWidth / cameraSize.w);
+    adjuster.style.zIndex = 1;
+    document.getElementById('videoPreview').appendChild(adjuster);
+
+
+    function video_start(){
 
         // キャプチャ
         let video_cap = document.getElementById('video');
@@ -113,11 +433,13 @@
             // キャプチャ時刻
             capture_time = new Date().toLocaleTimeString();
 
-            fd.append('image', null);
+            // fd.append('image', null);
 
             canvas.toBlob(
                 function(blob){
                     fd.set('image', blob);
+
+                    console.log(new Date().toLocaleTimeString() + ' 画像を送信しました');
 
                     $.ajax({
                         url: "/shoulder",
@@ -132,14 +454,15 @@
                         sisei.innerHTML = '<h3>' + resultObjct[0] + '</h3>';
                         kakou.src = resultObjct[1];
                         set_log(capture_time, 'image', resultObjct[0], resultObjct[1]);
+                        console.log(new Date().toLocaleTimeString() + ' ' + resultObjct[0]);
                     })
                     .fail(function(data){
-                        alert("画像を得られませんでした。");
+                        console.log(new Date().toLocaleTimeString() + ' 検出できませんでした。');
                     });
                 }
             , 'image/jpeg');
 
-        }, 10000);
+        }, 10000); // 画像処理スパン
     }
 
     function video_stop(){
@@ -158,7 +481,7 @@
 
     let finalTranscript = '';
 
-    let word_time = 3000; //0.0
+    let word_time = 0.0;
     let time_head;
     let time_tail;
     let time_flag = false;
@@ -178,7 +501,7 @@
                 word_time += time_tail - time_head;
                 time_flag = false;
                 finalTranscript += transcript;
-                set_log(transcript_time, 'text', '', transcript);
+                set_log(transcript_time, 'text', '' + (time_tail - time_head), transcript);
             }
             else {
                 time_tail = event.timeStamp;
@@ -198,11 +521,27 @@
             word_time += time_tail - time_head;
             time_flag = false;
         }
-        let word = cus_voice.textContent;
-        HiraganaConvert(word);
+        // let word = finalTranscript;
+        // let hiragana = HiraganaConvert(word);
+        // let word_length = hiragana.length;
+        // let wasoku = Math.round((word_length / ((word_time / 1000) / 60)));
+
+        for (let i = 0; i  < log_list.length; i++) {
+
+            let log = log_list[i];
+            
+            if (log.type == 'text') {
+                let hiragana = HiraganaConvert(log.content);
+                log.score =  Math.round(hiragana.length / ((parseFloat(log.score) / 1000) / 60));
+            }
+            
+        }
+
     }
 
     function HiraganaConvert(send_word) {
+
+        let hiragana = send_word;
 
         let json = JSON.stringify({
             app_id: "f192486406c327292ce7cc842a7e4eea482fb063c9b023d6dbd3c6339d376ab5",
@@ -212,25 +551,44 @@
         });
 
         let xhr = new XMLHttpRequest;
-        xhr.onload = function () {
-            let res = JSON.parse(xhr.responseText);
-            let hiragana = res.converted.replace(/\s+/g, '');
-            let word_length = hiragana.length;
-            mozisuu.innerHTML = '文字数：' + word_length;
-            time.innerHTML = '時間：' + (word_time / 1000);
-            wasoku.innerHTML = '話速：' + (word_length / ((word_time / 1000) / 60)) + '(文字数/分)';
-            kana.innerText = hiragana;
-        }
 
-        xhr.onerror = function () {
-            alert("文章をひらがなにできませんでした。");
-        }
-
-        xhr.open("POST", "https://labs.goo.ne.jp/api/hiragana", true);
+        xhr.open("POST", "https://labs.goo.ne.jp/api/hiragana", false);
         xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
-        xhr.send(json);
+
+        try {
+            xhr.send(json);
+            if (xhr.status != 200) {
+                alert(`Error ${xhr.status}: ${xhr.statusText}`);
+            } else {
+                let res = JSON.parse(xhr.responseText);
+                hiragana = res.converted.replace(/\s+/g, '');
+            }
+        } catch (err) {
+            ("Request failed");
+        }
+
+        return hiragana;
 
     }
+
+    // 俺様専用スクリプト
+    function sample(){
+        start_time = '09:00:00';
+        end_time = '10:00:00';
+        set_log('09:10:10', 'image', 'OK', './static/images/20201211_102327.jpg');
+        set_log('09:10:00', 'text', 350, 'おはようございます。本日は宜しくお願いいたします。');
+        set_log('09:30:10', 'image', '右に15度傾いています', './static/images/20201211_102337.jpg');
+        set_log('09:30:00', 'text', 400, '私の強みは問題解決能力があるところです。私は大学時代バスケットボール部に所属していました。部のなかで、私は練習メニューを考えることに力を入れていました。試合結果を分析して課題と改善点を打ち出すことで、チームの底上げになる練習メニューを考え取り入れていました。');
+        set_log('09:50:00', 'text', 500, '本日は誠にありがとうございました。');
+        run.style = "display: none"
+        print_log();
+        printGraph();
+        button_graph.style = "display: inline;";
+        set_form();
+        video.remove();
+    }
+
+    // sample();
 
 </script>
 {% endblock %}

@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+
+{% block header %}
+<link rel="stylesheet" href="static/css/settings.css">
+{% endblock %}
+
+
+{% block content %}
+
+
+            <div class="col-8 mx-auto m-5 p-3">
+                <div id="main_form">
+                    <p class="form-title">設定</p>
+                    <form action="settings_edit.html">
+                        <p class="offset-3 h4">ID</p>
+                        <p class="mail offset-3 h5" >masaru</p>
+                        <p class="offset-3 h4">パスワード</p>
+                        <p class="pass offset-3 h5">20000101</p>
+
+                        <div class="text-right">
+                            <a class="btn btn-outline-secondary" href="/settings_edit">パスワード再設定</a>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="text-right">
+                    <a class="btn btn-outline-secondary" href="/">戻る</a>
+                </div>
+
+            </div>
+
+
+
+        {% endblock %}
+
+

@@ -1,0 +1,84 @@
+{% extends "layout.html" %}
+
+{% block header %}
+<link rel="stylesheet" href="../static/css/log.css">
+{% endblock %}
+
+{% block content %}
+
+<div class="row my-5">
+	<div class="col">
+		<table class="table-borderless table-sm mx-auto">
+			<tr>
+				<th class="h4 text-right">分析日時:</th>
+				<th><div class="h3 ml-5 text-left font-weight-bold ">{{ row_session[0] }}</div></th>
+			</tr>
+			<tr>
+				<th class="h4 text-right">会社名:</th>
+				<td><div class="h3 ml-5 text-left font-weight-bold">{{ row_session[1] }}</div></td>
+			</tr>
+			<tr>
+				<th class="h4 text-right">選考段階:</th>
+				<td><div class="h3 ml-5 text-left font-weight-bold">{{ row_session[2] }}</div></td>
+			</tr>
+			<tr>
+				<th class="h4 text-right">開始時間 ~ 終了時間:</th>
+				<td><div class="h3 ml-5 text-left font-weight-bold">{{ row_result[1] }} ~ {{ row_result[2] }}</div></td>
+			</tr>
+		</table>
+	</div>
+</div>
+
+{% if log_list != None %}
+
+{% for log in log_list %}
+
+<div class="row mb-5">
+	<div class="col">
+		<div class="card mx-auto" style="max-width: 55rem;">
+			{% if log['judge'] == 'OK' %}
+				<div class="card-header bg-success">
+			{% else %}
+				<div class="card-header bg-danger">
+			{% endif %}
+				<div class="row">
+					<div class="col-2 h5 text-left text-white-50">
+						{{ log['time'] }}
+					</div>
+					<div class="col-8 h3 font-weight-bold text-center text-white">
+						{% if log['type'] == 'text' %}
+							{{ log['judge'] }}
+						{% else %}
+							{{ log['score'] }}
+						{% endif %}
+					</div>
+					<div class="col-2 text-right text-light">
+						{% if log['type'] == 'text' %}
+							<span class="h4">{{ log['score'] }}</span> <span class="small">[文字/分]</span>
+						{% else %}
+						{% endif %}
+					</div>
+				</div>
+			</div>
+			<div class="card-body bg-white text-dark text-center">
+				{% if log['type'] == 'text' %}
+					<div class="h4 text-left">{{ log['content'] }}</div>
+				{% else %}
+					<img src="../static/{{ log['content'] }}">
+				{% endif %}
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endfor %}
+
+{% endif %}
+
+<div class="row">
+	<div class="col text-center">
+		<button type="button" class="btn btn-outline-secondary my-4" onclick="location.href='../archive'">戻る</button>
+	</div>
+</div>
+
+{% endblock %}

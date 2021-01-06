@@ -1,63 +1,71 @@
 <!doctype html>
 <html lang="jp">
-    <head>
-        <title>{{ title }}</title>
-        <meta charset="UTF-8">
 
-        <link rel="icon" type="image/x-icon" href="static/asets/horus.jpg">
-        <link rel="stylesheet" href="static/css/bootstrap.css">
-        <link rel="stylesheet" href="static/css/common.css">
-        <link rel="stylesheet" href="static/css/login.css">
-        <link rel="stylesheet" href="static/css/top.css">
-        <link rel="stylesheet" href="static/css/all.css">
-        <link rel="stylesheet" href="static/css/particles.css">
-        <link href="https://fonts.googleapis.com/css?family=Sawarabi+Gothic" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/earlyaccess/nicomoji.css" rel="stylesheet">
+<head>
+    <title>{{ title }}</title>
+    <meta charset="UTF-8">
 
-        <script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
+    <meta name="viewport" content="width=1280 ,initial-scale=1">
 
-        <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script> -->
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='asets/horus.jpg') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/common.css') }}">
+    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/top.css') }}"> -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/all.css') }}">
+    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/particles.css') }}"> -->
+    <link href="https://fonts.googleapis.com/css?family=Sawarabi+Gothic" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/earlyaccess/nicomoji.css" rel="stylesheet">
 
-        {% block header %}
-        <!-- ここにヘッダーが入る。 -->
-        {% endblock %}
-    </head>
-    <body>
-        <div id="particles-js"></div>
+    <script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
 
-        <div class="container-fluid">
-        
-            <div class="p-3 row nav">
-                <div class="col-1">
-                    <img src="static/asets/horus.jpg" width="70px" height="auto">
+    <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script> -->
+
+    {% block header %}
+    <!-- ここにヘッダーが入る。 -->
+    {% endblock %}
+</head>
+
+<body class="bg-light">
+    <!-- <div id="particles-js"></div> -->
+
+    <div class="container-fluid _zindex_1">
+
+        <div class="pt-3 pb-1 px-3 row _nav">
+            <!-- <div class="col-1"> -->
+            <div class="col-md-8 col-sm-12">
+                <div class="float-left mr-4">
+                    <img src="{{ url_for('static', filename='asets/horus.jpg') }}" width="64px" height="auto">
                 </div>
-                <div class="col-4 h1 my-2 main_title">
+                <!-- <div class="col-4 h1 my-2 main_title"> -->
+                <div class="float-left pt-3 pb-1 text-left h1 _main_title">
                     The Eyes of Horus
                 </div>
-                {% if current_user.is_active %}
-                    <div class="col text-light h3 mt-3 ml-5">
-                        ようこそ <span class="text-white">{{ current_user.name }}</span> !
-                    </div>
-                {% endif %}
             </div>
-
-            <br><br><br><br><br><br><br><br>
-
-            {% block content %}
-            <!-- ここにメインコンテンツが入る。 -->
-            {% endblock %}
-
+            {% if current_user.is_active %}
+            <!-- <div class="col text-right h3 mt-3"> -->
+            <div class="col-md-4 col-sm-12 pt-4 pb-1 text-right h3 _user_info">
+                <i class="fas fa-user-circle text-white"></i>
+                <span class="text-white">{{ current_user.name }}</span>
+            </div>
+            {% endif %}
         </div>
 
-        <script src="static/js/particles.js"></script>
-        <script src="static/js/set_bubble.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bubbly-bg@1.0.0/dist/bubbly-bg.js"></script>
+        {% block content %}
+        <!-- ここにメインコンテンツが入る。 -->
+        {% endblock %}
 
-    </body>
-    {% block script %}
-    <!-- ここにスクリプトが入る。 -->
-    {% endblock %}
-    <footer>
+    </div>
+
+    <!-- <script src="{{ url_for('static', filename='js/particles.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/set_bubble.js') }}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bubbly-bg@1.0.0/dist/bubbly-bg.js"></script> -->
+
+</body>
+{% block script %}
+<!-- ここにスクリプトが入る。 -->
+{% endblock %}
+<footer>
     <!-- ここにフッター -->
-    </footer>
+</footer>
+
 </html>

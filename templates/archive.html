@@ -1,0 +1,47 @@
+{% extends "layout.html" %}
+
+{% block header %}
+<link rel="stylesheet" href="static/css/archive.css">
+{% endblock %}
+
+
+{% block content %}
+
+<div class="m-5 row">
+                    
+    <div class="col text-center">
+        <div class="h1">履歴</div>
+　　　　　　　　　
+        <br>
+
+        <table class="table h4">
+            <thead>
+              <tr>
+                <td class="text-left" style="color: black;"><strong>分析日時</strong></td>
+                <td class="text-left" style="color: black;"><strong>会社名</strong></td>
+                <td class="text-left" style="color: black;"><strong>選考段階</strong></td>
+              </tr>
+            </thead>
+            <tbody>
+              {% for row in rows %}
+              <tr>
+                <td class="text-left" style="color: black;">{{ row[1] }}</td>
+                <td class="text-left" style="color: black;"><a href="/archive/{{ row[0] }}">{{ row[2] }}</a></td>
+                <td class="text-left" style="color: black;">{{ row[3] }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+
+</div>
+
+<div class="row">
+  <div class="col text-center">
+      <a class="btn btn-outline-secondary mb-5" href="/">戻る</a>
+  </div>
+</div>
+
+{% endblock %}
+
