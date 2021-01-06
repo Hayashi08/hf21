@@ -3,3 +3,4 @@ flask-login
 mysql-connector-python
 numpy
 opencv-python
+matplotlib

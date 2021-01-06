@@ -1,5 +1,6 @@
 import numpy as np
 import cv2
+import matplotlib.pyplot as plt
 
 from image import MyImage
 
@@ -77,6 +78,9 @@ class Shoulder(object):
         # マークされた画像を生成するアルゴリズム
         marked = cv2.watershed(self.noback_image, marker)
 
+        # プロット
+        plt.imshow(marked, cmap='gray')
+
         # 背景を黒にして、白にしたいものは白にする
         marked[marked == 1] = 0
         marked[marked > 1] = 255
@@ -84,6 +88,7 @@ class Shoulder(object):
         # 5×5ピクセルのカーネルを使用して画像を薄くし、輪郭のディテールを失わないようにする
         kernel = np.ones((5,5),np.uint8)
         dilation = cv2.dilate(marked.astype(np.float32), kernel, iterations = 1)
+        plt.imshow(dilation, cmap='gray')
 
         # 最初の画像に作成したマスクを適用
         final_img = cv2.bitwise_and(self.noback_image, self.noback_image, mask=dilation.astype(np.uint8))
