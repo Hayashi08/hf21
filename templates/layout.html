@@ -64,8 +64,20 @@
 {% block script %}
 <!-- ここにスクリプトが入る。 -->
 {% endblock %}
-<footer>
-    <!-- ここにフッター -->
+<footer class="footer">
+    <div id="footer1" class="col-12">
+        <div class="row ">
+            <div class=" col-11 mt-2" id="footer2">
+                Copyright © 2020-2021　S.Ohshima,S.Ohshiro,S.Hayashi,Y.Hirata,K.Matuno,T.Murai,T.Morikawa,S.Yamamoto,S.Wada　All Rights Resarved.
+            </div>
+            <div class="col-1">
+                <a href="http://www.goo.ne.jp/">
+                    <img src="{{ url_for('static', filename='asets/sgoo.jpg') }}" alt="supported by goo"title="supported by goo" width="100px" height="auto">
+                </a>
+            </div>
+        </div>
+    </div>
 </footer>
+
 
 </html>
