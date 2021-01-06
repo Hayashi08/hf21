@@ -159,13 +159,37 @@
 
         let log_html = '';
         for (let i = 0; i < log_list.length; i++){
+
+            log_html_card_header = '<div class="card-header bg-success"><div class="row">';
+            log_html_judge = ''
+            log_html_value = '';
+            if (log_list[i].type == 'text') {
+                if (350 > log_list[i].score) {
+                    log_html_card_header = '<div class="card-header bg-danger"><div class="row">';
+                    log_html_judge = '遅過ぎです';
+                }
+                else if (log_list[i].score > 450){
+                    log_html_card_header = '<div class="card-header bg-danger"><div class="row">';
+                    log_html_judge = '速過ぎです';
+                }
+                else{
+                    log_html_judge = 'OK';
+                }
+                log_html_value = '<span class="h4">' + log_list[i].score + '</span> <span class="small">[文字/分]</span>';
+            }
+            else {
+                if (log_list[i].score.indexOf('右') > -1 || log_list[i].score.indexOf('左') > -1) {
+                    log_html_card_header = '<div class="card-header bg-danger"><div class="row">';
+                }
+            }
+
             log_html += '<div class="row mb-5"><div class="col">';
 
             // カード <
             log_html += '<div class="card mx-auto" style="max-width: 55rem;">';
 
             //カードヘッダー <
-            log_html += '<div class="card-header bg-dark"><div class="row">';
+            log_html += log_html_card_header;
 
             // ログ時刻
             log_html += '<div class="col-2 h5 text-left text-white-50">';
@@ -176,7 +200,7 @@
             log_html += '<div class="col-8 h3 font-weight-bold text-center text-white">';
             if (log_list[i].type == 'text') {
                 // 話速
-                log_html += log_list[i].score + ' <span class="h5">[文字/分]</span>';
+                log_html += log_html_judge;
             }
             else{
                 // 画像判定
@@ -187,7 +211,7 @@
 
             // 値
             log_html += '<div class="col-2 text-right text-light">';
-            
+            log_html += log_html_value;
             log_html += '</div>';
 
             // カードヘッダー >
@@ -409,7 +433,7 @@
             // キャプチャ時刻
             capture_time = new Date().toLocaleTimeString();
 
-            fd.append('image', null);
+            // fd.append('image', null);
 
             canvas.toBlob(
                 function(blob){
@@ -555,7 +579,7 @@
         set_log('09:10:00', 'text', 350, 'おはようございます。本日は宜しくお願いいたします。');
         set_log('09:30:10', 'image', '右に15度傾いています', './static/images/20201211_102337.jpg');
         set_log('09:30:00', 'text', 400, '私の強みは問題解決能力があるところです。私は大学時代バスケットボール部に所属していました。部のなかで、私は練習メニューを考えることに力を入れていました。試合結果を分析して課題と改善点を打ち出すことで、チームの底上げになる練習メニューを考え取り入れていました。');
-        set_log('09:50:00', 'text', 350, '本日は誠にありがとうございました。');
+        set_log('09:50:00', 'text', 500, '本日は誠にありがとうございました。');
         run.style = "display: none"
         print_log();
         printGraph();
