@@ -542,7 +542,7 @@
         if (time_flag) {
             word_time += time_tail - time_head;
             time_flag = false;
-            set_log(transcript_time, 'text', '' + (time_tail - time_head), interimTranscript);
+            set_log(transcript_time, 'text', '' + (time_tail - time_head), interimBuffer);
             cus_voice.innerHTML = finalTranscript + interimBuffer;
         }
         // let word = finalTranscript;
