@@ -1,0 +1,48 @@
+/* 多分使ってない */
+
+@import url('https://fonts.googleapis.com/css2?family=Kotta+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Kosugi&display=swap');
+
+
+.main_item{
+	background-color: #373e52;
+	border-radius: 20px;
+}
+
+.main_item .main_text{/*
+	display: none;*/
+	font-family: 'Kosugi', sans-serif;
+	color: #e3e8fa;
+	font-size: 2rem;
+}
+
+.main_item .sub_text{/*
+	display: none;*/
+	font-family: 'Kosugi', sans-serif;
+	color: #e3e8fa;
+	font-size: 1rem;
+}
+
+.main_item .main_logo{
+	color: #e3e8fa;
+	font-size: 7rem;
+}
+
+.main_item:hover{
+  	-webkit-transition: all 0.3s linear 0s;
+  	opacity: 0.8;
+}
+
+.main_item:hover .main_text{
+}
+
+.main_item:hover .sub_text{
+}
+
+.main_item:hover .main_logo{
+	/*display: none;
+	float: none;
+	position: fixed;
+	opacity: 0.5;*/
+
+}
