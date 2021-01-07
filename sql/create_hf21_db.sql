@@ -28,13 +28,6 @@ CREATE TABLE result_tbl (
 	session_id INTEGER UNSIGNED NOT NULL,
 	result_start_time TIME DEFAULT '00:00:00',
 	result_end_time TIME DEFAULT '00:00:00',
-	result_total_point TINYINT UNSIGNED DEFAULT 0,
-	result_wasoku SMALLINT UNSIGNED DEFAULT 0,
-	result_wasoku_judge VARCHAR(64) DEFAULT '',
-	result_wasoku_point TINYINT UNSIGNED DEFAULT 0,
-	result_posture TINYINT UNSIGNED DEFAULT 0,
-	result_posture_judge VARCHAR(64) DEFAULT '',
-	result_posture_point TINYINT UNSIGNED DEFAULT 0,
 	PRIMARY KEY (result_id),
 	FOREIGN KEY (session_id) REFERENCES session_tbl (session_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -42,11 +35,11 @@ CREATE TABLE result_tbl (
 CREATE TABLE sentence_tbl (
 	sentence_id INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
 	result_id INTEGER UNSIGNED NOT NULL,
-	sentence_time TIME DEFAULT '00:00:00',
+	sentence_start_time TIME DEFAULT '00:00:00',
+	sentence_end_time TIME DEFAULT '00:00:00',
 	sentence_str VARCHAR(512),
 	sentence_wasoku SMALLINT UNSIGNED DEFAULT 0,
-	sentence_judge VARCHAR(64) DEFAULT '',
-	sentence_point TINYINT UNSIGNED DEFAULT 0,
+	sentence_judge VARCHAR(32) DEFAULT '',
 	PRIMARY KEY (sentence_id),
 	FOREIGN KEY (result_id) REFERENCES result_tbl (result_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -56,8 +49,8 @@ CREATE TABLE image_tbl (
 	result_id INTEGER UNSIGNED NOT NULL,
 	image_time TIME DEFAULT '00:00:00',
 	image_path VARCHAR(64) DEFAULT '',
-	image_judge VARCHAR(64) DEFAULT '',
-	image_point TINYINT UNSIGNED DEFAULT 0,
+	image_judge VARCHAR(32) DEFAULT '',
+	image_angle VARCHAR(16) DEFAULT '',
 	PRIMARY KEY (image_id),
 	FOREIGN KEY (result_id) REFERENCES result_tbl (result_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
