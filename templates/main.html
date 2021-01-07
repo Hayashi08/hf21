@@ -418,6 +418,10 @@
     adjuster.style.zIndex = 1;
     document.getElementById('videoPreview').appendChild(adjuster);
 
+    var capture_span = 10000;
+    function setSpan(sec){
+        capture_span = sec * 1000;
+    }
 
     function video_start(){
 
@@ -467,7 +471,7 @@
                 }
             , 'image/jpeg');
 
-        }, 10000); // 画像処理スパン
+        }, capture_span); // 画像処理スパン
     }
 
     function video_stop(){
