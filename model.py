@@ -63,7 +63,7 @@ class MySQL:
 
         return row[0]
 
-    def insert_sentence(self, result_id, sentence_strat_time, sentence_end_time, sentence_str, sentence_wasoku, sentence_judge):
+    def insert_sentence(self, result_id, sentence_strat_time, sentence_str, sentence_wasoku, sentence_end_time,  sentence_judge):
         self.cur.execute('INSERT INTO sentence_tbl (result_id, sentence_start_time, sentence_end_time, sentence_str, sentence_wasoku, sentence_judge) VALUES (%s, %s, %s, %s, %s, %s)', (result_id, sentence_start_time, sentence_end_time, sentence_str, sentence_wasoku, sentence_judge))
 
     def insert_image(self, result_id, image_time, image_path, image_judge):

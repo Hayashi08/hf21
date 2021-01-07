@@ -80,7 +80,7 @@ def save():
         for sentence_row in sentence_list:
             sentence_ele = sentence_row.split(',')
             if len(sentence_ele) != 1 and sentence_ele[2] != 'Infinity':
-                db.insert_sentence(result_id, str(sentence_ele[0]), str(sentence_ele[1]), int(sentence_ele[2]))
+                db.insert_sentence(result_id, str(sentence_ele[0]), str(sentence_ele[1]), int(sentence_ele[2]), str(sentence_ele[3]), str(sentence_ele[4]))
 
 
         image_list = image.split('|')
