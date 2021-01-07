@@ -10,7 +10,7 @@ class Shoulder(object):
         self.noback_image = img
         self.gray_image = None
         self.canny_image = None
-        self.detect_area = [350, 619, 430, 133, 380]# 上、右、下、左、真ん中
+        self.detect_area = [290, 650, 430, 120, 380]# 上、右、下、左、真ん中
         self.hough_lines = []
 
         self.all_img_path = MyImage.mkdir_all_img()
@@ -136,18 +136,18 @@ class Shoulder(object):
             result1 = 'false'
         if x1<self.detect_area[4] and x2>self.detect_area[4]:
             result1 = 'false'
-        # # 上部の直線を除く
-        # if y1<self.detect_area[0] or y2<self.detect_area[0]:
-        #     result1 = "false"
-        # # 右部の直線を除く
-        # if x1>self.detect_area[1] or x2>self.detect_area[1]:
-        #     result1 = "false"
+        # 上部の直線を除く
+        if y1<self.detect_area[0] or y2<self.detect_area[0]:
+            result1 = "false"
+        # 右部の直線を除く
+        if x1>self.detect_area[1] or x2>self.detect_area[1]:
+            result1 = "false"
         # # 下部の直線を除く
         # if y1>self.detect_area[2] or y2>self.detect_area[2]:
         #     result1 = "false"
-        # # 左部の直線を除く
-        # if x1<self.detect_area[3] or x2<self.detect_area[3]:
-        #     result1 = "false"
+        # 左部の直線を除く
+        if x1<self.detect_area[3] or x2<self.detect_area[3]:
+            result1 = "false"
         # 傾きの値が大きい直線を排除。
         if a>1 or a<-1:
             result1 = 'false'

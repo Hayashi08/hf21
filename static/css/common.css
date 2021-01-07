@@ -2,7 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Kosugi&display=swap');
 
 a:hover{
-  	-webkit-transition: all 0.3s linear 0s;
+	-webkit-transition: all 0.3s linear 0s;
 	text-decoration: none;
 	opacity: 0.8;
 }
@@ -35,28 +35,19 @@ body{
 	min-height: 100vh;
 }
 
-#footer1{
-	text-align: center; 
+._footer{
 	color: #e3e8fa; 
-	/* position: absolute;
-	bottom: 0;  */
 	background-color: #373e52
 }
 
-#footer2{
+
+/* #footer1{
+	text-align: center; 
+	color: #e3e8fa; 
+	background-color: #373e52
+} */
+
+/* #footer2{
 	text-align: center; 
 	font-size: 15px
-}
-
-footer{
-	margin-top: auto;
-	padding: 0;
-}
-
-
-
-
-
-
-
-
+} */
