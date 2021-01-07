@@ -70,7 +70,8 @@ class Shoulder(object):
 
         # 切り取りたいパーツを指定
         # 体とマスクと顔を色分けして分かりやすくしてる
-        marker[391][456] = 255    # suit
+        marker[391][248] = 255    # suit_right
+        marker[391][512] = 255    # suit_left
         marker[352][362] = 125    # shirt
         marker[250][378] = 62     # face
         marker[121][378] = 31     # head

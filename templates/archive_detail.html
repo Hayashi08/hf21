@@ -64,7 +64,7 @@
 				{% if log['type'] == 'text' %}
 					<div class="h4 text-left">{{ log['content'] }}</div>
 				{% else %}
-					<img src="../static/{{ log['content'] }}">
+					<img src="../static/{{ log['content'] }}" style="transform: scaleX(-1);">
 				{% endif %}
 			</div>
 		</div>
