@@ -1,13 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Kotta+One&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Kosugi&display=swap');
 
-/* ._article{
-	position: relative;
-	top: 50%;
-	right: auto;
-	left: auto;
-} */
-
 
 /* 録画 */
 ._panel_record{
@@ -46,7 +39,7 @@
 
 
 ._panel_record ._main_logo{
-	font-size: 7rem;
+	font-size: 6rem;
 }
 
 ._panel_history ._main_logo{
