@@ -135,18 +135,18 @@ class Shoulder(object):
             result1 = 'false'
         if x1<self.detect_area[4] and x2>self.detect_area[4]:
             result1 = 'false'
-        # # 上部の直線を除く
-        # if y1<self.detect_area[0] or y2<self.detect_area[0]:
-        #     result1 = "false"
-        # # 右部の直線を除く
-        # if x1>self.detect_area[1] or x2>self.detect_area[1]:
-        #     result1 = "false"
-        # # 下部の直線を除く
-        # if y1>self.detect_area[2] or y2>self.detect_area[2]:
-        #     result1 = "false"
-        # # 左部の直線を除く
-        # if x1<self.detect_area[3] or x2<self.detect_area[3]:
-        #     result1 = "false"
+        # 上部の直線を除く
+        if y1<self.detect_area[0] or y2<self.detect_area[0]:
+            result1 = "false"
+        # 右部の直線を除く
+        if x1>self.detect_area[1] or x2>self.detect_area[1]:
+            result1 = "false"
+        # 下部の直線を除く
+        if y1>self.detect_area[2] or y2>self.detect_area[2]:
+            result1 = "false"
+        # 左部の直線を除く
+        if x1<self.detect_area[3] or x2<self.detect_area[3]:
+            result1 = "false"
         # 傾きの値が大きい直線を排除。
         if a>1 or a<-1:
             result1 = 'false'
