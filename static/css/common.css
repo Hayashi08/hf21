@@ -62,3 +62,27 @@ footer{
 	/* padding: 0; */
 }
 
+#js-show-popup{
+	min-height: 50vh;
+}
+
+#row_01{
+	margin: 15vh;
+}
+
+#row_01-02{
+	min-height: 30vh;
+}
+
+.word{
+	margin-top: 8vh;
+}
+
+#history{
+	min-height: 37vh;
+	margin-bottom: 3vh;
+}
+
+#js-show-popup1{
+	min-height: 10vh;
+}

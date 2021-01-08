@@ -7,9 +7,10 @@
 {% endblock %}
 
 {% block content %}
-<div class="row p-3 mt-5 mb-2 mx-3 pt-5" id="row_01">
+<div class="row p-3 mb-2 mx-3" id="row_01">
 		<div class="col-md-7 col-sm-12 mb-4" id="row_01-01">
 				<div id="js-show-popup" class="px-1 py-5 text-center _panel_record">
+					<div class="word">
 						<i class="fas fa-microphone mt-4 mb-4 mr-2 _main_logo"></i>
 						<i class="fas fa-video mt-4 mb-4 _main_logo"></i>
 						<div class="mt-2 mb-4 _main_text">
@@ -18,14 +19,16 @@
 						<div class="mb-3 _sub_text ">
 								面接中の話速と姿勢を診断します
 						</div>
+					</div>
 				</div>
 		</div>
 		<!-- row_01の2番目の要素（row_01-02）をflexコンテナにし（d-flex）、子要素を縦に配置する（flex-colmn）-->
 		<div class="col-md-5 col-sm-12 d-flex flex-column mb-4" id="row_01-02">
 				<div class="row" id="dflex_01(row_01-02)-01">
-					<div class="col-12 mb-4">
+					<div class="col-12">
 						<a href="/archive">
-								<div class="px-1 py-3 text-center _panel_history">
+								<div class="px-1 py-3 text-center _panel_history" id="history">
+									<div class="word">
 										<i class="fa fa-book mt-3 mb-3 _main_logo "></i>
 										<div class="mb-2 _main_text">
 												履歴
@@ -33,6 +36,7 @@
 										<div class="mb-2 _sub_text">
 												過去の解析結果を確認します
 										</div>
+									</div>
 								</div>
 						</a>
 					</div>
@@ -51,8 +55,8 @@
 										</div>
 								</a>
 						</div> -->
-						<div class="col-sm-12 mb-4 text-center" id="row_02(dflex_01-02)-02">
-								<div id="js-show-popup1" class="px-1 py-3 _panel_logout">
+						<div class="col-sm-12 text-center" id="row_02(dflex_01-02)-02">
+								<div id="js-show-popup1" class="px-1  _panel_logout">
 										<i class="fas fa-door-open _main_logo mt-2 mb-2 pt-1"></i>
 										<div class="_main_text">
 												ログアウト
