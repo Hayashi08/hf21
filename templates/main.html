@@ -1,8 +1,8 @@
 {% extends "layout.html" %}
 
 {% block header %}
-    <link rel="stylesheet" href="static/css/main.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
+<link rel="stylesheet" href="static/css/main.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -73,7 +73,8 @@
                     </div>
                 </div>
             </div>
-            <button id="button_graph" class="btn btn-primary mx-auto my-4" style="display: none" onclick="GraphButton()">グラフを表示</button>
+            <button id="button_graph" class="btn btn-primary mx-auto my-4" style="display: none"
+                onclick="GraphButton()">グラフを表示</button>
         </section>
         <section>
             <div id="log" class="mt-5"></div>
@@ -97,26 +98,26 @@
     var end_time;
     var button_flag = false;
 
-    function recordButton(){
+    function recordButton() {
         if (!button_flag) {
             start();
             button_flag = true;
             button_js.textContent = 'STOP';
             button_js.className = 'btn btn-danger';
         }
-        else{
+        else {
             button_flag = false;
             stop();
         }
     }
 
-    function start(){
+    function start() {
         start_time = new Date().toLocaleString();
         wasoku_start();
         video_start();
     }
 
-    function stop(){
+    function stop() {
         end_time = new Date().toLocaleString();
         wasoku_stop();
         video_stop();
@@ -127,27 +128,27 @@
         set_form();
     }
 
-    function GraphButton(){
+    function GraphButton() {
         if (button_graph.textContent == 'グラフを表示') {
             result_chart.style = "display: inline"
             button_graph.textContent = 'グラフを閉じる';
             button_graph.className = 'btn btn-outline-secondary mx-auto my-4';
         }
-        else{
+        else {
             result_chart.style = "display: none"
             button_graph.textContent = 'グラフを表示';
             button_graph.className = 'btn btn-primary mx-auto my-4';
         }
     }
 
-//-------------ログ-------------------------------------------    
+    //-------------ログ-------------------------------------------    
     var log_list = [];
 
-    function set_log(time, type,  score, content){
-        log_list.push({time: time,type: type, score: score, content: content});    
+    function set_log(time, type, score, content) {
+        log_list.push({ time: time, type: type, score: score, content: content });
     }
 
-    function print_log(){
+    function print_log() {
         result_header_time.textContent = start_time + ' ~ ' + end_time;
         result_header.style = "display: inline";
 
@@ -161,7 +162,7 @@
         })
 
         let log_html = '';
-        for (let i = 0; i < log_list.length; i++){
+        for (let i = 0; i < log_list.length; i++) {
 
             log_html_card_header = '<div class="card-header bg-success"><div class="row">';
             log_html_judge = ''
@@ -171,11 +172,11 @@
                     log_html_card_header = '<div class="card-header bg-danger"><div class="row">';
                     log_html_judge = '遅過ぎです';
                 }
-                else if (log_list[i].score > 450){
+                else if (log_list[i].score > 450) {
                     log_html_card_header = '<div class="card-header bg-danger"><div class="row">';
                     log_html_judge = '速過ぎです';
                 }
-                else{
+                else {
                     log_html_judge = 'OK';
                 }
                 log_html_value = '<span class="h4">' + log_list[i].score + '</span> <span class="small">[文字/分]</span>';
@@ -196,7 +197,7 @@
 
             // ログ時刻
             log_html += '<div class="col-2 h5 text-left text-white-50">';
-            log_html +=  log_list[i].time;
+            log_html += log_list[i].time;
             log_html += '</div>';
 
             // 解析結果 <
@@ -205,7 +206,7 @@
                 // 話速
                 log_html += log_html_judge;
             }
-            else{
+            else {
                 // 画像判定
                 log_html += log_list[i].score;
             }
@@ -226,7 +227,7 @@
                 // 文章
                 log_html += '<div class="h4 text-left">' + log_list[i].content + '</div>';
             }
-            else{
+            else {
                 // 画像表示
                 log_html += '<img src="' + log_list[i].content + '" style="transform: scaleX(-1);">';
             }
@@ -242,7 +243,7 @@
         log.innerHTML = log_html;
     }
 
-//-------------グラフ-------------------------------------------
+    //-------------グラフ-------------------------------------------
 
     function printGraph() {
 
@@ -355,19 +356,19 @@
 
     }
 
-//-------------保存-------------------------------------------
-    function set_form(){
+    //-------------保存-------------------------------------------
+    function set_form() {
 
         session.value = '{{ session_timestamp }},' + '{{ company_name }},' + '{{ company_stage }}';
 
-        result.value = start_time  + ',' + end_time;
+        result.value = start_time + ',' + end_time;
 
         for (let i = 0; i < log_list.length; i++) {
             let log = log_list[i];
             if (log.type == 'text') {
-                sentence.value +=  log.time + ',' + log.content + ',' + log.score + "|";
+                sentence.value += log.time + ',' + log.content + ',' + log.score + "|";
             }
-            else{
+            else {
                 image.value += log.time + ',' + log.content.slice(9) + ',' + log.score + "|";
             }
         }
@@ -379,7 +380,7 @@
 
     }
 
-//--------------画像判定--------------------------------------
+    //--------------画像判定--------------------------------------
     let timer;
 
     const cameraSize = { w: 768, h: 432 };
@@ -409,17 +410,17 @@
     });
 
     // img要素をつくる
-    adjuster          = document.createElement('img');
-    adjuster.id       = 'adjuster';
+    adjuster = document.createElement('img');
+    adjuster.id = 'adjuster';
     // adjuster.src      = 'images/adjuster.png';
-    adjuster.src      = '/static/asets/adjuster.png';
-    adjuster.width    = videoPreviewWidth;
-    adjuster.height   = cameraSize.h * (videoPreviewWidth / cameraSize.w);
+    adjuster.src = '/static/asets/adjuster.png';
+    adjuster.width = videoPreviewWidth;
+    adjuster.height = cameraSize.h * (videoPreviewWidth / cameraSize.w);
     adjuster.style.zIndex = 1;
     document.getElementById('videoPreview').appendChild(adjuster);
 
 
-    function video_start(){
+    function video_start() {
 
         // キャプチャ
         let video_cap = document.getElementById('video');
@@ -428,7 +429,7 @@
 
         // ajax
         let fd = new FormData();
-        timer = setInterval(function(){
+        timer = setInterval(function () {
 
             // canvas要素全体に画像を描画する。
             ctx.drawImage(video_cap, 0, 0, 768, 432);
@@ -439,43 +440,43 @@
             // fd.append('image', null);
 
             canvas.toBlob(
-                function(blob){
+                function (blob) {
                     fd.set('image', blob);
 
                     console.log(new Date().toLocaleTimeString() + ' 画像を送信しました');
 
                     $.ajax({
                         url: "/shoulder",
-                        type : "POST",
+                        type: "POST",
                         processData: false,
                         contentType: false,
-                        data : fd,
+                        data: fd,
                         dataType: "text",
                     })
-                    .done(function(data){
-                        let resultObjct = data.split(",");
-                        sisei.innerHTML = '<h3>' + resultObjct[0] + '</h3>';
-                        kakou.src = resultObjct[1];
-                        if (resultObjct[0] != 'エラー') {
-                            set_log(capture_time, 'image', resultObjct[0], resultObjct[1]);
-                        }
-                        console.log(new Date().toLocaleTimeString() + ' ' + resultObjct[0]);
-                    })
-                    .fail(function(data){
-                        console.log(new Date().toLocaleTimeString() + ' 検出できませんでした。');
-                    });
+                        .done(function (data) {
+                            let resultObjct = data.split(",");
+                            sisei.innerHTML = '<h3>' + resultObjct[0] + '</h3>';
+                            kakou.src = resultObjct[1];
+                            if (resultObjct[0] != 'エラー') {
+                                set_log(capture_time, 'image', resultObjct[0], resultObjct[1]);
+                            }
+                            console.log(new Date().toLocaleTimeString() + ' ' + resultObjct[0]);
+                        })
+                        .fail(function (data) {
+                            console.log(new Date().toLocaleTimeString() + ' 検出できませんでした。');
+                        });
                 }
-            , 'image/jpeg');
+                , 'image/jpeg');
 
         }, 10000); // 画像処理スパン
     }
 
-    function video_stop(){
-            video.remove();
-            clearInterval(timer);
+    function video_stop() {
+        video.remove();
+        clearInterval(timer);
     }
 
-//--------------話速測定------------------------------------------
+    //--------------話速測定------------------------------------------
 
     SpeechRecognition = webkitSpeechRecognition || SpeechRecognition;
     let recognition = new SpeechRecognition();
@@ -521,6 +522,8 @@
             if (event.results[i].isFinal) {
                 word_time += time_tail - time_head;
                 time_flag = false;
+                console.log(transcript);
+                console.log((time_tail - time_head) / 1000);
                 set_log(transcript_time, 'text', '' + (time_tail - time_head), transcript);
                 finalTranscript += transcript;
             }
@@ -550,15 +553,19 @@
         // let word_length = hiragana.length;
         // let wasoku = Math.round((word_length / ((word_time / 1000) / 60)));
 
-        for (let i = 0; i  < log_list.length; i++) {
+        for (let i = 0; i < log_list.length; i++) {
 
             let log = log_list[i];
-            
+
             if (log.type == 'text') {
                 let hiragana = HiraganaConvert(log.content);
-                log.score =  Math.round(hiragana.length / ((parseFloat(log.score) / 1000) / 60));
+                console.log(log.content);
+                console.log(hiragana);
+                console.log('文字数:' + hiragana.length);
+                console.log(parseFloat(log.score) / 1000);
+                log.score = Math.round(hiragana.length / ((parseFloat(log.score) / 1000) / 60));
             }
-            
+
         }
 
     }
@@ -596,7 +603,7 @@
     }
 
     // 俺様専用スクリプト
-    function sample(){
+    function sample() {
         start_time = '09:00:00';
         end_time = '10:00:00';
         set_log('09:10:10', 'image', 'OK', './static/images/20201211_102327.jpg');
