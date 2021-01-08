@@ -542,12 +542,12 @@
 
     function wasoku_stop() {
         recognition.stop();
-        if (time_flag) {
-            word_time += time_tail - time_head;
-            time_flag = false;
-            set_log(transcript_time, 'text', '' + (time_tail - time_head), interimBuffer);
-            cus_voice.innerHTML = finalTranscript + interimBuffer;
-        }
+        // if (time_flag) {
+        //     word_time += time_tail - time_head;
+        //     time_flag = false;
+        //     set_log(transcript_time, 'text', '' + (time_tail - time_head), interimBuffer);
+        //     cus_voice.innerHTML = finalTranscript + interimBuffer;
+        // }
         // let word = finalTranscript;
         // let hiragana = HiraganaConvert(word);
         // let word_length = hiragana.length;
