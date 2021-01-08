@@ -38,7 +38,7 @@
                 </div>
                 <div class="row">
                     <div class="col-12" id="parent">
-                        <div id="before_kakou">加工済み画像を表示します。</div>
+                        <div id="before_kakou">姿勢の診断結果表示します。</div>
                         <img id="kakou">
                     </div>
                 </div>
@@ -92,6 +92,15 @@
 
 {% block script %}
 <script>
+
+    // 話速パラメーター
+
+    // 最小値
+    var wasoku_min = 375;
+    // 最大値
+    var wasoku_max = 475;
+    // スパイク
+    var wasoku_spike = 700;
 
     var start_time;
     var end_time;
@@ -167,11 +176,11 @@
             log_html_judge = ''
             log_html_value = '';
             if (log_list[i].type == 'text') {
-                if (350 > log_list[i].score) {
+                if (wasoku_min > log_list[i].score) {
                     log_html_card_header = '<div class="card-header bg-danger"><div class="row">';
                     log_html_judge = '遅過ぎです';
                 }
-                else if (log_list[i].score > 450){
+                else if (log_list[i].score > wasoku_max){
                     log_html_card_header = '<div class="card-header bg-danger"><div class="row">';
                     log_html_judge = '速過ぎです';
                 }
@@ -248,8 +257,6 @@
 
         let wasoku_time_list = [];
         let wasoku_list = [];
-        let wasoku_max = 450;
-        let wasoku_min = 350;
         let wasoku_list_max = [];
         let wasoku_list_min = [];
 
@@ -557,6 +564,13 @@
             if (log.type == 'text') {
                 let hiragana = HiraganaConvert(log.content);
                 log.score =  Math.round(hiragana.length / ((parseFloat(log.score) / 1000) / 60));
+                // スパイクが発生した場合削除
+                if (log.score >= wasoku_spike) {
+                    console.log('スパイクしました');
+                    console.log(log.content);
+                    console.log(log.score);
+                    log_list.splice(i, 1);
+                }
             }
             
         }
@@ -600,10 +614,10 @@
         start_time = '09:00:00';
         end_time = '10:00:00';
         set_log('09:10:10', 'image', 'OK', './static/images/20201211_102327.jpg');
-        set_log('09:10:00', 'text', 350, 'おはようございます。本日は宜しくお願いいたします。');
+        set_log('09:10:00', 'text', 370, 'おはようございます。本日は宜しくお願いいたします。');
         set_log('09:30:10', 'image', '右に15度傾いています', './static/images/20201211_102337.jpg');
         set_log('09:30:00', 'text', 400, '私の強みは問題解決能力があるところです。私は大学時代バスケットボール部に所属していました。部のなかで、私は練習メニューを考えることに力を入れていました。試合結果を分析して課題と改善点を打ち出すことで、チームの底上げになる練習メニューを考え取り入れていました。');
-        set_log('09:50:00', 'text', 500, '本日は誠にありがとうございました。');
+        set_log('09:50:00', 'text', 470, '本日は誠にありがとうございました。');
         run.style = "display: none"
         print_log();
         printGraph();
