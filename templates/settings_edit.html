@@ -6,32 +6,50 @@
 
 
 {% block content %}
+<!-- <div class="col-8 mx-auto m-5 p-3">
+		<br><br>
+		<div id="main_form" data-toggle="modal" data-target="#exampleModalCentered ">
+				<p class="form-title">設定</p>
+				<form action="settings_confirm.html">
+						<p class="offset-3">パスワード</p>
+						<p class="pass offset-3"><input type="password" name="pass" /></p>
+						<div class="text-right">
+								<a class="btn btn-outline-secondary" href="/">決定</a>
+						</div>
+						
+				</form>
 
+		</div> -->
 
-<div class="col-8 mx-auto m-5 p-3">
-    <br><br>
-    <div id="main_form" data-toggle="modal" data-target="#exampleModalCentered ">
-        <p class="form-title">設定</p>
-        <form action="settings_confirm.html">
-            <p class="offset-3">パスワード</p>
-            <p class="pass offset-3"><input type="password" name="pass" /></p>
-            <div class="text-right">
-                <a class="btn btn-outline-secondary" href="/">決定</a>
-            </div>
-            
-        </form>
-
-    </div>
-
-
-    <div class="text-right">
-        <a class="btn btn-outline-secondary" href="/settings">戻る</a>
-    </div>
-
+<div class="row">
+	<div class="offset-2 col-8 mt-5 p-3">
+		<div class="p-4 _unit">
+			<form action="/settings_edit" method="POST">
+				<h3 class="text-center _unit_title">パスワード変更</h3>
+				<div class="form-group">
+					<h5 class="mt-4 text-center font-weight-bold">現在のパスワード</h5>
+					<input type="text" name="current_pass" class="form-control form-control-sm" />
+				</div>
+				<div class="form-group">
+					<h5 h5 class="mt-4 text-center font-weight-bold">新しいパスワード</h5>
+					<input type="text" name="new_pass" class="form-control form-control-sm" />
+				</div>
+				<div class="form-group">
+					<h5 h5 class="mt-4 text-center font-weight-bold">新しいパスワード（確認）</h5>
+					<input type="text" name="check_pass" class="form-control form-control-sm" />
+				</div>
+				<div class="text-center">
+					<button type="submit" class="btn btn-outline-secondary">変更</button>
+				</div>
+			</form>
+		</div>
+	</div>
 </div>
-
-
-
-        {% endblock %}
+<div class="row">
+	<div class="col-12 mt-4 mb-5 text-center">
+		<a class="btn btn-outline-secondary" href="/settings">戻る</a>
+	</div>
+</div>
+				{% endblock %}
 
 

@@ -28,6 +28,7 @@ header{
 }
 
 ._nav{
+	/* .btn-outline-secondary に合わせた配色？ */
 	background-color: #373e52;
 	float: none;
 	/* position: relative; */

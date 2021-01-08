@@ -6,31 +6,47 @@
 
 
 {% block content %}
-
-
-            <div class="col-8 mx-auto m-5 p-3">
-                <div id="main_form">
-                    <p class="form-title">設定</p>
-                    <form action="settings_edit.html">
-                        <p class="offset-3 h4">ID</p>
-                        <p class="mail offset-3 h5" >masaru</p>
-                        <p class="offset-3 h4">パスワード</p>
-                        <p class="pass offset-3 h5">20000101</p>
-
-                        <div class="text-right">
-                            <a class="btn btn-outline-secondary" href="/settings_edit">パスワード再設定</a>
-                        </div>
-                    </form>
-                </div>
-
-                <div class="text-right">
-                    <a class="btn btn-outline-secondary" href="/">戻る</a>
-                </div>
-
-            </div>
-
-
-
-        {% endblock %}
+<div class="row">
+	<div class="offset-1 col-5 mt-5 p-3">
+						<!-- <div class="col-8 mx-auto m-5 p-3"> -->
+		<div class="p-4 _unit" id="info_area">
+			<h3 class="text-center _unit_title">ユーザー情報</h3>
+										<!-- <form action="settings_edit.html"> -->
+			<!-- <div class="row"> -->
+												<!-- <p class="offset-3 h4">ID</p> -->
+			<h5 class="mt-4 text-center font-weight-bold">ID</h5>
+												<!-- <p class="mail offset-3 h5" >masaru</p> -->
+			<div class="text-center h4 pb-2">{{ current_user.name }}</div>
+												<!-- <p class="offset-3 h4">パスワード</p> -->
+			<h5 h5 class="mt-4 text-center font-weight-bold">パスワード</h5>
+												<!-- <p class="pass offset-3 h5">20000101</p> -->
+												<!-- <div class="text-right"> -->
+			<div class="text-center">
+				<a class="btn btn-outline-secondary" href="/settings_edit">変更</a>
+			</div>
+										<!-- </form> -->
+		</div>
+	</div>
+	<div class="col-5 mt-5 p-3">
+		<div class="p-4 _unit" id="setting_area">
+			<h3 class="text-center _unit_title">設定</h3>
+			<h5 class="mt-4 text-center font-weight-bold">API設定</h5>
+			<div class="text-center">
+				<a class="btn btn-outline-secondary" href="/settings_edit">確認 / 設定</a>
+			</div>
+			<h5 h5 class="mt-4 text-center font-weight-bold">動作設定</h5>
+			<div class="text-center">
+				<a class="btn btn-outline-secondary" href="/settings_edit">確認 / 設定</a>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row">
+								<!-- <div class="text-right"> -->
+	<div class="col-12 mt-4 mb-5 text-center">
+		<a class="btn btn-outline-secondary" href="/">戻る</a>
+	</div>
+</div>
+{% endblock %}
 
 

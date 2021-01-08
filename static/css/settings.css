@@ -1,52 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Kotta+One&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Kosugi&display=swap');
 
-body,p,form,input{margin: 0}
-#main_form{
-  width: 700px;
-  margin: 30px auto;
-  padding: 20px;
-  border: 1px solid #555;
-  }
-
-form p{
-    font-size: 20px;
-    }
-
-.form-title{
-  text-align: center;
-    font-size: 20px;
-  }
-
-.mail,.pass{
-  margin-bottom: 20px;
-  }
-
-input[type="email"],
-input[type="password"] {
-  width: 350px;
-  padding: 4px;
-  font-size: 14px;
-  }
-    
-.submit{
-  text-align: right;
-  }
-
 /* font */
-#main_form p{
+._unit{
   color: #373e52;
-  font-weight: bold;
-  }
-
-#main_form .form-title{
   font-family: Arial;
-  font-size: 50px;
-  color: #373e52;
   }
 
 /* skin */
-#main_form{
+._unit{
   -webkit-border-radius: 6px;
   -moz-border-radius: 6px;
   border-radius: 6px;
@@ -57,27 +19,8 @@ input[type="password"] {
   background: #fafafa;
   }
 
-#main_form .form-title{
+._unit_title{
   padding-bottom: 6px;
   border-bottom: 2px solid #373e52;
   margin-bottom: 20px;
   }
-
-.submit input{
-  font-family: Arial;
-  color: #ffffff;
-  font-size: 16px;
-  padding-top: 10px;
-  padding-right: 20px;
-  padding-bottom: 10px;
-  padding-left: 20px;
-  text-decoration: none;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  border-radius: 10px;
-  border: solid #373e52;
-  background: #373e52;
-  }
-.submit input:hover{
-  opacity: 0.8;
- }

@@ -2,45 +2,109 @@
 @import url('https://fonts.googleapis.com/css2?family=Kosugi&display=swap');
 
 
-.main_item{
+/* 録画 */
+._panel_record{
+	background-color: #373e52;
+	border-radius: 20px;
+	cursor:pointer;
+}
+
+/* 履歴 */
+._panel_history{
 	background-color: #373e52;
 	border-radius: 20px;
 }
 
-.main_item .main_text{/*
-	display: none;*/
-	font-family: 'Kosugi', sans-serif;
-	color: #e3e8fa;
-	font-size: 2rem;
+/* 設定 */
+._panel_setting{
+	background-color: #373e52;
+	border-radius: 20px;
 }
 
-.main_item .sub_text{/*
-	display: none;*/
-	font-family: 'Kosugi', sans-serif;
+/* ログアウト */
+._panel_logout{
+	background-color: #373e52;
+	border-radius: 20px;
+	cursor:pointer;
+}
+
+
+._main_text ,._sub_text ,._main_logo{
 	color: #e3e8fa;
+}
+
+._main_text ,._sub_text{
+	font-family: 'Kosugi', sans-serif;
+}
+
+
+._panel_record ._main_logo{
+	font-size: 6rem;
+}
+
+._panel_history ._main_logo{
+	font-size: 4.5rem;
+}
+
+._panel_setting ._main_logo{
+	font-size: 3rem;
+}
+
+._panel_logout ._main_logo{
+	font-size: 3rem;
+}
+
+
+._panel_record ._main_text{
+	font-size: 4rem;
+}
+
+._panel_history ._main_text{
+	font-size: 3rem;
+}
+
+._panel_setting ._main_text{
+	font-size: 1.5rem;
+}
+
+._panel_logout ._main_text{
+	font-size: 1.5rem;
+}
+
+
+._panel_record ._sub_text{
 	font-size: 1rem;
 }
 
-.main_item .main_logo{
-	color: #e3e8fa;
-	font-size: 7rem;
+._panel_history ._sub_text{
+	font-size: 1rem;
 }
 
-.main_item:hover{
-  	-webkit-transition: all 0.3s linear 0s;
-  	opacity: 0.8;
+._panel_setting ._sub_text{
+	font-size: 1rem;
 }
 
-.main_item:hover .main_text{
+._panel_logout ._sub_text{
+	font-size: 1rem;
 }
 
-.main_item:hover .sub_text{
+
+._panel_record:hover{
+	-webkit-transition: all 0.3s linear 0s;
+	opacity: 0.8;
 }
 
-.main_item:hover .main_logo{
-	/*display: none;
-	float: none;
-	position: fixed;
-	opacity: 0.5;*/
+._panel_history:hover{
+	-webkit-transition: all 0.3s linear 0s;
+	opacity: 0.8;
+}
 
+._panel_setting:hover{
+	-webkit-transition: all 0.3s linear 0s;
+	opacity: 0.8;
+}
+
+._panel_logout:hover{
+	-webkit-transition: all 0.3s linear 0s;
+	opacity: 0.8;
 }
