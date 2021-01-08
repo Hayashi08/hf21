@@ -87,6 +87,10 @@ class MySQL:
         self.cur.execute('SELECT image_time, image_path, image_judge FROM image_tbl WHERE result_id = %s', (row_result[0],))
         rows_image = self.cur.fetchall()
 
+        # 話速パラメーター
+        wasoku_min = 375
+        wasoku_max = 475
+
         log_list = None
         if rows_sentence != None or rows_image != None:
             log_list = []
@@ -94,9 +98,9 @@ class MySQL:
             if rows_sentence != None:
                 for row_sentence in rows_sentence:
                     sentence_judge = 'OK'
-                    if 350 > row_sentence[2]:
+                    if wasoku_min > row_sentence[2]:
                         sentence_judge = '遅過ぎです'
-                    elif row_sentence[2] > 450:
+                    elif row_sentence[2] > wasoku_max:
                         sentence_judge = '速過ぎです'
                     log_list.append({'time': row_sentence[0], 'type': 'text', 'score': str(row_sentence[2]), 'content': row_sentence[1], 'judge': sentence_judge})
 
