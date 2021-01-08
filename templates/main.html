@@ -168,11 +168,11 @@
             log_html_judge = ''
             log_html_value = '';
             if (log_list[i].type == 'text') {
-                if (350 > log_list[i].score) {
+                if (300 > log_list[i].score) {
                     log_html_card_header = '<div class="card-header bg-danger"><div class="row">';
                     log_html_judge = '遅過ぎです';
                 }
-                else if (log_list[i].score > 450) {
+                else if (log_list[i].score > 500) {
                     log_html_card_header = '<div class="card-header bg-danger"><div class="row">';
                     log_html_judge = '速過ぎです';
                 }
