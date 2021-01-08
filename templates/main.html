@@ -141,6 +141,14 @@
         }
     }
 
+    var wasoku_max = 475;
+    var wasoku_min = 375;
+
+    function setWasoku(min, max){
+        wasoku_min = min;
+        wasoku_max = max;
+    }
+
     //-------------ログ-------------------------------------------    
     var log_list = [];
 
@@ -168,11 +176,11 @@
             log_html_judge = ''
             log_html_value = '';
             if (log_list[i].type == 'text') {
-                if (375 > log_list[i].score) {
+                if (wasoku_min > log_list[i].score) {
                     log_html_card_header = '<div class="card-header bg-danger"><div class="row">';
                     log_html_judge = '遅過ぎです';
                 }
-                else if (log_list[i].score > 475) {
+                else if (log_list[i].score > wasoku_max) {
                     log_html_card_header = '<div class="card-header bg-danger"><div class="row">';
                     log_html_judge = '速過ぎです';
                 }
@@ -249,8 +257,6 @@
 
         let wasoku_time_list = [];
         let wasoku_list = [];
-        let wasoku_max = 475;
-        let wasoku_min = 375;
         let wasoku_list_max = [];
         let wasoku_list_min = [];
 
