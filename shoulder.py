@@ -199,7 +199,7 @@ class Shoulder(object):
             else:
                 deg = -deg
             
-            if(deg > 4):
+            if(deg > 5):
                 if(flag == 0):
                     result = '右に' + str(round(deg)) + '度傾いています'
                 else:
