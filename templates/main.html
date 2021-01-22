@@ -26,12 +26,10 @@
             <div class="col-5">
                 <div class="row">
                     <div class="col-12">
-                        <div class="card mx-auto my-4" id="card_box">
-                            <div class="card-body  text-primary overflow-auto" id="sampleBox">
-                                <section>
-                                    <!-- 表示される文章 -->
-                                    <div id="cus_voice">こちらに話した言葉が表示されます。</div>
-                                </section>
+                        <div id="wasoku_judge"></div>
+                        <div class="card my-4" id="card_box">
+                            <div class="card-body  text-primary overflow-auto">
+                                <div id="cus_voice">こちらに話した言葉が表示されます。</div>
                             </div>
                         </div>
                     </div>
@@ -101,6 +99,9 @@
     var wasoku_max = 475;
     // スパイク
     var wasoku_spike = 700;
+
+    // 姿勢パラメーター
+    var capture_span = 10000;
 
     var start_time;
     var end_time;
@@ -461,9 +462,14 @@
                     })
                     .done(function(data){
                         let resultObjct = data.split(",");
-                        sisei.innerHTML = '<h3>' + resultObjct[0] + '</h3>';
-                        kakou.src = resultObjct[1];
                         if (resultObjct[0] != 'エラー') {
+                            if (resultObjct[0] == 'OK') {
+                                sisei.innerHTML = '<span class="h3 text-success">' + resultObjct[0] + '</span>';
+                            }
+                            else{
+                                sisei.innerHTML = '<span class="h3 text-danger">' + resultObjct[0] + '</span>';
+                            }
+                            kakou.src = resultObjct[1];
                             set_log(capture_time, 'image', resultObjct[0], resultObjct[1]);
                         }
                         console.log(new Date().toLocaleTimeString() + ' ' + resultObjct[0]);
@@ -474,7 +480,7 @@
                 }
             , 'image/jpeg');
 
-        }, 10000); // 画像処理スパン
+        }, capture_span); // 画像処理スパン
     }
 
     function video_stop(){
@@ -528,8 +534,9 @@
             if (event.results[i].isFinal) {
                 word_time += time_tail - time_head;
                 time_flag = false;
-                set_log(transcript_time, 'text', '' + (time_tail - time_head), transcript);
+                // set_log(transcript_time, 'text', '' + (time_tail - time_head), transcript);
                 finalTranscript += transcript;
+                HiraganaConvert(transcript_time, transcript, (time_tail - time_head));
             }
             else {
                 time_tail = event.timeStamp;
@@ -557,29 +564,29 @@
         // let word_length = hiragana.length;
         // let wasoku = Math.round((word_length / ((word_time / 1000) / 60)));
 
-        for (let i = 0; i  < log_list.length; i++) {
+        // for (let i = 0; i  < log_list.length; i++) {
 
-            let log = log_list[i];
+        //     let log = log_list[i];
             
-            if (log.type == 'text') {
-                let hiragana = HiraganaConvert(log.content);
-                log.score =  Math.round(hiragana.length / ((parseFloat(log.score) / 1000) / 60));
-                // スパイクが発生した場合削除
-                if (log.score >= wasoku_spike) {
-                    console.log('スパイクしました');
-                    console.log(log.content);
-                    console.log(log.score);
-                    log_list.splice(i, 1);
-                }
-            }
+        //     if (log.type == 'text') {
+        //         let hiragana = HiraganaConvert(log.content);
+        //         log.score =  Math.round(hiragana.length / ((parseFloat(log.score) / 1000) / 60));
+        //         // スパイクが発生した場合削除
+        //         if (log.score >= wasoku_spike) {
+        //             console.log('スパイクしました');
+        //             console.log(log.content);
+        //             console.log(log.score);
+        //             log_list.splice(i, 1);
+        //         }
+        //     }
             
-        }
+        // }
 
     }
 
-    function HiraganaConvert(send_word) {
+    function HiraganaConvert(log_time, send_word, word_time) {
 
-        let hiragana = send_word;
+        console.log("文章をAPIに送信");
 
         let json = JSON.stringify({
             app_id: "f192486406c327292ce7cc842a7e4eea482fb063c9b023d6dbd3c6339d376ab5",
@@ -588,29 +595,83 @@
             output_type: "hiragana"
         });
 
-        let xhr = new XMLHttpRequest;
+        xhr = new XMLHttpRequest;
 
-        xhr.open("POST", "https://labs.goo.ne.jp/api/hiragana", false);
-        xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
-
-        try {
-            xhr.send(json);
-            if (xhr.status != 200) {
-                alert(`Error ${xhr.status}: ${xhr.statusText}`);
-            } else {
-                let res = JSON.parse(xhr.responseText);
-                hiragana = res.converted.replace(/\s+/g, '');
-            }
-        } catch (err) {
-            ("Request failed");
+        xhr.onload = function () {
+            console.log("APIから返信")
+            let res = JSON.parse(xhr.responseText);
+            let hiragana = res.converted.replace(/\s+/g, '');
+            JudgeWasoku(hiragana);
         }
 
-        return hiragana;
+        xhr.onerror = function () {
+            console.log("文章をひらがなにできませんでした。\n" + send_word);
+            JudgeWasoku(send_word);
+        }
+
+        xhr.open("POST", "https://labs.goo.ne.jp/api/hiragana", true);
+        xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+        xhr.send(json);
+
+        function JudgeWasoku(judge_word) {
+
+            let word_length = judge_word.length;
+            let wasoku_value = Math.round(word_length / ((word_time / 1000) / 60));
+
+            // スパイク
+            if (wasoku_value > wasoku_spike) {
+                console.log("スパイクしました。\n" + judge_word + "\n" + wasoku_value);
+                wasoku_value = 425;
+            }
+
+            let judge_str = '';
+            if (wasoku_value < wasoku_min) {
+                judge_str = '<div class="h3 text-danger">遅過ぎです！  <span class="h4">話速：' + wasoku_value + '</span></div>';
+            }
+            else if (wasoku_value > wasoku_max) {
+                judge_str = '<div class="h3 text-danger">速過ぎです！  <span class="h4">話速：' + wasoku_value + '</span></div>';
+            }
+            else {
+                judge_str = '<div class="h3 text-success">OK  <span class="h4">話速：' + wasoku_value + '</span></div>';
+            }
+
+            wasoku_judge.innerHTML = judge_str;
+            set_log(log_time, 'text', '' + wasoku_value, send_word);
+
+        }
+
+        // let hiragana = send_word;
+
+        // let json = JSON.stringify({
+        //     app_id: "f192486406c327292ce7cc842a7e4eea482fb063c9b023d6dbd3c6339d376ab5",
+        //     request_id: "record",
+        //     sentence: send_word,
+        //     output_type: "hiragana"
+        // });
+
+        // let xhr = new XMLHttpRequest;
+
+        // xhr.open("POST", "https://labs.goo.ne.jp/api/hiragana", false);
+        // xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+
+        // try {
+        //     xhr.send(json);
+        //     if (xhr.status != 200) {
+        //         alert(`Error ${xhr.status}: ${xhr.statusText}`);
+        //     } else {
+        //         let res = JSON.parse(xhr.responseText);
+        //         hiragana = res.converted.replace(/\s+/g, '');
+        //     }
+        // } catch (err) {
+        //     ("Request failed");
+        // }
+
+        // return hiragana;
 
     }
 
     // 俺様専用スクリプト
-    function sample(){
+    function oresama(){
         start_time = '09:00:00';
         end_time = '10:00:00';
         set_log('09:10:10', 'image', 'OK', './static/images/20201211_102327.jpg');
